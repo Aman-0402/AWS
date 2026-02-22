@@ -4,6 +4,9 @@
    ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@400;500&family=Nunito:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Nunito:wght@400;500;600&display=swap');
+
 
 /* ── RESET & BASE ── */
 *, *::before, *::after {
@@ -39,22 +42,44 @@ section.show {
 /* ── HERO ── */
 .hero {
   position: relative;
-  padding: 80px 24px 56px;
+  padding: 100px 24px 80px;
   text-align: center;
-  background: linear-gradient(135deg, #0b0f19 0%, #0d1b33 55%, #0b0f19 100%);
+  background: #0b0f19;
   overflow: hidden;
 }
 
+/* animated grid background */
 .hero::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 80% 55% at 50% 0%, rgba(255,153,0,.10) 0%, transparent 70%);
+  background-image:
+    linear-gradient(rgba(255,153,0,.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,153,0,.06) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+  pointer-events: none;
+}
+
+/* orange glow blob */
+.hero::after {
+  content: '';
+  position: absolute;
+  top: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 300px;
+  background: radial-gradient(ellipse, rgba(255,153,0,.18) 0%, transparent 70%);
   pointer-events: none;
 }
 
 .hero-eyebrow {
-  display: inline-block;
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   font-family: 'IBM Plex Mono', monospace;
   font-size: 11px;
   color: #ff9900;
@@ -62,29 +87,102 @@ section.show {
   text-transform: uppercase;
   background: rgba(255,153,0,.08);
   border: 1px solid rgba(255,153,0,.28);
-  padding: 4px 14px;
+  padding: 6px 16px;
   border-radius: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 28px;
+}
+
+.hero-eyebrow::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ff9900;
+  box-shadow: 0 0 8px #ff9900;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: .4; transform: scale(.7); }
 }
 
 .hero h1 {
-  font-family: 'Syne', 'Segoe UI', sans-serif;
-  font-size: clamp(28px, 5vw, 52px);
-  font-weight: 800;
-  color: #ff9900;
-  line-height: 1.15;
-  margin-bottom: 14px;
+  position: relative;
+  z-index: 1;
+  font-family: "Roboto Slab", serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+  font-size: clamp(32px, 5.5vw, 58px);
+  line-height: 1.2;
+  color: #f1f5f9;
+  margin-bottom: 18px;
+  letter-spacing: -.5px;
 }
 
 .hero h1 span {
-  color: #facc15;
+  color: #ff9900;
+  position: relative;
+  display: inline-block;
+}
+
+/* underline accent on the orange span */
+.hero h1 span::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #ff9900, #facc15, transparent);
+  border-radius: 2px;
 }
 
 .hero p {
-  max-width: 600px;
-  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  max-width: 580px;
+  margin: 0 auto 40px;
   color: #94a3b8;
   font-size: 17px;
+  line-height: 1.75;
+}
+
+/* optional stat chips below the subtitle */
+.hero-stats {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.hero-stat {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,153,0,.2);
+  border-radius: 8px;
+  padding: 10px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-stat strong {
+  font-family: "Roboto Slab", serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #facc15;
+  line-height: 1;
+}
+
+.hero-stat span {
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 4px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 /* ── CONTAINER ── */
