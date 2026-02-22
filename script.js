@@ -336,7 +336,7 @@ if (enterBtn) {
 
     let pct = 0;
     let startTime = Date.now();
-    const totalTime = 8000; // 8 seconds
+    const totalTime = 9000; // 8 seconds
     
     const interval = setInterval(() => {
     
@@ -359,7 +359,7 @@ if (enterBtn) {
         }, 300);
       }
     
-    }, 50);
+    }, 70); 
   });
 }
 
