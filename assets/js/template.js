@@ -14,3 +14,33 @@ topBtn.addEventListener("click", function () {
     behavior: "smooth"
   });
 });
+
+/* SECTION REVEAL ANIMATION */
+const sections = document.querySelectorAll("section");
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("show");
+    }
+  });
+}, {
+  threshold: 0.15
+});
+
+sections.forEach(section => {
+  observer.observe(section);
+});
+
+/* QUIZ LOGIC */
+function checkAnswer(button, isCorrect) {
+  const explanation = button.parentElement.querySelector(".explanation");
+
+  if (isCorrect) {
+    button.style.background = "#16a34a";
+  } else {
+    button.style.background = "#dc2626";
+  }
+
+  explanation.style.display = "block";
+}
