@@ -322,8 +322,8 @@ if (enterBtn) {
   enterBtn.addEventListener('click', function () {
     // Play sound (optional)
     try {
-      const audio = new Audio('dragon-studio-epic-glitch-intro.mp3');
-      audio.volume = 0.4;
+      const audio = new Audio('Sound/harry_potter.mp3');
+      audio.volume = 0.5;
       audio.play().catch(() => {});
     } catch(e) {}
 
