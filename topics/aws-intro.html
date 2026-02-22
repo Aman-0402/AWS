@@ -10,49 +10,234 @@
 
 <div class="container">
 
-  <h1>AWS Introduction</h1>
+    <h1>MODULE 1 – Welcome to AWS Academy Data Engineering</h1>
 
-  <!-- Anchor Navigation -->
-  <div class="anchor-nav">
-    Jump to:
-    <a href="#what-is-aws">What is AWS?</a>
-    <a href="#cloud-models">Cloud Models</a>
-    <a href="#benefits">Benefits</a>
-  </div>
-
-  <!-- Section 1 -->
-  <section id="what-is-aws">
-    <h2>What is AWS?</h2>
-    <p>
-      Amazon Web Services (AWS) is a cloud computing platform 
-      providing scalable computing, storage, and networking.
-    </p>
-
-    <div class="info-box">
-      💡 AWS follows a Pay-as-you-go pricing model.
+    <div class="anchor-nav">
+      Jump to:
+      <a href="#data-engineering">What is Data Engineering?</a>
+      <a href="#prerequisites">Prerequisites</a>
+      <a href="#roles">Job Roles</a>
+      <a href="#objectives">Course Objectives</a>
     </div>
-  </section>
-
-  <!-- Section 2 -->
-  <section id="cloud-models">
-    <h2>Cloud Service Models</h2>
-    <p>AWS provides three major cloud models:</p>
-
-    <pre>
-IaaS  → Infrastructure as a Service
-PaaS  → Platform as a Service
-SaaS  → Software as a Service
-    </pre>
-  </section>
-
-  <!-- Section 3 -->
-  <section id="benefits">
-    <h2>Benefits of AWS</h2>
-    <p>✔ Scalability</p>
-    <p>✔ High Availability</p>
-    <p>✔ Security</p>
-    <p>✔ Global Infrastructure</p>
-  </section>
+    
+    <!-- 1️⃣ WHAT IS DATA ENGINEERING -->
+    <section id="data-engineering">
+      <h2>1️⃣ What is Data Engineering?</h2>
+    
+      <h3>🔹 Concept</h3>
+      <p>Data Engineering is the process of:</p>
+      <ul>
+        <li>Collecting data</li>
+        <li>Cleaning data</li>
+        <li>Transforming data</li>
+        <li>Storing data</li>
+        <li>Making it available for analytics or ML</li>
+      </ul>
+    
+      <div class="info-box">
+        💡 Data Engineers build data pipelines.
+      </div>
+    
+      <h3>🔹 Real Example</h3>
+      <p>Imagine you build an e-commerce website.</p>
+      <p>Users generate:</p>
+      <ul>
+        <li>Orders</li>
+        <li>Payments</li>
+        <li>Reviews</li>
+        <li>Click data</li>
+      </ul>
+    
+      <p>Company wants:</p>
+      <ul>
+        <li>Sales dashboard</li>
+        <li>Fraud detection ML model</li>
+        <li>Customer behavior analytics</li>
+      </ul>
+    
+      <div class="info-box">
+        👉 Who prepares this data? <strong>Data Engineer</strong>
+      </div>
+    
+      <h3>🔹 Practical AWS Example</h3>
+      <p>Example architecture:</p>
+    
+      <pre>
+    Users Data → Database
+    Logs → Amazon S3
+    Transactions → Amazon RDS
+    
+    AWS Glue → Clean data
+    Amazon S3 → Store processed data
+    Amazon Redshift → Data warehouse
+    Amazon QuickSight → Visualization
+      </pre>
+    </section>
+    
+    
+    <!-- 2️⃣ PREREQUISITES -->
+    <section id="prerequisites">
+      <h2>2️⃣ Course Prerequisites</h2>
+    
+      <h3>🔹 SQL</h3>
+      <pre>
+    SELECT * FROM orders WHERE amount > 1000;
+      </pre>
+    
+      <h3>🔹 Databases</h3>
+      <ul>
+        <li>Tables</li>
+        <li>Rows</li>
+        <li>Indexes</li>
+        <li>Relationships</li>
+      </ul>
+    
+      <h3>🔹 Networking Basics</h3>
+      <ul>
+        <li>VPC</li>
+        <li>Subnets</li>
+        <li>Security Groups</li>
+        <li>Data Transfer</li>
+      </ul>
+    
+      <h3>🔹 Math / Statistics</h3>
+      <ul>
+        <li>Mean</li>
+        <li>Standard Deviation</li>
+        <li>Regression</li>
+      </ul>
+    </section>
+    
+    
+    <!-- 3️⃣ JOB ROLES -->
+    <section id="roles">
+      <h2>3️⃣ Related Job Roles</h2>
+    
+      <ul>
+        <li><strong>Data Engineer</strong> – Builds data pipelines</li>
+        <li><strong>Data Analyst</strong> – Creates dashboards</li>
+        <li><strong>Data Scientist</strong> – Builds ML models</li>
+        <li><strong>ETL Developer</strong> – Extract → Transform → Load expert</li>
+        <li><strong>ML Practitioner</strong> – Works on AI models</li>
+      </ul>
+    </section>
+    
+    
+    <!-- 4️⃣ COURSE OBJECTIVES -->
+    <section id="objectives">
+      <h2>4️⃣ Course Objectives</h2>
+    
+      <h3>🔹 Objective 1: Role of Data Science</h3>
+      <p>Companies make decisions using data.</p>
+    
+      <h3>🔹 Objective 2: Data Influences Infrastructure</h3>
+    
+      <table>
+        <tr>
+          <th>Data Type</th>
+          <th>Best Storage</th>
+        </tr>
+        <tr>
+          <td>Structured</td>
+          <td>RDS, Redshift</td>
+        </tr>
+        <tr>
+          <td>Semi-structured</td>
+          <td>S3</td>
+        </tr>
+        <tr>
+          <td>Unstructured</td>
+          <td>S3</td>
+        </tr>
+      </table>
+    
+      <h3>🔹 Objective 3: AWS Data Pipeline</h3>
+    
+      <pre>
+    Users → API → S3 → Glue → Redshift → QuickSight
+      </pre>
+    
+      <h3>🔹 Objective 4: Security & Governance</h3>
+      <ul>
+        <li>IAM Roles</li>
+        <li>Encryption</li>
+        <li>Access Policies</li>
+        <li>Data Masking</li>
+      </ul>
+    
+      <h3>🔹 Objective 5: Scaling</h3>
+      <ul>
+        <li>Auto Scaling</li>
+        <li>Partitioning</li>
+        <li>Parallel Processing</li>
+      </ul>
+    
+      <h3>🔹 Objective 6: Design Considerations</h3>
+    
+      <table>
+        <tr>
+          <th>Constraint</th>
+          <th>Meaning</th>
+        </tr>
+        <tr>
+          <td>Scalability</td>
+          <td>Handle 10M users?</td>
+        </tr>
+        <tr>
+          <td>Cost</td>
+          <td>Affordable?</td>
+        </tr>
+        <tr>
+          <td>Fault Tolerance</td>
+          <td>Server crash safe?</td>
+        </tr>
+        <tr>
+          <td>Latency</td>
+          <td>Real-time or batch?</td>
+        </tr>
+      </table>
+    
+      <h3>🔹 Objective 7: Storage Selection</h3>
+    
+      <table>
+        <tr>
+          <th>Use Case</th>
+          <th>Service</th>
+        </tr>
+        <tr>
+          <td>Data Lake</td>
+          <td>Amazon S3</td>
+        </tr>
+        <tr>
+          <td>Data Warehouse</td>
+          <td>Amazon Redshift</td>
+        </tr>
+        <tr>
+          <td>NoSQL</td>
+          <td>DynamoDB</td>
+        </tr>
+      </table>
+    
+      <h3>🔹 Objective 8: Data Processing</h3>
+      <p>Use AWS Glue, EMR, Lambda.</p>
+    
+      <h3>🔹 Objective 9: MapReduce & EMR</h3>
+    
+      <pre>
+    Map → Break into pieces
+    Reduce → Combine results
+      </pre>
+    
+      <h3>🔹 Objective 10: ML Pipeline</h3>
+      <p>Data → Cleaning → Feature Engineering → Training → Deployment</p>
+    
+      <h3>🔹 Objective 11: Data Analysis</h3>
+      <p>Athena, Redshift, QuickSight</p>
+    
+      <h3>🔹 Objective 12: Data Visualization</h3>
+      <p>CEO Dashboard: Revenue, Growth, Region analysis using QuickSight</p>
+    
+    </section>
 
   <!-- Bottom Navigation -->
   <div class="bottom-nav">
