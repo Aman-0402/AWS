@@ -5,13 +5,17 @@
 // ── Custom Cursor ──────────────────────────────
 (function() {
   const dot = document.createElement('div');
-  dot.style.cssText = `
-    position:fixed; width:6px; height:6px;
-    background:var(--orange, #FF8C00); border-radius:50%;
-    transform:translate(-50%,-50%); pointer-events:none;
-    z-index:10000; transition:transform 0.08s ease;
-    box-shadow: 0 0 8px rgba(255,140,0,0.8);
-  `;
+  try {
+    const audio = new Audio('Sound/harry_potter.mp3');
+    audio.volume = 0.5;
+    audio.currentTime = 0;
+    audio.play().catch(() => {});
+    
+    // Add timeout to stop after 9 seconds
+    setTimeout(() => {
+      audio.pause();
+    }, 9000);
+  } catch(e) {}
   document.body.appendChild(dot);
 
   let mx = window.innerWidth / 2, my = window.innerHeight / 2;
