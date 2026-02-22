@@ -335,25 +335,30 @@ if (enterBtn) {
     loadingOverlay.classList.add('active');
 
     let pct = 0;
+    let startTime = Date.now();
+    const totalTime = 8000; // 8 seconds
+    
     const interval = setInterval(() => {
-      // Non-linear speed — quick start, slow end
-      const increment = pct < 70 ? Math.random() * 6 + 3 : Math.random() * 2 + 0.5;
-      pct = Math.min(pct + increment, 99);
-      loadingFill.style.width = pct + '%';
-      loadingPct.textContent  = Math.floor(pct) + '%';
-
-      if (pct >= 99) {
+    
+      let elapsed = Date.now() - startTime;
+      let progress = Math.min((elapsed / totalTime) * 100, 100);
+    
+      loadingFill.style.width = progress + '%';
+      loadingPct.textContent = Math.floor(progress) + '%';
+    
+      if (progress >= 100) {
         clearInterval(interval);
-        loadingFill.style.width = '100%';
-        loadingPct.textContent  = '100%';
-
+    
         setTimeout(() => {
           document.body.classList.add('fade-out');
+    
           setTimeout(() => {
             window.location.href = 'content.html';
           }, 500);
+    
         }, 300);
       }
+    
     }, 50);
   });
 }
