@@ -36,7 +36,7 @@ body {
   transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
-section.show {
+.js-ready section.show {
   opacity: 1;
   transform: translateY(0);
 }
