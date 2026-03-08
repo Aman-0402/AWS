@@ -955,7 +955,7 @@ Timestamp        | User ID | Page   | Time on Page
     <!-- Q1 -->
     <div class="quiz-question">
       <div class="quiz-number">Q 01</div>
-      <div class="quiz-q-text">Which of the Five Vs describes how accurate, precise, and trusted the data is?</div>
+      <div class="quiz-q-text">Which data characteristic describes how accurate, precise, and trusted the data is?</div>
       <div class="options">
         <button class="option-btn" onclick="answer(this,'A','D')"><span class="opt-label">A</span>Volume</button>
         <button class="option-btn" onclick="answer(this,'B','D')"><span class="opt-label">B</span>Velocity</button>
@@ -963,22 +963,23 @@ Timestamp        | User ID | Page   | Time on Page
         <button class="option-btn" onclick="answer(this,'D','D')"><span class="opt-label">D</span>Veracity</button>
       </div>
       <div class="explanation correct-exp">
-        ✅ <strong>Veracity</strong> describes data quality — how accurate, reliable, and trustworthy the data is. Volume = size, Velocity = speed, Variety = format diversity, Value = business usefulness.
+        ✅ <strong>Veracity</strong> refers to the quality, accuracy, and trustworthiness of data. Volume = size, Velocity = speed, Variety = format diversity, Value = business usefulness.
       </div>
     </div>
 
-    <!-- Q2 -->
-    <div class="quiz-question">
+    <!-- Q2 — MULTI-SELECT (SELECT THREE) -->
+    <div class="quiz-multi" id="mq2">
       <div class="quiz-number">Q 02</div>
-      <div class="quiz-q-text">Which statements correctly describe Volume and Velocity in a data pipeline? (Choose the best answer)</div>
-      <div class="options">
-        <button class="option-btn" onclick="answer(this,'A','D')"><span class="opt-label">A</span>Only volume drives the expected throughput and scaling requirements of a pipeline.</button>
-        <button class="option-btn" onclick="answer(this,'B','D')"><span class="opt-label">B</span>Velocity is about how much data you need to process.</button>
-        <button class="option-btn" onclick="answer(this,'C','D')"><span class="opt-label">C</span>Volume and velocity are unrelated and affect different pipeline layers independently.</button>
-        <button class="option-btn" onclick="answer(this,'D','D')"><span class="opt-label">D</span>Volume is about how much data, velocity is about how quickly data moves — together they drive throughput and scaling requirements.</button>
-      </div>
-      <div class="explanation correct-exp">
-        ✅ Volume = amount of data. Velocity = speed of data flow. <strong>Both together</strong> drive the expected throughput and scaling requirements of a pipeline. Neither alone is sufficient to determine the right architecture.
+      <div class="quiz-q-text">Which statements describe volume and velocity in a data pipeline?</div>
+      <div class="select-hint">Select THREE correct answers</div>
+      <label class="checkbox-option"><input type="checkbox" value="A"><span class="opt-text">Only volume drives the expected throughput and scaling requirements of your pipeline.</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="B"><span class="opt-text">Volume is about how much data you need to process.</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="C"><span class="opt-text">Velocity is about how much data you need to process.</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="D"><span class="opt-text">Velocity is about how quickly data enters and moves through a pipeline.</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="E"><span class="opt-text">Volume and velocity together drive the expected throughput and scaling requirements of a pipeline.</span></label>
+      <button class="check-btn" onclick="checkMulti('mq2',['B','D','E'])">Check Answers</button>
+      <div class="multi-explanation">
+        ✅ <strong>Correct three:</strong> (1) <em>Volume is about how much data</em> — the sheer size of data that must be stored and processed. (2) <em>Velocity is about how quickly data enters and moves</em> — the speed of data flow through the pipeline. (3) <em>Both together drive throughput and scaling requirements</em> — neither alone determines the right architecture. Volume alone does not drive scaling; velocity is not about quantity.
       </div>
     </div>
 
@@ -989,116 +990,116 @@ Timestamp        | User ID | Page   | Time on Page
       <div class="options">
         <button class="option-btn" onclick="answer(this,'A','C')"><span class="opt-label">A</span>Structured</button>
         <button class="option-btn" onclick="answer(this,'B','C')"><span class="opt-label">B</span>Relational</button>
-        <button class="option-btn" onclick="answer(this,'C','C')"><span class="opt-label">C</span>Semi-structured</button>
+        <button class="option-btn" onclick="answer(this,'C','C')"><span class="opt-label">C</span>Semistructured</button>
         <button class="option-btn" onclick="answer(this,'D','C')"><span class="opt-label">D</span>Unstructured</button>
       </div>
       <div class="explanation correct-exp">
-        ✅ <strong>Semi-structured.</strong> CSV, JSON, and XML have a defined format but a flexible schema — not the rigid rows/columns of a relational table (structured), and not completely free-form like an image (unstructured).
+        ✅ <strong>Semistructured.</strong> CSV, JSON, and XML have a defined format but a flexible schema — not the rigid rows/columns of a relational table (structured), and not completely free-form like an image (unstructured).
       </div>
     </div>
 
     <!-- Q4 -->
     <div class="quiz-question">
       <div class="quiz-number">Q 04</div>
-      <div class="quiz-q-text">Which statement about structured vs unstructured data is correct?</div>
+      <div class="quiz-q-text">Which statement about data types is correct?</div>
       <div class="options">
         <button class="option-btn" onclick="answer(this,'A','A')"><span class="opt-label">A</span>Unstructured data is the hardest to query but the most flexible. Structured data is the easiest to query but the least flexible.</button>
-        <button class="option-btn" onclick="answer(this,'B','A')"><span class="opt-label">B</span>Unstructured and structured data are equally difficult to query.</button>
+        <button class="option-btn" onclick="answer(this,'B','A')"><span class="opt-label">B</span>Unstructured data and structured data are equally difficult to query.</button>
         <button class="option-btn" onclick="answer(this,'C','A')"><span class="opt-label">C</span>Unstructured data is the hardest to query and the least flexible. Structured data is the easiest to query and the most flexible.</button>
-        <button class="option-btn" onclick="answer(this,'D','A')"><span class="opt-label">D</span>Unstructured data is the easiest to query but structured data is harder to work with.</button>
+        <button class="option-btn" onclick="answer(this,'D','A')"><span class="opt-label">D</span>Unstructured data is the easiest to query but the most flexible. Structured data is the hardest to query but the least flexible.</button>
       </div>
       <div class="explanation correct-exp">
-        ✅ Structured data (tables, SQL) is the <strong>easiest to query but least flexible</strong> — you cannot store free-form content. Unstructured data (images, video, emails) is the <strong>hardest to query</strong> (requires AI/NLP) but the <strong>most flexible</strong> — you can store anything.
+        ✅ Structured data (tables, SQL) is the <strong>easiest to query but least flexible</strong> — it cannot store free-form content. Unstructured data (images, video, text) is the <strong>hardest to query</strong> (requires AI/NLP) but the <strong>most flexible</strong> — you can store anything.
       </div>
     </div>
 
     <!-- Q5 -->
     <div class="quiz-question">
       <div class="quiz-number">Q 05</div>
-      <div class="quiz-q-text">Which type of data source generates continuous, time-stamped data streams in real time?</div>
+      <div class="quiz-q-text">Which type of data source includes data that is generated continuously by events with a time-based component?</div>
       <div class="options">
         <button class="option-btn" onclick="answer(this,'A','D')"><span class="opt-label">A</span>File stores</button>
-        <button class="option-btn" onclick="answer(this,'B','D')"><span class="opt-label">B</span>On-premises relational databases</button>
+        <button class="option-btn" onclick="answer(this,'B','D')"><span class="opt-label">B</span>On-premises databases</button>
         <button class="option-btn" onclick="answer(this,'C','D')"><span class="opt-label">C</span>Public datasets</button>
-        <button class="option-btn" onclick="answer(this,'D','D')"><span class="opt-label">D</span>Events, IoT devices, and sensors</button>
+        <button class="option-btn" onclick="answer(this,'D','D')"><span class="opt-label">D</span>Events, Internet of Things (IoT) devices, and sensors</button>
       </div>
       <div class="explanation correct-exp">
-        ✅ <strong>IoT devices, sensors, and events</strong> generate continuous real-time data with timestamps — temperature readings every second, website clicks as they happen, GPS coordinates from moving vehicles. This is called time-series data.
+        ✅ <strong>IoT devices, sensors, and events</strong> generate continuous time-based data streams — temperature readings every second, website clicks as they happen, GPS coordinates from moving vehicles. This is called time-series data.
       </div>
     </div>
 
     <!-- Q6 -->
     <div class="quiz-question">
       <div class="quiz-number">Q 06</div>
-      <div class="quiz-q-text">What is an example of structured data?</div>
+      <div class="quiz-q-text">How could a healthcare company use data to support the most valuable personalized experience for their customers?</div>
       <div class="options">
-        <button class="option-btn" onclick="answer(this,'A','C')"><span class="opt-label">A</span>Website clickstream data</button>
-        <button class="option-btn" onclick="answer(this,'B','C')"><span class="opt-label">B</span>A JSON or CSV file</button>
-        <button class="option-btn" onclick="answer(this,'C','C')"><span class="opt-label">C</span>A relational database table</button>
-        <button class="option-btn" onclick="answer(this,'D','C')"><span class="opt-label">D</span>An image file</button>
+        <button class="option-btn" onclick="answer(this,'A','A')"><span class="opt-label">A</span>Combine disparate data of different types from on-premises databases, public datasets, and customer devices to alert customers who might be at risk for a health event.</button>
+        <button class="option-btn" onclick="answer(this,'B','A')"><span class="opt-label">B</span>Provide summary reports of health trends based on an internal customer database.</button>
+        <button class="option-btn" onclick="answer(this,'C','A')"><span class="opt-label">C</span>Give customers access to full public health datasets through a mobile app.</button>
+        <button class="option-btn" onclick="answer(this,'D','A')"><span class="opt-label">D</span>Collect heart rate data from customers' personal devices and automatically add it to their healthcare records.</button>
       </div>
       <div class="explanation correct-exp">
-        ✅ <strong>Relational database tables</strong> are the classic example of structured data — rows, columns, fixed schema, and SQL-queryable. JSON/CSV = semi-structured. Images = unstructured. Clickstream = semi-structured or unstructured depending on format.
+        ✅ Combining <strong>multiple data types from multiple sources</strong> — internal records, public data, and real-time device data — enables proactive, personalised health alerts. This is the highest-value use of all Five Vs working together.
       </div>
     </div>
 
     <!-- Q7 -->
     <div class="quiz-question">
       <div class="quiz-number">Q 07</div>
-      <div class="quiz-q-text">Which scenario is best suited for batch ingestion rather than streaming?</div>
+      <div class="quiz-q-text">What is an example of structured data?</div>
       <div class="options">
-        <button class="option-btn" onclick="answer(this,'A','A')"><span class="opt-label">A</span>Sales transaction data from retail stores is sent to a central location periodically and processed overnight, with reports distributed each morning.</button>
-        <button class="option-btn" onclick="answer(this,'B','A')"><span class="opt-label">B</span>A dashboard is populated with real-time error rates from factory sensors.</button>
-        <button class="option-btn" onclick="answer(this,'C','A')"><span class="opt-label">C</span>Real-time fraud alerts are produced based on transaction log data as each transaction occurs.</button>
-        <button class="option-btn" onclick="answer(this,'D','A')"><span class="opt-label">D</span>Clickstream data from a website must be analysed immediately for personalised recommendations.</button>
+        <button class="option-btn" onclick="answer(this,'A','C')"><span class="opt-label">A</span>Clickstream data</button>
+        <button class="option-btn" onclick="answer(this,'B','C')"><span class="opt-label">B</span>CSV, JSON, or XML file</button>
+        <button class="option-btn" onclick="answer(this,'C','C')"><span class="opt-label">C</span>Relational database table</button>
+        <button class="option-btn" onclick="answer(this,'D','C')"><span class="opt-label">D</span>Image</button>
       </div>
       <div class="explanation correct-exp">
-        ✅ <strong>Batch processing</strong> handles data collected over a period and processed together — overnight report generation is the classic example. Real-time dashboards, fraud detection, and live recommendations all require streaming, not batch.
+        ✅ <strong>Relational database tables</strong> are the classic example of structured data — organised in rows and columns with a fixed schema, queryable using SQL. JSON/CSV = semistructured. Images = unstructured. Clickstream = semistructured depending on format.
       </div>
     </div>
 
     <!-- Q8 -->
     <div class="quiz-question">
       <div class="quiz-number">Q 08</div>
-      <div class="quiz-q-text">A website is busy and there is a delay in returning personalised recommendations based on clickstream data. Which characteristic of data does this challenge relate to?</div>
+      <div class="quiz-q-text">Which scenario could benefit from batch ingestion or processing?</div>
       <div class="options">
-        <button class="option-btn" onclick="answer(this,'A','B')"><span class="opt-label">A</span>Volume — the total size of the dataset is too large</button>
-        <button class="option-btn" onclick="answer(this,'B','B')"><span class="opt-label">B</span>Velocity — the system cannot process data fast enough to meet speed requirements</button>
-        <button class="option-btn" onclick="answer(this,'C','B')"><span class="opt-label">C</span>Variety — the data is in too many different formats</button>
-        <button class="option-btn" onclick="answer(this,'D','B')"><span class="opt-label">D</span>Veracity — the data is inaccurate during peak traffic periods</button>
+        <button class="option-btn" onclick="answer(this,'A','A')"><span class="opt-label">A</span>Sales transaction data from a retailer's website is sent to a central location periodically. Data is analyzed overnight with reports sent to branches in the morning.</button>
+        <button class="option-btn" onclick="answer(this,'B','A')"><span class="opt-label">B</span>A dashboard is populated with real-time error rates of sensors in a factory.</button>
+        <button class="option-btn" onclick="answer(this,'C','A')"><span class="opt-label">C</span>Real-time alerts are produced based on log data to identify potential fraud as soon as it occurs.</button>
+        <button class="option-btn" onclick="answer(this,'D','A')"><span class="opt-label">D</span>Clickstream data from a retailer's website sends a large volume of small bits of data at a continuous pace. Analysis must be performed immediately.</button>
       </div>
       <div class="explanation correct-exp">
-        ✅ This is a <strong>Velocity challenge.</strong> The system is not processing data fast enough to deliver real-time recommendations during peak load. The data size (volume) may also be a factor, but the core symptom — delays in results — is a velocity problem.
+        ✅ <strong>Batch processing</strong> handles data collected over a period and processed together — overnight report generation is the classic example. Real-time dashboards, fraud detection, and live recommendations all require streaming, not batch.
       </div>
     </div>
 
     <!-- Q9 -->
     <div class="quiz-question">
       <div class="quiz-number">Q 09</div>
-      <div class="quiz-q-text">Which statement about data veracity is true?</div>
+      <div class="quiz-q-text">Which scenario describes a challenge to velocity?</div>
       <div class="options">
-        <button class="option-btn" onclick="answer(this,'A','D')"><span class="opt-label">A</span>Veracity is only addressed during the cleaning and transformation stage.</button>
-        <button class="option-btn" onclick="answer(this,'B','D')"><span class="opt-label">B</span>The data analytics field has a universal, shared definition of "clean data."</button>
-        <button class="option-btn" onclick="answer(this,'C','D')"><span class="opt-label">C</span>All veracity issues can be fixed by cleansing data once during ingestion.</button>
-        <button class="option-btn" onclick="answer(this,'D','D')"><span class="opt-label">D</span>Value rests on veracity — if you cannot trust the data, your analysis will not have much value.</button>
+        <button class="option-btn" onclick="answer(this,'A','C')"><span class="opt-label">A</span>Regional offices send the same type of data but use different CSV formats.</button>
+        <button class="option-btn" onclick="answer(this,'B','C')"><span class="opt-label">B</span>A sales department wants to use a data source but lacks information about its lineage.</button>
+        <button class="option-btn" onclick="answer(this,'C','C')"><span class="opt-label">C</span>Clickstream data is collected for personalized recommendations, but when the website is busy there is a delay in returning results.</button>
+        <button class="option-btn" onclick="answer(this,'D','C')"><span class="opt-label">D</span>Data is ingested from regional sales sites, and the overnight batch job fails because it runs out of disk space.</button>
       </div>
       <div class="explanation correct-exp">
-        ✅ <strong>Value rests on veracity.</strong> Veracity must be maintained across every pipeline layer — not just ingestion. "Clean data" has no universal definition; it depends on the use case. And not all data issues can be fixed at ingestion — some are discovered much later during analysis.
+        ✅ <strong>Velocity challenge.</strong> The system cannot process data fast enough to return real-time recommendations during peak load. Different CSV formats = a Variety problem. Missing lineage = a Veracity problem. Running out of disk space = a Volume problem.
       </div>
     </div>
 
     <!-- Q10 -->
     <div class="quiz-question">
       <div class="quiz-number">Q 10</div>
-      <div class="quiz-q-text">A healthcare company wants to provide the most personalised customer experience. Which approach delivers the highest value?</div>
+      <div class="quiz-q-text">Which statement about data veracity is true?</div>
       <div class="options">
-        <button class="option-btn" onclick="answer(this,'A','A')"><span class="opt-label">A</span>Combine on-premises patient records, public health datasets, and wearable device data to proactively alert customers who may be at risk for a health event.</button>
-        <button class="option-btn" onclick="answer(this,'B','A')"><span class="opt-label">B</span>Provide summary reports of health trends based only on internal databases.</button>
-        <button class="option-btn" onclick="answer(this,'C','A')"><span class="opt-label">C</span>Give customers access to full public health datasets through a mobile app.</button>
-        <button class="option-btn" onclick="answer(this,'D','A')"><span class="opt-label">D</span>Collect heart rate data from devices and automatically add it to healthcare records without analysis.</button>
+        <button class="option-btn" onclick="answer(this,'A','D')"><span class="opt-label">A</span>The first point where veracity is addressed is during cleaning and transformation in ingestion.</button>
+        <button class="option-btn" onclick="answer(this,'B','D')"><span class="opt-label">B</span>The data analytics field shares a common definition of clean data.</button>
+        <button class="option-btn" onclick="answer(this,'C','D')"><span class="opt-label">C</span>All veracity issues can be fixed by cleansing data during ingestion.</button>
+        <button class="option-btn" onclick="answer(this,'D','D')"><span class="opt-label">D</span>Value rests on veracity. If you can't trust the data, then your analysis will not have much value.</button>
       </div>
       <div class="explanation correct-exp">
-        ✅ Combining <strong>multiple data types from multiple sources</strong> — internal records, public data, and real-time device data — enables proactive, personalised health alerts. This is the highest-value use of all Five Vs working together: variety of sources, real-time velocity, sufficient volume, verified data quality, and clear business value.
+        ✅ <strong>Value rests on veracity.</strong> If data is not accurate or trustworthy, the analysis and decisions based on it become unreliable. Veracity must be maintained across every pipeline layer — not just ingestion — and "clean data" has no universal definition; it depends on the use case.
       </div>
     </div>
 
