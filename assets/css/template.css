@@ -31,7 +31,7 @@ body {
 
 /* ── SECTION ANIMATION (driven by JS IntersectionObserver) ── */
 section {
-  opacity: 0;
+  opacity: 0.4;
   transform: translateY(40px);
   transition: opacity 0.8s ease, transform 0.8s ease;
 }
