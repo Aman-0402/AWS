@@ -30,8 +30,8 @@ body {
 }
 
 /* ── SECTION ANIMATION (driven by JS IntersectionObserver) ── */
-section {
-  opacity: 0.4;
+.js-ready section {
+  opacity: 0;
   transform: translateY(40px);
   transition: opacity 0.8s ease, transform 0.8s ease;
 }

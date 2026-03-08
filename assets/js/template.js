@@ -5,6 +5,7 @@
    ============================================================ */
 
 /* ── TOP BUTTON ── */
+document.documentElement.classList.add('js-ready');
 const topBtn = document.getElementById("topBtn");
 
 if (topBtn) {
