@@ -21,8 +21,8 @@
     .checkbox-option input[type="checkbox"]:checked::after { content: '✓'; position: absolute; top: -2px; left: 2px; font-size: 13px; color: #000; font-weight: 700; }
     .checkbox-option.locked { cursor: default; pointer-events: none; }
     .checkbox-option.correct-pick { border-color: #22c55e !important; background: rgba(34,197,94,.08) !important; }
-    .checkbox-option.wrong-pick { border-color: #ef4444 !important; background: rgba(239,68,68,.08) !important; }
-    .checkbox-option.missed-pick { border-color: #facc15 !important; background: rgba(250,204,21,.06) !important; }
+    .checkbox-option.wrong-pick   { border-color: #ef4444 !important; background: rgba(239,68,68,.08) !important; }
+    .checkbox-option.missed-pick  { border-color: #facc15 !important; background: rgba(250,204,21,.06) !important; }
     .checkbox-option .opt-text { font-size: .95rem; color: #cbd5e1; line-height: 1.45; }
     .check-btn { margin-top: .8rem; padding: .55rem 1.5rem; background: #ff9900; color: #000; font-weight: 700; font-size: .9rem; border: none; border-radius: 8px; cursor: pointer; transition: background .2s; }
     .check-btn:hover { background: #facc15; }
@@ -30,7 +30,7 @@
     .multi-explanation { margin-top: 1rem; padding: .9rem 1.1rem; border-radius: 8px; font-size: .9rem; line-height: 1.55; display: none; }
     .multi-explanation.show { display: block; }
     .multi-explanation.correct-exp { background: rgba(34,197,94,.1); border-left: 3px solid #22c55e; color: #bbf7d0; }
-    .multi-explanation.wrong-exp { background: rgba(239,68,68,.1); border-left: 3px solid #ef4444; color: #fca5a5; }
+    .multi-explanation.wrong-exp   { background: rgba(239,68,68,.1); border-left: 3px solid #ef4444; color: #fca5a5; }
   </style>
 </head>
 <body>
@@ -1100,109 +1100,8 @@
 <!-- GO TO TOP -->
 <button id="topBtn">↑</button>
 
-<!-- Load template.js for scroll-to-top and section reveal only -->
+<!-- ── Single script tag — all quiz logic lives in template.js ── -->
 <script src="../assets/js/template.js"></script>
 
-<!-- ── UNIFIED QUIZ ENGINE (overrides template.js quiz) ── -->
-<script>
-  /* ── State ── */
-  const TOTAL_Q = 10;
-  let answered  = 0;
-  let correct   = 0;
-
-  /* ── Override template.js answer() ── */
-  function answer(btn, chosen, correctAns) {
-    const qBlock = btn.closest('.quiz-question');
-    if (!qBlock || qBlock.dataset.done) return;
-    qBlock.dataset.done = '1';
-    answered++;
-
-    const allBtns = qBlock.querySelectorAll('.option-btn');
-    allBtns.forEach(b => {
-      b.disabled = true;
-      const lbl = b.querySelector('.opt-label').textContent;
-      if (lbl === correctAns) b.classList.add('correct');
-    });
-
-    const expEl = qBlock.querySelector('.explanation');
-    if (chosen === correctAns) {
-      btn.classList.add('correct');
-      correct++;
-    } else {
-      btn.classList.add('wrong');
-      if (expEl) expEl.textContent = '❌ ' + expEl.textContent.replace(/^[✅❌]\s*/, '');
-    }
-    if (expEl) expEl.style.display = 'block';
-
-    tryShowScore();
-  }
-
-  /* ── Multi-select handler ── */
-  function checkMulti(qId, correctVals) {
-    const block = document.getElementById(qId);
-    if (!block || block.dataset.done) return;
-    block.dataset.done = '1';
-    answered++;
-
-    const options  = block.querySelectorAll('.checkbox-option');
-    const submitBtn = block.querySelector('.check-btn');
-    submitBtn.disabled = true;
-
-    const selected = new Set();
-    options.forEach(opt => {
-      const cb = opt.querySelector('input[type="checkbox"]');
-      if (cb.checked) selected.add(cb.value);
-      cb.disabled = true;
-      opt.classList.add('locked');
-    });
-
-    const correctSet = new Set(correctVals);
-    let allCorrect = true;
-
-    options.forEach(opt => {
-      const val = opt.querySelector('input[type="checkbox"]').value;
-      const isCorrect = correctSet.has(val);
-      const isSelected = selected.has(val);
-
-      if (isSelected && isCorrect)  opt.classList.add('correct-pick');
-      if (isSelected && !isCorrect) { opt.classList.add('wrong-pick'); allCorrect = false; }
-      if (!isSelected && isCorrect) { opt.classList.add('missed-pick'); allCorrect = false; }
-    });
-
-    if (allCorrect) correct++;
-
-    const expEl = block.querySelector('.multi-explanation');
-    if (expEl) {
-      expEl.classList.add('show');
-      expEl.classList.add(allCorrect ? 'correct-exp' : 'wrong-exp');
-      if (!allCorrect) expEl.textContent = '❌ ' + expEl.textContent.replace(/^[✅❌]\s*/, '');
-    }
-
-    tryShowScore();
-  }
-
-  /* ── Score display ── */
-  function tryShowScore() {
-    if (answered < TOTAL_Q) return;
-    const bar  = document.getElementById('scoreBar');
-    const cnt  = document.getElementById('scoreCount');
-    const msg  = document.getElementById('scoreMsg');
-    if (!bar) return;
-
-    bar.style.display = 'block';
-    cnt.textContent = correct + ' / ' + TOTAL_Q;
-    const pct = correct / TOTAL_Q;
-    if (pct === 1)        msg.textContent = '🏆 Perfect score! You are ready for Module 7.';
-    else if (pct >= 0.7)  msg.textContent = '✅ Good work! Review any missed questions before moving on.';
-    else                  msg.textContent = '📖 Review the sections above, then try again.';
-
-    bar.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }
-
-  /* ── Disable template.js showScore to avoid conflict ── */
-  if (typeof window !== 'undefined') {
-    window.showScore = function() {};   // neutralise template.js version
-  }
-</script>
 </body>
 </html>
