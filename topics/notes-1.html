@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notes 1 — Module 02: Intro to AWS Data Engineering</title>
+  <link rel="stylesheet" href="../assets/css/template.css" />
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════
+       HERO
+  ══════════════════════════════════════════════ -->
+  <div class="hero">
+    <div class="hero-eyebrow">Extra · Notes 1</div>
+
+    <h1>
+      Module 02:<br />
+      <span>Introduction to AWS Data Engineering</span>
+    </h1>
+
+    <p>
+      Think of a Data Engineer as the <strong style="color:#ff9900;">"plumber"</strong>
+      and <strong style="color:#ff9900;">"architect"</strong> of the data world. While
+      Data Scientists build the fancy faucets (models), you are responsible for the massive,
+      high-pressure pipes that ensure the water (data) is clean, flowing, and never runs dry.
+    </p>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <strong>6</strong>
+        <span>Core Services</span>
+      </div>
+      <div class="hero-stat">
+        <strong>5</strong>
+        <span>Key Roles</span>
+      </div>
+      <div class="hero-stat">
+        <strong>4</strong>
+        <span>Lifecycle Stages</span>
+      </div>
+      <div class="hero-stat">
+        <strong>1</strong>
+        <span>Live Scenario</span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════
+       MAIN CONTENT
+  ══════════════════════════════════════════════ -->
+  <div class="container">
+
+    <!-- Anchor Nav -->
+    <nav class="anchor-nav">
+      <span>Jump to</span>
+      <a href="#what-is">What Is It?</a>
+      <a href="#lifecycle">Lifecycle</a>
+      <a href="#roles">Roles</a>
+      <a href="#why-aws">Why AWS?</a>
+      <a href="#objectives">Objectives</a>
+      <a href="#console-tour">Console Tour</a>
+      <a href="#scenario">Live Scenario</a>
+      <a href="#quiz">Quiz</a>
+    </nav>
+
+
+    <!-- ─── SECTION 1: What Is AWS Data Engineering? ─── -->
+    <section id="what-is">
+      <div class="section-label">Section 01</div>
+      <h2>What is AWS Data Engineering?</h2>
+
+      <p>
+        Data Engineering on AWS is the practice of <strong>designing and building systems</strong>
+        for collecting, storing, and analyzing data at scale. Using AWS means you don't have to
+        worry about buying physical servers; instead, you use managed services to handle
+        <strong style="color:#facc15;">petabytes</strong> of information.
+      </p>
+
+      <h3><span class="icon">🎯</span>The Core Objectives</h3>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">🔗</div>
+          <div class="card-title">Data Integration</div>
+          <div class="card-desc">Combining data from different sources — apps, databases, logs — into one unified flow.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🧹</div>
+          <div class="card-title">Transformation</div>
+          <div class="card-desc">Cleaning "messy" raw data into a structured, usable format for consumers.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🛡️</div>
+          <div class="card-title">Reliability</div>
+          <div class="card-desc">Ensuring data is always available, accurate, and consistent — no broken pipes.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">💰</div>
+          <div class="card-title">Cost Optimization</div>
+          <div class="card-desc">Scaling resources up when needed, down when not — pay only for what you use.</div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+
+    <!-- ─── SECTION 2: The Data Engineering Lifecycle ─── -->
+    <section id="lifecycle">
+      <div class="section-label">Section 02</div>
+      <h2>The Data Engineering Lifecycle</h2>
+
+      <p>
+        Every project you work on will generally follow this flow. AWS provides specific,
+        purpose-built tools for each stage.
+      </p>
+
+      <!-- Pipeline flow visual -->
+      <div class="pipeline">
+        <div class="pipeline-step">📥 Ingestion</div>
+        <div class="pipeline-arrow">▶</div>
+        <div class="pipeline-step">🗄️ Storage</div>
+        <div class="pipeline-arrow">▶</div>
+        <div class="pipeline-step">⚙️ Processing</div>
+        <div class="pipeline-arrow">▶</div>
+        <div class="pipeline-step">📊 Consumption</div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Stage</th>
+              <th>Goal</th>
+              <th>Common AWS Tools</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="badge badge-orange">Ingestion</span></td>
+              <td>Getting data into the cloud</td>
+              <td>Kinesis, AWS Glue, AppFlow</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-blue">Storage</span></td>
+              <td>Holding data securely</td>
+              <td>Amazon S3, DynamoDB, RDS</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-yellow">Processing</span></td>
+              <td>Cleaning and calculating</td>
+              <td>AWS Lambda, EMR, Glue</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-green">Consumption</span></td>
+              <td>Making data ready for users</td>
+              <td>Redshift, Athena, QuickSight</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+
+    <!-- ─── SECTION 3: Key Roles ─── -->
+    <section id="roles">
+      <div class="section-label">Section 03</div>
+      <h2>Key Roles in the Data Landscape</h2>
+
+      <p>
+        It's easy to get confused by job titles. Here is how the Data Engineer
+        interacts with the rest of the team:
+      </p>
+
+      <div class="role-grid">
+        <div class="role-card" style="--card-color:#ff9900;">
+          <div class="role-icon">🔧</div>
+          <div class="role-title">Data Engineer <span class="badge badge-orange" style="margin-left:6px;">You</span></div>
+          <div class="role-desc">Builds and maintains the pipelines. You provide the <em>"Single Source of Truth."</em></div>
+          <div class="role-skills">
+            <span class="skill-tag">S3</span>
+            <span class="skill-tag">Glue</span>
+            <span class="skill-tag">Kinesis</span>
+            <span class="skill-tag">Lambda</span>
+          </div>
+        </div>
+
+        <div class="role-card" style="--card-color:#a78bfa;">
+          <div class="role-icon">🤖</div>
+          <div class="role-title">Data Scientist</div>
+          <div class="role-desc">Uses the data you cleaned to build predictive models (Machine Learning).</div>
+          <div class="role-skills">
+            <span class="skill-tag">SageMaker</span>
+            <span class="skill-tag">Python</span>
+            <span class="skill-tag">ML Models</span>
+          </div>
+        </div>
+
+        <div class="role-card" style="--card-color:#60a5fa;">
+          <div class="role-icon">📊</div>
+          <div class="role-title">Data Analyst</div>
+          <div class="role-desc">Uses your processed data to create business reports and dashboards.</div>
+          <div class="role-skills">
+            <span class="skill-tag">QuickSight</span>
+            <span class="skill-tag">Athena</span>
+            <span class="skill-tag">SQL</span>
+          </div>
+        </div>
+
+        <div class="role-card" style="--card-color:#22c55e;">
+          <div class="role-icon">🗃️</div>
+          <div class="role-title">Database Admin (DBA)</div>
+          <div class="role-desc">Focuses specifically on the health and tuning of databases like RDS or Aurora.</div>
+          <div class="role-skills">
+            <span class="skill-tag">RDS</span>
+            <span class="skill-tag">Aurora</span>
+            <span class="skill-tag">DynamoDB</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+
+    <!-- ─── SECTION 4: Why AWS? ─── -->
+    <section id="why-aws">
+      <div class="section-label">Section 04</div>
+      <h2>Why AWS for Data Engineering?</h2>
+
+      <p>
+        AWS is currently the <strong>market leader</strong> in cloud data services for three main reasons:
+      </p>
+
+      <div class="info-box">
+        <h3 style="margin-top:0;margin-bottom:10px;"><span class="icon">🧩</span>1. The "Lego" Effect</h3>
+        <p style="margin:0;">Every service is designed to "snap" into another. You can trigger a cleaning script
+        (Glue) the <em>second</em> a file lands in storage (S3). No glue code needed — pun intended.</p>
+      </div>
+
+      <div class="info-box">
+        <h3 style="margin-top:0;margin-bottom:10px;"><span class="icon">☁️</span>2. Serverless Options</h3>
+        <p style="margin:0;">You can process massive amounts of data without ever managing a single
+        operating system. Lambda, Glue, Athena — all fully managed.</p>
+      </div>
+
+      <div class="info-box">
+        <h3 style="margin-top:0;margin-bottom:10px;"><span class="icon">🔐</span>3. Security Built-In</h3>
+        <p style="margin:0;">With <strong>AWS IAM</strong> (Identity and Access Management), you have granular control
+        over who can see or touch the data — vital for legal and regulatory compliance.</p>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+
+    <!-- ─── SECTION 5: Course Objectives ─── -->
+    <section id="objectives">
+      <div class="section-label">Section 05</div>
+      <h2>Course Objectives: What You Will Achieve</h2>
+
+      <p>By the end of this journey, you will be able to:</p>
+
+      <ul class="styled">
+        <li>Architect a <strong>Data Lake</strong> using Amazon S3.</li>
+        <li>Build <strong>ETL</strong> (Extract, Transform, Load) jobs that run automatically.</li>
+        <li>Handle both <strong>Batch</strong> (scheduled) and <strong>Real-time</strong> (streaming) data.</li>
+        <li>Prepare yourself for the <strong>AWS Certified Data Engineer – Associate</strong> exam.</li>
+      </ul>
+
+      <div class="warn-box">
+        💡 <strong>Pro-Tip:</strong> As you learn each service, ask yourself: "Which lifecycle
+        stage does this belong to — Ingestion, Storage, Processing, or Consumption?"
+        That mental model will carry you through the entire course.
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+
+    <!-- ─── SECTION 6: Console Tour ─── -->
+    <section id="console-tour">
+      <div class="section-label">Section 06</div>
+      <h2>Console Tour: Your Primary AWS Tools</h2>
+
+      <h3><span class="icon">🪣</span>1. The Storage Foundation — Amazon S3</h3>
+      <p>
+        Amazon S3 (Simple Storage Service) is the <strong>"Ground Zero"</strong> for data engineering.
+        It acts as your <em>Data Lake</em>, holding everything from raw <code>.csv</code> files
+        to optimized <code>.parquet</code> datasets.
+      </p>
+      <ul class="styled">
+        <li><strong>In the Console:</strong> Create "Buckets," set up folders (prefixes), and manage "Lifecycle Policies" (e.g., move old data to cheaper Glacier storage automatically).</li>
+        <li><strong>Pro-Tip:</strong> Use the <code>S3 Select</code> feature to preview specific rows of a file without downloading the whole thing.</li>
+      </ul>
+
+      <h3><span class="icon">🧠</span>2. The "Brains" of ETL — AWS Glue</h3>
+      <p>AWS Glue is a serverless data integration service. It discovers what your data looks like and transforms it.</p>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">📚</div>
+          <div class="card-title">Glue Data Catalog</div>
+          <div class="card-desc">Central metadata repository. Tells Athena and other services the schema (columns/types) of your S3 files.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🕷️</div>
+          <div class="card-title">Glue Crawlers</div>
+          <div class="card-desc">Automatically scan S3 buckets and create table definitions in the Catalog — no manual schema writing.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🎨</div>
+          <div class="card-title">Glue Studio</div>
+          <div class="card-desc">Visual drag-and-drop interface to create ETL jobs without writing complex Spark code.</div>
+        </div>
+      </div>
+
+      <h3><span class="icon">🔍</span>3. Querying Without Servers — Amazon Athena</h3>
+      <p>
+        Amazon Athena is an interactive query service that lets you analyze data in S3
+        using standard SQL. No servers to manage, and you
+        <strong style="color:#facc15;">only pay for the data scanned</strong> by each query.
+      </p>
+      <pre><code><span class="cm">-- Example: query a CSV in S3 as if it were a DB table</span>
+<span class="kw">SELECT</span> customer_id, SUM(amount) <span class="kw">AS</span> total_spent
+<span class="kw">FROM</span>   my_data_lake.orders
+<span class="kw">WHERE</span>  order_date &gt;= <span class="str">'2024-01-01'</span>
+<span class="kw">GROUP BY</span> customer_id
+<span class="kw">ORDER BY</span> total_spent <span class="kw">DESC</span>
+<span class="kw">LIMIT</span> <span class="num">10</span>;</code></pre>
+
+      <h3><span class="icon">🏢</span>4. The High-Speed Warehouse — Amazon Redshift</h3>
+      <p>
+        While S3 is for "raw" and "massive" data, Amazon Redshift is where you store
+        <strong>"clean" and "structured"</strong> data for heavy-duty business reporting.
+        Use <em>Query Editor v2</em> in the console for complex joins at scale.
+      </p>
+
+      <h3><span class="icon">⚡</span>5. Handling Live Data — Amazon Kinesis</h3>
+      <p>If your data is "streaming" (live stock prices, website clicks), you'll use Kinesis.</p>
+      <div class="pipeline">
+        <div class="pipeline-step">📡 Live Source</div>
+        <div class="pipeline-arrow">▶</div>
+        <div class="pipeline-step">Kinesis Data Streams</div>
+        <div class="pipeline-arrow">▶</div>
+        <div class="pipeline-step">Kinesis Firehose</div>
+        <div class="pipeline-arrow">▶</div>
+        <div class="pipeline-step">🪣 S3 / Redshift</div>
+      </div>
+
+      <h3><span class="icon">⚙️</span>6. Automation &amp; Monitoring</h3>
+      <div class="role-grid">
+        <div class="role-card" style="--card-color:#ff9900;">
+          <div class="role-icon">λ</div>
+          <div class="role-title">AWS Lambda</div>
+          <div class="role-desc">Small Python/Node.js functions triggered by events (e.g., new file in S3). Serverless and instant.</div>
+        </div>
+        <div class="role-card" style="--card-color:#facc15;">
+          <div class="role-icon">🗺️</div>
+          <div class="role-title">AWS Step Functions</div>
+          <div class="role-desc">Visual workflow orchestrator for multi-step processes: Clean → Validate → Load → Notify.</div>
+        </div>
+        <div class="role-card" style="--card-color:#60a5fa;">
+          <div class="role-icon">📡</div>
+          <div class="role-title">Amazon CloudWatch</div>
+          <div class="role-desc">Your "Health Dashboard." Check logs, see why jobs failed, and set email Alarms when pipelines break.</div>
+        </div>
+      </div>
+
+      <h3><span class="icon">📋</span>Quick Reference: Which Tool for Which Task?</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>If you need to…</th>
+              <th>Use This Service</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Store files (CSV, Parquet, JSON)</td><td><span class="badge badge-orange">Amazon S3</span></td></tr>
+            <tr><td>Catalog and Transform data</td><td><span class="badge badge-yellow">AWS Glue</span></td></tr>
+            <tr><td>Query S3 data using SQL</td><td><span class="badge badge-blue">Amazon Athena</span></td></tr>
+            <tr><td>Store structured data for BI</td><td><span class="badge badge-purple">Amazon Redshift</span></td></tr>
+            <tr><td>Ingest live, streaming data</td><td><span class="badge badge-orange">Amazon Kinesis</span></td></tr>
+            <tr><td>Automate small tasks</td><td><span class="badge badge-green">AWS Lambda</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+
+    <!-- ─── SECTION 7: Live Scenario ─── -->
+    <section id="scenario">
+      <div class="section-label">Section 07 · Live Scenario</div>
+      <h2>Building Your First Event-Driven Pipeline</h2>
+
+      <p>
+        This is the <strong>"Hello World"</strong> of AWS Data Engineering — the moment you stop
+        manually clicking buttons and start building an <em>Event-Driven Architecture</em>.
+        A data source drops a raw file into your storage and AWS automatically handles the rest.
+      </p>
+
+      <h3><span class="icon">🔄</span>The Workflow: "The Automated Pipe"</h3>
+
+      <div class="pipeline" style="flex-direction:column; align-items:flex-start; gap:12px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="pipeline-step">🪣 1. S3 Event</div>
+          <span style="color:#64748b;font-size:13px;">— A new <code>.csv</code> file is uploaded to your S3 Bucket.</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding-left:20px;">
+          <span style="color:#ff9900;">▼</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="pipeline-step">⚡ 2. Lambda Trigger</div>
+          <span style="color:#64748b;font-size:13px;">— S3 notifies Lambda: <em>"Hey, a new file just arrived!"</em></span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding-left:20px;">
+          <span style="color:#ff9900;">▼</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="pipeline-step">λ 3. Lambda Action</div>
+          <span style="color:#64748b;font-size:13px;">— Python validates the file, then starts the Glue job.</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding-left:20px;">
+          <span style="color:#ff9900;">▼</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="pipeline-step">🧠 4. Glue Processing</div>
+          <span style="color:#64748b;font-size:13px;">— Glue transforms & saves to a "Clean" folder.</span>
+        </div>
+      </div>
+
+      <h3><span class="icon">🐍</span>A Look at the Lambda Code (Boto3)</h3>
+      <p>Inside the AWS Lambda console, you write a Python script using <strong>Boto3</strong> — the official AWS SDK for Python:</p>
+
+      <pre><code><span class="kw">import</span> boto3
+
+<span class="kw">def</span> <span class="fn">lambda_handler</span>(event, context):
+    <span class="cm"># 1. Initialize the Glue client</span>
+    glue = boto3.<span class="fn">client</span>(<span class="str">'glue'</span>)
+
+    <span class="cm"># 2. Define which Glue Job to run</span>
+    job_name = <span class="str">'My_Data_Cleaning_Job'</span>
+
+    <span class="cm"># 3. Start the job</span>
+    response = glue.<span class="fn">start_job_run</span>(JobName=job_name)
+
+    <span class="fn">print</span>(<span class="str">f"Successfully started Glue Job: <span class="fn">{job_name}</span>"</span>)
+    <span class="kw">return</span> response</code></pre>
+
+      <h3><span class="icon">⚖️</span>Manual vs. Automated: Why Bother?</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Manual Process</th>
+              <th>Automated (Event-Driven)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>You have to log in every morning to check for files.</td>
+              <td>The system works <strong>24/7, 365 days a year.</strong></td>
+            </tr>
+            <tr>
+              <td>You might forget to run the cleaning script.</td>
+              <td>The script runs <strong>milliseconds</strong> after the file lands.</td>
+            </tr>
+            <tr>
+              <td>You pay for servers that stay "On" all day.</td>
+              <td>Serverless: <strong>Pay only for the seconds</strong> the code runs.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3><span class="icon">🔑</span>Console Tools in This Scenario</h3>
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">🪣</div>
+          <div class="card-title">S3 Console</div>
+          <div class="card-desc">Set up "Event Notifications" under Bucket Properties to fire when files arrive.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">λ</div>
+          <div class="card-title">Lambda Console</div>
+          <div class="card-desc">Write the Python "Trigger" code and configure the S3 event source.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🔐</div>
+          <div class="card-title">IAM Console</div>
+          <div class="card-desc">Grant the Lambda function permission to talk to Glue. Security first!</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">📡</div>
+          <div class="card-title">CloudWatch</div>
+          <div class="card-desc">Check logs if the Lambda fails to trigger. Your debugging command center.</div>
+        </div>
+      </div>
+
+      <div class="success-box">
+        ✅ <strong>You've built your first automated pipeline!</strong> A file drops → Lambda wakes up →
+        Glue cleans the data → Clean data lands in S3. No human intervention required.
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+
+    <!-- ─── QUIZ ─── -->
+    <section id="quiz">
+      <div class="section-label">Knowledge Check</div>
+      <h2>Quiz — Module 02</h2>
+      <p>Test your understanding of the concepts covered in these notes. All questions must be answered to see your final score.</p>
+
+
+      <!-- Q1 — Single Answer -->
+      <div class="quiz-question">
+        <div class="quiz-number">Q1 · Single Choice</div>
+        <div class="quiz-q-text">Which AWS service acts as the "Ground Zero" Data Lake for storing raw files like CSV and Parquet?</div>
+        <div class="options">
+          <button class="option-btn" onclick="answer(this,'A','C')">
+            <span class="opt-label">A</span> Amazon Redshift
+          </button>
+          <button class="option-btn" onclick="answer(this,'B','C')">
+            <span class="opt-label">B</span> AWS Glue
+          </button>
+          <button class="option-btn" onclick="answer(this,'C','C')">
+            <span class="opt-label">C</span> Amazon S3
+          </button>
+          <button class="option-btn" onclick="answer(this,'D','C')">
+            <span class="opt-label">D</span> Amazon Kinesis
+          </button>
+        </div>
+        <div class="explanation">
+          ✅ <strong>Amazon S3</strong> is the foundation — your Data Lake for all raw and processed files.
+          Redshift is for structured BI data; Glue is for ETL; Kinesis is for streaming.
+        </div>
+      </div>
+
+
+      <!-- Q2 — Single Answer -->
+      <div class="quiz-question">
+        <div class="quiz-number">Q2 · Single Choice</div>
+        <div class="quiz-q-text">In the Data Engineering Lifecycle, which stage comes directly after Storage?</div>
+        <div class="options">
+          <button class="option-btn" onclick="answer(this,'A','B')">
+            <span class="opt-label">A</span> Ingestion
+          </button>
+          <button class="option-btn" onclick="answer(this,'B','B')">
+            <span class="opt-label">B</span> Processing
+          </button>
+          <button class="option-btn" onclick="answer(this,'C','B')">
+            <span class="opt-label">C</span> Consumption
+          </button>
+          <button class="option-btn" onclick="answer(this,'D','B')">
+            <span class="opt-label">D</span> Transformation
+          </button>
+        </div>
+        <div class="explanation">
+          ✅ The lifecycle order is: <strong>Ingestion → Storage → Processing → Consumption</strong>.
+          After data is stored, it must be processed (cleaned, calculated) before it can be consumed.
+        </div>
+      </div>
+
+
+      <!-- Q3 — Single Answer -->
+      <div class="quiz-question">
+        <div class="quiz-number">Q3 · Single Choice</div>
+        <div class="quiz-q-text">What is the primary role of the Glue Data Catalog?</div>
+        <div class="options">
+          <button class="option-btn" onclick="answer(this,'A','D')">
+            <span class="opt-label">A</span> Storing cleaned data for business reporting
+          </button>
+          <button class="option-btn" onclick="answer(this,'B','D')">
+            <span class="opt-label">B</span> Capturing live streaming events in real-time
+          </button>
+          <button class="option-btn" onclick="answer(this,'C','D')">
+            <span class="opt-label">C</span> Running SQL queries directly on S3
+          </button>
+          <button class="option-btn" onclick="answer(this,'D','D')">
+            <span class="opt-label">D</span> Acting as a central metadata repository for schemas
+          </button>
+        </div>
+        <div class="explanation">
+          ✅ The <strong>Glue Data Catalog</strong> stores schema definitions (column names, data types) so that
+          services like Athena know how to interpret files stored in S3.
+        </div>
+      </div>
+
+
+      <!-- Q4 — Multi-Select -->
+      <div class="quiz-multi" id="q4">
+        <div class="quiz-number">Q4 · Multi-Select</div>
+        <div class="quiz-q-text">Which of the following are part of AWS Glue? (Select all that apply)</div>
+        <div class="select-hint">Select all correct answers, then click Check.</div>
+
+        <label class="checkbox-option">
+          <input type="checkbox" value="A" /> <span class="opt-text">A — Glue Data Catalog: a metadata registry for schemas</span>
+        </label>
+        <label class="checkbox-option">
+          <input type="checkbox" value="B" /> <span class="opt-text">B — Glue Crawlers: automatically scan S3 and create table definitions</span>
+        </label>
+        <label class="checkbox-option">
+          <input type="checkbox" value="C" /> <span class="opt-text">C — Glue Studio: a visual drag-and-drop ETL job builder</span>
+        </label>
+        <label class="checkbox-option">
+          <input type="checkbox" value="D" /> <span class="opt-text">D — Glue Streams: for capturing live clickstream data</span>
+        </label>
+
+        <button class="check-btn" onclick="checkMulti('q4', ['A','B','C'])">Check Answer</button>
+        <div class="multi-explanation">
+          ✅ <strong>A, B, and C</strong> are all core AWS Glue components. Option D is a distractor —
+          Kinesis Data Streams (not Glue) handles live streaming data capture.
+        </div>
+      </div>
+
+
+      <!-- Q5 — Single Answer -->
+      <div class="quiz-question">
+        <div class="quiz-number">Q5 · Single Choice</div>
+        <div class="quiz-q-text">In the event-driven scenario, what is the correct order of services triggered after a file lands in S3?</div>
+        <div class="options">
+          <button class="option-btn" onclick="answer(this,'A','C')">
+            <span class="opt-label">A</span> S3 → Glue → Lambda → CloudWatch
+          </button>
+          <button class="option-btn" onclick="answer(this,'B','C')">
+            <span class="opt-label">B</span> S3 → Redshift → Lambda → Glue
+          </button>
+          <button class="option-btn" onclick="answer(this,'C','C')">
+            <span class="opt-label">C</span> S3 → Lambda → Glue → Clean S3 Folder
+          </button>
+          <button class="option-btn" onclick="answer(this,'D','C')">
+            <span class="opt-label">D</span> Kinesis → S3 → Lambda → Glue
+          </button>
+        </div>
+        <div class="explanation">
+          ✅ The correct flow is: <strong>S3 receives file → S3 notifies Lambda → Lambda triggers Glue →
+          Glue saves clean data back to S3</strong>. This is the classic event-driven ETL pattern.
+        </div>
+      </div>
+
+
+      <!-- Q6 — Multi-Select -->
+      <div class="quiz-multi" id="q6">
+        <div class="quiz-number">Q6 · Multi-Select</div>
+        <div class="quiz-q-text">Why is automation better than a manual pipeline process? (Select all that apply)</div>
+        <div class="select-hint">Select all correct answers, then click Check.</div>
+
+        <label class="checkbox-option">
+          <input type="checkbox" value="A" /> <span class="opt-text">A — The system works 24/7, 365 days a year without human intervention</span>
+        </label>
+        <label class="checkbox-option">
+          <input type="checkbox" value="B" /> <span class="opt-text">B — The cleaning script runs milliseconds after the file lands</span>
+        </label>
+        <label class="checkbox-option">
+          <input type="checkbox" value="C" /> <span class="opt-text">C — You only pay for the seconds the serverless code runs</span>
+        </label>
+        <label class="checkbox-option">
+          <input type="checkbox" value="D" /> <span class="opt-text">D — Automation requires more physical servers to be running at all times</span>
+        </label>
+
+        <button class="check-btn" onclick="checkMulti('q6', ['A','B','C'])">Check Answer</button>
+        <div class="multi-explanation">
+          ✅ <strong>A, B, and C</strong> are all advantages of event-driven automation. Option D is
+          false — serverless automation uses <em>fewer</em> servers because compute only runs on demand.
+        </div>
+      </div>
+
+
+      <!-- Score Bar -->
+      <div id="scoreBar" class="score-bar" style="display:none;">
+        <div class="score-title">Your Score</div>
+        <div class="score-count" id="scoreCount">0 / 6</div>
+        <div class="score-sub" id="scoreMsg"></div>
+      </div>
+
+    </section>
+
+    <hr class="divider" />
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+      <a class="btn" href="../index.html">← Back to Modules</a>
+      <a class="btn" href="notes-2.html">Notes 2 →</a>
+    </div>
+
+  </div><!-- /.container -->
+
+
+  <!-- Scroll-to-top button -->
+  <button id="topBtn" title="Back to top">↑</button>
+
+  <!-- JS -->
+  <script src="../assets/js/template.js"></script>
+
+</body>
+</html>

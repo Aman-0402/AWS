@@ -20,10 +20,15 @@
       --text-primary:  #F0F0F0;
       --text-muted:    #9A9A9A;
       --glow-orange:   rgba(255,140,0,0.45);
+
+      /* Extra section accent — electric teal/cyan */
+      --extra:         #00C8D7;
+      --extra-dim:     #008E9B;
+      --extra-bright:  #33DDEC;
+      --glow-extra:    rgba(0,200,215,0.40);
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     html { scroll-behavior: smooth; }
 
     body {
@@ -34,7 +39,6 @@
       overflow-x: hidden;
     }
 
-    /* Ambient background */
     body::before {
       content: '';
       position: fixed;
@@ -47,7 +51,6 @@
       z-index: 0;
     }
 
-    /* Grid texture */
     body::after {
       content: '';
       position: fixed;
@@ -232,7 +235,6 @@
       display: block;
     }
 
-    /* Staggered entrance */
     .module-card:nth-child(1)  { animation-delay: 0.30s; }
     .module-card:nth-child(2)  { animation-delay: 0.38s; }
     .module-card:nth-child(3)  { animation-delay: 0.46s; }
@@ -248,7 +250,6 @@
     .module-card:nth-child(13) { animation-delay: 1.26s; }
     .module-card:nth-child(14) { animation-delay: 1.34s; }
 
-    /* Top accent line */
     .module-card::before {
       content: '';
       position: absolute;
@@ -260,7 +261,6 @@
       transition: transform 0.4s ease;
     }
 
-    /* Bottom glow sweep */
     .module-card::after {
       content: '';
       position: absolute;
@@ -284,7 +284,6 @@
     .module-card:hover::after  { opacity: 1; }
     .module-card:active        { transform: translateY(-4px) scale(0.99); }
 
-    /* Number badge */
     .card-number {
       font-family: 'Rajdhani', sans-serif;
       font-size: 11px;
@@ -305,7 +304,6 @@
       background: linear-gradient(90deg, var(--grey-border), transparent);
     }
 
-    /* Icon */
     .card-icon {
       width: 52px;
       height: 52px;
@@ -344,7 +342,6 @@
       font-weight: 300;
     }
 
-    /* Arrow */
     .card-arrow {
       position: absolute;
       bottom: 22px;
@@ -367,6 +364,273 @@
       color: #111;
       transform: translate(3px, -3px);
       box-shadow: 0 4px 16px var(--glow-orange);
+    }
+
+    /* ════════════════════════════════════════
+       ── EXTRA SECTION ──
+    ════════════════════════════════════════ */
+    .extra-section {
+      position: relative;
+      z-index: 10;
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 0 24px 90px;
+    }
+
+    /* Section heading row */
+    .section-heading {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      margin-bottom: 32px;
+      animation: fadeUp 0.7s ease 1.4s both;
+    }
+
+    .section-heading-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--extra-dim), transparent);
+    }
+
+    .section-heading-label {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--extra);
+      white-space: nowrap;
+      padding: 6px 16px;
+      border: 1px solid rgba(0,200,215,0.25);
+      border-radius: 2px;
+      background: rgba(0,200,215,0.06);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .section-heading-label::before {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0,200,215,0.15), transparent);
+      animation: shimmer 3.2s infinite 0.5s;
+    }
+
+    .section-heading-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--extra);
+      box-shadow: 0 0 10px var(--glow-extra);
+      flex-shrink: 0;
+    }
+
+    /* Extra grid — 3 cols for notes, then follow card spanning */
+    .extra-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+      gap: 20px;
+    }
+
+    /* ── Extra Card ── */
+    .extra-card {
+      position: relative;
+      background: linear-gradient(145deg, #1e2228, #1c1f24);
+      border: 1px solid rgba(0,200,215,0.15);
+      border-radius: 12px;
+      padding: 28px 24px 52px;
+      cursor: pointer;
+      overflow: hidden;
+      transition:
+        transform 0.35s cubic-bezier(.22,.88,.22,1),
+        box-shadow 0.35s ease,
+        border-color 0.35s ease;
+      text-decoration: none;
+      display: block;
+      animation: fadeUp 0.7s ease both;
+    }
+
+    .extra-card:nth-child(1) { animation-delay: 1.50s; }
+    .extra-card:nth-child(2) { animation-delay: 1.58s; }
+    .extra-card:nth-child(3) { animation-delay: 1.66s; }
+    .extra-card:nth-child(4) { animation-delay: 1.74s; }
+    .extra-card:nth-child(5) { animation-delay: 1.82s; }
+    .extra-card:nth-child(6) { animation-delay: 1.90s; }
+
+    /* Top accent */
+    .extra-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--extra-dim), var(--extra-bright), rgba(0,200,215,0.2));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+
+    /* Bottom glow */
+    .extra-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 50% at 50% 100%, rgba(0,200,215,0.12), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
+    }
+
+    .extra-card:hover {
+      transform: translateY(-7px) scale(1.01);
+      border-color: rgba(0,200,215,0.45);
+      box-shadow:
+        0 12px 40px rgba(0,0,0,0.5),
+        0 0 0 1px rgba(0,200,215,0.18),
+        inset 0 0 28px rgba(0,200,215,0.04);
+    }
+
+    .extra-card:hover::before { transform: scaleX(1); }
+    .extra-card:hover::after  { opacity: 1; }
+    .extra-card:active        { transform: translateY(-3px) scale(0.99); }
+
+    /* Tag row */
+    .extra-tag {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      color: var(--extra);
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .extra-tag::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(0,200,215,0.3), transparent);
+    }
+
+    /* Icon */
+    .extra-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(0,200,215,0.12), rgba(0,200,215,0.04));
+      border: 1px solid rgba(0,200,215,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-bottom: 16px;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    .extra-card:hover .extra-icon {
+      background: linear-gradient(135deg, rgba(0,200,215,0.22), rgba(0,200,215,0.08));
+      transform: scale(1.08);
+    }
+
+    .extra-title {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: clamp(16px, 2vw, 19px);
+      font-weight: 600;
+      color: var(--silver-light);
+      line-height: 1.25;
+      margin-bottom: 8px;
+      transition: color 0.3s ease;
+    }
+
+    .extra-card:hover .extra-title { color: #fff; }
+
+    .extra-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    /* Arrow */
+    .extra-arrow {
+      position: absolute;
+      bottom: 20px;
+      right: 22px;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid rgba(0,200,215,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--silver-dim);
+      font-size: 13px;
+      transition: all 0.35s ease;
+    }
+
+    .extra-card:hover .extra-arrow {
+      background: var(--extra);
+      border-color: var(--extra);
+      color: #0a0e10;
+      transform: translate(3px, -3px);
+      box-shadow: 0 4px 16px var(--glow-extra);
+    }
+
+    /* Follow card — spans full row on wide screens */
+    .extra-card.follow-card {
+      grid-column: 1 / -1;
+      padding: 28px 32px 28px;
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+
+    .follow-card .extra-icon {
+      margin-bottom: 0;
+      flex-shrink: 0;
+      width: 56px;
+      height: 56px;
+      font-size: 26px;
+    }
+
+    .follow-card-body { flex: 1; min-width: 200px; }
+
+    .follow-card .extra-title {
+      margin-bottom: 4px;
+      font-size: clamp(18px, 2.5vw, 22px);
+    }
+
+    .follow-card .extra-desc { font-size: 13.5px; }
+
+    .follow-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 24px;
+      background: linear-gradient(135deg, var(--extra-dim), rgba(0,200,215,0.7));
+      border: 1px solid rgba(0,200,215,0.4);
+      border-radius: 6px;
+      color: #0a0e10;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+      box-shadow: 0 0 18px rgba(0,200,215,0.2);
+    }
+
+    .extra-card.follow-card:hover .follow-cta {
+      background: linear-gradient(135deg, var(--extra), var(--extra-bright));
+      box-shadow: 0 0 28px rgba(0,200,215,0.45);
+      transform: scale(1.04);
     }
 
     /* ── Footer ── */
@@ -398,23 +662,23 @@
       100% { left: 200%; }
     }
 
-    /* ── Ripple keyframe (injected once) ── */
     @keyframes rippleAnim {
       to { transform: scale(40); opacity: 0; }
     }
 
     /* ── Responsive ── */
     @media (max-width: 600px) {
-      .grid { grid-template-columns: 1fr; }
+      .grid, .extra-grid { grid-template-columns: 1fr; }
       .stats-inner { gap: 20px; }
       .stat-sep { display: none; }
+      .extra-card.follow-card { flex-direction: column; align-items: flex-start; }
     }
 
     @media (min-width: 601px) and (max-width: 860px) {
       .grid { grid-template-columns: repeat(2, 1fr); }
+      .extra-grid { grid-template-columns: repeat(2, 1fr); }
     }
 
-    /* Scrollbar */
     ::-webkit-scrollbar { width: 6px; }
     ::-webkit-scrollbar-track { background: var(--grey-dark); }
     ::-webkit-scrollbar-thumb { background: var(--grey-border); border-radius: 3px; }
@@ -578,11 +842,82 @@
     </div>
   </section>
 
+
+  <!-- ═══════════════════════════════════════
+       EXTRA SECTION
+  ═══════════════════════════════════════ -->
+  <section class="extra-section">
+
+    <!-- Section heading -->
+    <div class="section-heading">
+      <div class="section-heading-dot"></div>
+      <div class="section-heading-label">Extra</div>
+      <div class="section-heading-line"></div>
+    </div>
+
+    <div class="extra-grid">
+
+      <a class="extra-card" href="topics/notes-1.html">
+        <div class="extra-tag">Extra · 01</div>
+        <div class="extra-icon">📝</div>
+        <div class="extra-title">Notes 1</div>
+        <div class="extra-desc">Supplementary notes and key takeaways to reinforce core concepts from the first set of modules.</div>
+        <div class="extra-arrow">→</div>
+      </a>
+
+      <a class="extra-card" href="topics/notes-2.html">
+        <div class="extra-tag">Extra · 02</div>
+        <div class="extra-icon">📋</div>
+        <div class="extra-title">Notes 2</div>
+        <div class="extra-desc">Expanded reference material covering pipeline design patterns and security essentials.</div>
+        <div class="extra-arrow">→</div>
+      </a>
+
+      <a class="extra-card" href="topics/notes-3.html">
+        <div class="extra-tag">Extra · 03</div>
+        <div class="extra-icon">🗒️</div>
+        <div class="extra-title">Notes 3</div>
+        <div class="extra-desc">Detailed study notes on data ingestion, batch processing, and streaming architectures.</div>
+        <div class="extra-arrow">→</div>
+      </a>
+
+      <a class="extra-card" href="topics/notes-4.html">
+        <div class="extra-tag">Extra · 04</div>
+        <div class="extra-icon">📌</div>
+        <div class="extra-title">Notes 4</div>
+        <div class="extra-desc">Big data, ML processing, and analysis — curated notes for quick exam revision and deep dives.</div>
+        <div class="extra-arrow">→</div>
+      </a>
+
+      <a class="extra-card" href="topics/notes-5.html">
+        <div class="extra-tag">Extra · 05</div>
+        <div class="extra-icon">🔖</div>
+        <div class="extra-title">Notes 5</div>
+        <div class="extra-desc">Final module notes covering automation, certification prep, and hands-on practice tips.</div>
+        <div class="extra-arrow">→</div>
+      </a>
+
+      <!-- Follow — full-width card -->
+      <a class="extra-card follow-card" href="topics/follow.html">
+        <div class="extra-icon">🔔</div>
+        <div class="follow-card-body">
+          <div class="extra-tag">Extra · Follow</div>
+          <div class="extra-title">Stay in the Loop</div>
+          <div class="extra-desc">Get notified about new modules, updated notes, and upcoming AWS certification content as it drops.</div>
+        </div>
+        <span class="follow-cta">Follow ↗</span>
+      </a>
+
+    </div>
+  </section>
+
+
   <footer>
     Built for <span>AWS Academy</span> · Data Engineering Track · 2026
   </footer>
 
   <script>
+    // Ripple on module cards
     document.querySelectorAll('.module-card').forEach(card => {
       card.addEventListener('click', function(e) {
         e.preventDefault();
@@ -591,8 +926,7 @@
         const ripple = document.createElement('span');
         ripple.style.cssText = `
           position: absolute;
-          width: 8px;
-          height: 8px;
+          width: 8px; height: 8px;
           background: rgba(255,140,0,0.5);
           border-radius: 50%;
           transform: scale(0);
@@ -603,7 +937,32 @@
           z-index: 99;
         `;
         this.appendChild(ripple);
+        setTimeout(() => { window.location.href = href; }, 400);
+        setTimeout(() => ripple.remove(), 700);
+      });
+    });
 
+    // Ripple on extra cards (teal)
+    document.querySelectorAll('.extra-card').forEach(card => {
+      card.addEventListener('click', function(e) {
+        e.preventDefault();
+        const href = this.getAttribute('href');
+        if (!href) return;
+
+        const ripple = document.createElement('span');
+        ripple.style.cssText = `
+          position: absolute;
+          width: 8px; height: 8px;
+          background: rgba(0,200,215,0.45);
+          border-radius: 50%;
+          transform: scale(0);
+          animation: rippleAnim 0.6s ease forwards;
+          left: ${e.offsetX - 4}px;
+          top: ${e.offsetY - 4}px;
+          pointer-events: none;
+          z-index: 99;
+        `;
+        this.appendChild(ripple);
         setTimeout(() => { window.location.href = href; }, 400);
         setTimeout(() => ripple.remove(), 700);
       });
