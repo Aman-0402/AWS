@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notes 3 — Module 04: Understanding Data Types &amp; Data Elements</title>
+  <link rel="stylesheet" href="../assets/css/template.css" />
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════
+       HERO
+  ══════════════════════════════════════════════ -->
+  <div class="hero">
+    <div class="hero-eyebrow">Extra · Notes 3</div>
+
+    <h1>
+      Module 04:<br />
+      <span>Data Types &amp; Data Elements</span>
+    </h1>
+
+    <p>
+      In this module, you need to think like a
+      <strong style="color:#ff9900;">"Data Translator."</strong>
+      In AWS, the cost and speed of your pipeline depend on how well you handle the
+      <strong style="color:#ff9900;">Schema</strong> — the blueprint of the data.
+      Get this wrong and your pipeline is slow, expensive, or simply broken.
+    </p>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <strong>3</strong>
+        <span>Data Types</span>
+      </div>
+      <div class="hero-stat">
+        <strong>2</strong>
+        <span>Storage Formats</span>
+      </div>
+      <div class="hero-stat">
+        <strong>5</strong>
+        <span>Data Elements</span>
+      </div>
+      <div class="hero-stat">
+        <strong>4</strong>
+        <span>Strategy Steps</span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════
+       MAIN CONTENT
+  ══════════════════════════════════════════════ -->
+  <div class="container">
+
+    <!-- Anchor Nav -->
+    <nav class="anchor-nav">
+      <span>Jump to</span>
+      <a href="#three-types">3 Data Types</a>
+      <a href="#comparison">Comparison</a>
+      <a href="#metadata">Metadata</a>
+      <a href="#aws-fit">AWS Fit</a>
+      <a href="#formats">File Formats</a>
+      <a href="#elements">Data Elements</a>
+      <a href="#strategy">Strategy</a>
+      <a href="#quiz">Quiz</a>
+    </nav>
+
+
+    <!-- ─── SECTION 1: The Three Main Data Types ─── -->
+    <section id="three-types">
+      <div class="section-label">Section 01</div>
+      <h2>The Three Main Data Types</h2>
+
+      <p>
+        Data isn't just rows and columns. It falls into three distinct categories based on
+        how <strong>"organized"</strong> it is — and choosing the wrong storage for the wrong
+        type is one of the most expensive mistakes a Data Engineer can make.
+      </p>
+
+      <!-- ── 1. Structured ── -->
+      <h3><span class="icon">🗂️</span>1. Structured Data — "Schema-on-Write"</h3>
+
+      <p>
+        In structured data, you must <strong>define the structure before you can save any data.</strong>
+        This is called <span class="badge badge-blue">Schema-on-Write</span>.
+      </p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">🚫</div>
+          <div class="card-title">The Constraint</div>
+          <div class="card-desc">If your table has <code>Name</code> and <code>Email</code> columns and you try to upload a row with <code>PhoneNumber</code> too, the database <strong>rejects it.</strong></div>
+        </div>
+        <div class="card">
+          <div class="card-icon">⚡</div>
+          <div class="card-title">The Benefit</div>
+          <div class="card-desc">Because the computer knows exactly where every piece of data lives (e.g., "Email is always Column 2"), it can search <strong>millions of rows in milliseconds.</strong></div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🛠️</div>
+          <div class="card-title">AWS Technical Fit</div>
+          <div class="card-desc">When using <strong>Amazon RDS (SQL)</strong>, you spend time "Normalizing" data — ensuring there is no redundancy across tables.</div>
+        </div>
+      </div>
+
+      <div class="info-box">
+        🔑 <strong>Normalization</strong> means splitting data into related tables to eliminate
+        duplication. For example, instead of storing a customer's name on every order row,
+        you store it once in a <em>Customers</em> table and reference it by ID.
+      </div>
+
+      <!-- ── 2. Semi-Structured ── -->
+      <h3 style="margin-top:36px;"><span class="icon">🌐</span>2. Semi-Structured Data — The King of the Web (JSON)</h3>
+
+      <p>
+        As a Data Engineer, you will spend roughly <strong style="color:#facc15;">80% of your time</strong>
+        dealing with JSON. It is the dominant format for APIs, web events, and mobile apps.
+      </p>
+
+      <pre><code><span class="cm">// A typical JSON event from a web application</span>
+{
+  <span class="str">"user_id"</span>:  <span class="num">101</span>,
+  <span class="str">"action"</span>:   <span class="str">"click"</span>,
+  <span class="str">"metadata"</span>: {
+    <span class="str">"device"</span>:     <span class="str">"iPhone"</span>,
+    <span class="str">"os_version"</span>: <span class="str">"17.4"</span>
+  }
+}</code></pre>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">🏷️</div>
+          <div class="card-title">Self-Describing</div>
+          <div class="card-desc">The data includes its own labels (<code>user_id</code>, <code>action</code>). You don't need a separate schema document to understand it.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">⚠️</div>
+          <div class="card-title">The Flexibility Trap</div>
+          <div class="card-desc">One JSON object might have a <code>device</code> field; the next one doesn't. This inconsistency is why we call it <span class="badge badge-yellow">Schema-on-Read</span>.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">⚡</div>
+          <div class="card-title">AWS Tool: DynamoDB</div>
+          <div class="card-desc">A NoSQL database built specifically for this. It doesn't care if User A has more fields than User B — no rigid table structure required.</div>
+        </div>
+      </div>
+
+      <div class="warn-box">
+        ⚠️ <strong>Schema-on-Read explained:</strong> With JSON stored in S3, you don't worry
+        about the shape when you <em>store</em> it. You only define and enforce the shape
+        when you <em>query</em> it (via Athena or Glue). This is powerful but can lead to
+        silent data quality issues if you're not careful.
+      </div>
+
+      <!-- ── 3. Unstructured ── -->
+      <h3 style="margin-top:36px;"><span class="icon">🗃️</span>3. Unstructured Data — The Data Lake Foundation</h3>
+
+      <p>
+        Unstructured data is the <strong>"Heavy Lifting"</strong> part of your job.
+        Images, videos, audio files, PDFs — none of these have a queryable structure on their own.
+      </p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">🎬</div>
+          <div class="card-title">The Challenge</div>
+          <div class="card-desc">You can't run a SQL query on a <code>.mp4</code> video file to find out who the actor is. There's no "column" to search.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🏷️</div>
+          <div class="card-title">The Solution: Metadata</div>
+          <div class="card-desc">You wrap unstructured files in metadata tags. Example: <code>meeting_recording.mp4</code> → S3 tags: <code>Project: Marketing</code>, <code>Date: 2026-03-10</code>.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🤖</div>
+          <div class="card-title">AWS Secret Weapons</div>
+          <div class="card-desc"><strong>Amazon Rekognition</strong> (AI vision) and <strong>Amazon Transcribe</strong> (speech-to-text) convert unstructured media into structured text you can store and query.</div>
+        </div>
+      </div>
+
+      <div class="pipeline">
+        <div class="pipeline-step">🎬 .mp4 Video</div>
+        <div class="pipeline-arrow">▶</div>
+        <div class="pipeline-step">🤖 Amazon Transcribe</div>
+        <div class="pipeline-arrow">▶</div>
+        <div class="pipeline-step">📝 Structured Text</div>
+        <div class="pipeline-arrow">▶</div>
+        <div class="pipeline-step">🗄️ Stored in RDS / S3</div>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+
+    <!-- ─── SECTION 2: Comparison Table ─── -->
+    <section id="comparison">
+      <div class="section-label">Section 02</div>
+      <h2>Comparing the Three Data Types</h2>
+
+      <p>Use this table as your quick-reference guide when deciding which approach to use for any dataset.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Feature</th>
+              <th>Structured</th>
+              <th>Semi-Structured</th>
+              <th>Unstructured</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Format</strong></td>
+              <td>Tables / Rows</td>
+              <td>JSON / XML / Tags</td>
+              <td>Files / Blobs / Media</td>
+            </tr>
+            <tr>
+              <td><strong>Schema</strong></td>
+              <td><span class="badge badge-blue">Schema-on-Write</span></td>
+              <td><span class="badge badge-yellow">Schema-on-Read</span></td>
+              <td>No Schema</td>
+            </tr>
+            <tr>
+              <td><strong>Flexibility</strong></td>
+              <td>Low — Hard to change</td>
+              <td>Medium</td>
+              <td>High — Any format</td>
+            </tr>
+            <tr>
+              <td><strong>Query Speed</strong></td>
+              <td>⚡ Very Fast (SQL)</td>
+              <td>🔶 Fast</td>
+              <td>🐢 Slow (needs processing)</td>
+            </tr>
+            <tr>
+              <td><strong>Typical Size</strong></td>
+              <td>Small (Text)</td>
+              <td>Medium</td>
+              <td>Large (Media / Logs)</td>
+            </tr>
+            <tr>
+              <td><strong>Primary AWS Service</strong></td>
+              <td>RDS, Redshift</td>
+              <td>DynamoDB, S3</td>
+              <td>S3 + Rekognition / Transcribe</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+
+    <!-- ─── SECTION 3: Metadata ─── -->
+    <section id="metadata">
+      <div class="section-label">Section 03</div>
+      <h2>Data Elements and Metadata</h2>
+
+      <p>
+        As a Data Engineer, you don't just look at the <em>value</em> (e.g., <code>$50.00</code>).
+        You look at the <strong>Data Elements</strong> and the <strong>Metadata</strong> that
+        describe where it came from, what format it is in, and how it should be used.
+      </p>
+
+      <div class="role-grid">
+        <div class="role-card" style="--card-color:#ff9900;">
+          <div class="role-icon">🧩</div>
+          <div class="role-title">Data Elements</div>
+          <div class="role-desc">
+            The individual pieces of information inside a record.
+            <br /><br />
+            Examples: <code>Name</code>, <code>Date</code>, <code>Price</code>, <code>UserID</code>, <code>Status</code>
+          </div>
+          <div class="role-skills">
+            <span class="skill-tag">Atomic Units</span>
+            <span class="skill-tag">Schema Fields</span>
+          </div>
+        </div>
+
+        <div class="role-card" style="--card-color:#60a5fa;">
+          <div class="role-icon">🏷️</div>
+          <div class="role-title">Metadata</div>
+          <div class="role-desc">
+            "Data <em>about</em> the data." For a photo: the GPS location, the date taken,
+            the file size, the camera model.
+            <br /><br />
+            In AWS: <strong>Glue uses metadata</strong> to tell Athena how to read a raw file.
+            Without it, your pipeline is blind.
+          </div>
+          <div class="role-skills">
+            <span class="skill-tag">Glue Catalog</span>
+            <span class="skill-tag">S3 Tags</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-box">
+        🔍 <strong>Real Example:</strong> You have 10,000 <code>.jpg</code> images stored in S3.
+        Without metadata, you have a pile of binary blobs. With metadata tags
+        (<code>Category: Product</code>, <code>SKU: ABC-123</code>, <code>Date: 2026-01</code>),
+        you can query S3 directly to find all product images uploaded in January — in seconds.
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+
+    <!-- ─── SECTION 4: AWS Fit ─── -->
+    <section id="aws-fit">
+      <div class="section-label">Section 04</div>
+      <h2>Why This Matters for AWS Architecture</h2>
+
+      <p>
+        If you try to store <strong>Unstructured</strong> data (like 10,000 videos) in a
+        <strong>Structured</strong> database (like RDS), the system will crash or become
+        incredibly expensive. Matching data type to the right service is a core skill.
+      </p>
+
+      <h3><span class="icon">📐</span>The Data Engineer's Rule of Thumb</h3>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">🪣</div>
+          <div class="card-title">S3 — Everything</div>
+          <div class="card-desc">
+            Your default landing zone for <em>all</em> data types — especially Unstructured
+            and Semi-Structured. Think of it as the universal inbox.
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🏢</div>
+          <div class="card-title">RDS / Redshift — Structured</div>
+          <div class="card-desc">
+            For cleaned, structured business data that needs to be queried quickly with SQL.
+            Redshift is optimized for analytics at scale.
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon">⚡</div>
+          <div class="card-title">DynamoDB — Semi-Structured</div>
+          <div class="card-desc">
+            For Semi-Structured app data (JSON) that needs lightning-fast reads and writes —
+            think user sessions, shopping carts, game states.
+          </div>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>If your data is…</th>
+              <th>Store it in…</th>
+              <th>Then analyze with…</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Raw logs, videos, images (Unstructured)</td>
+              <td><span class="badge badge-orange">Amazon S3</span></td>
+              <td>Rekognition / Transcribe / Athena</td>
+            </tr>
+            <tr>
+              <td>JSON events, API payloads (Semi-Structured)</td>
+              <td><span class="badge badge-yellow">DynamoDB or S3</span></td>
+              <td>Athena / Glue / Lambda</td>
+            </tr>
+            <tr>
+              <td>Clean sales records, transactions (Structured)</td>
+              <td><span class="badge badge-blue">RDS or Redshift</span></td>
+              <td>QuickSight / Direct SQL</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+
+    <!-- ─── SECTION 5: File Formats ─── -->
+    <section id="formats">
+      <div class="section-label">Section 05 · Certification Favourite</div>
+      <h2>Why File Formats Matter — The "Big Data" Secret</h2>
+
+      <p>
+        This is a <strong style="color:#facc15;">favourite AWS Certification exam topic.</strong>
+        Understanding <em>Row-based</em> vs. <em>Columnar</em> storage can mean the difference
+        between a pipeline that costs $1 and one that costs $1,000 for the same query.
+      </p>
+
+      <div class="role-grid">
+        <div class="role-card" style="--card-color:#60a5fa;">
+          <div class="role-icon">📄</div>
+          <div class="role-title">Row-Based Storage</div>
+          <div class="role-desc">
+            Stores all fields of a record together in sequence. Fast for writing individual
+            transactions, but slow and expensive for analytics queries that only need a
+            few columns from millions of rows.
+          </div>
+          <div class="role-skills">
+            <span class="skill-tag">.CSV</span>
+            <span class="skill-tag">.JSON</span>
+            <span class="skill-tag">Write-Optimized</span>
+          </div>
+        </div>
+
+        <div class="role-card" style="--card-color:#22c55e;">
+          <div class="role-icon">📊</div>
+          <div class="role-title">Columnar Storage</div>
+          <div class="role-desc">
+            Stores all values of the same column together. When you only need to calculate
+            "Total Sales," Parquet skips every other column entirely —
+            reading <strong>only the data you asked for.</strong>
+          </div>
+          <div class="role-skills">
+            <span class="skill-tag">.Parquet</span>
+            <span class="skill-tag">.ORC</span>
+            <span class="skill-tag">Read-Optimized</span>
+          </div>
+        </div>
+      </div>
+
+      <h3><span class="icon">💰</span>The Real Cost Difference — A 1TB Example</h3>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Format</th>
+              <th>Query: "Calculate Total Sales"</th>
+              <th>Data Read</th>
+              <th>Cost &amp; Speed</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="badge badge-blue">.CSV (Row-Based)</span></td>
+              <td>AWS reads the <strong>entire 1 TB file</strong> — including all columns you don't need.</td>
+              <td>1,000 GB</td>
+              <td>🐢 Slow &amp; Expensive</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-green">.Parquet (Columnar)</span></td>
+              <td>AWS reads <strong>only the "Sales" column</strong> — skips everything else.</td>
+              <td>~10 GB</td>
+              <td>⚡ Fast &amp; Cheap (~100× less data)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="success-box">
+        🏆 <strong>The Gold Standard Rule:</strong> Always convert raw CSV/JSON files to
+        <strong>Parquet</strong> format using AWS Glue before loading them into Athena or
+        Redshift. This single step can reduce your query costs by <em>up to 99%.</em>
+      </div>
+
+      <div class="table-wrap" style="margin-top:20px;">
+        <table>
+          <thead>
+            <tr>
+              <th>Format</th>
+              <th>Type</th>
+              <th>Best Use Case</th>
+              <th>AWS Service Pairing</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="badge badge-blue">.CSV</span></td>
+              <td>Row-Based</td>
+              <td>Writing a single transaction or small export</td>
+              <td>S3, RDS import/export</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-yellow">.JSON</span></td>
+              <td>Row-Based</td>
+              <td>API payloads, streaming event data</td>
+              <td>Kinesis, DynamoDB, Lambda</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-green">.Parquet</span></td>
+              <td>Columnar</td>
+              <td>Analytics, large-scale aggregation queries</td>
+              <td>Athena, Glue, Redshift Spectrum</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-purple">.ORC</span></td>
+              <td>Columnar</td>
+              <td>Hive/EMR workloads, alternative to Parquet</td>
+              <td>EMR, Glue</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+
+    <!-- ─── SECTION 6: Data Elements ─── -->
+    <section id="elements">
+      <div class="section-label">Section 06</div>
+      <h2>Data Elements: The Atomic Level</h2>
+
+      <p>
+        When you design a pipeline, you must <strong>define the Data Types</strong> for each
+        element in your schema. Getting this wrong causes <em style="color:#ef4444;">"Data Corruption"</em>
+        — values stored incorrectly that look fine on the surface but produce wrong calculations.
+      </p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">🔢</div>
+          <div class="card-title">Integers / Floats</div>
+          <div class="card-desc">
+            Numbers used for calculations. Use <code>INTEGER</code> for whole numbers (counts)
+            and <code>FLOAT/DECIMAL</code> for prices or measurements.
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🔤</div>
+          <div class="card-title">Strings / Varchars</div>
+          <div class="card-desc">
+            Text values: names, addresses, descriptions. A <code>VARCHAR(255)</code> caps
+            the string length — important for storage efficiency.
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon">✅</div>
+          <div class="card-title">Booleans</div>
+          <div class="card-desc">
+            <code>TRUE</code> / <code>FALSE</code> only. Used for flags like
+            <em>is_active_user</em>, <em>is_paid</em>, <em>email_verified</em>.
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🕐</div>
+          <div class="card-title">Timestamps</div>
+          <div class="card-desc">
+            Crucial for event ordering. <strong>Always store in UTC.</strong> Failing to do so
+            causes timezone nightmares when syncing global data across regions.
+          </div>
+        </div>
+      </div>
+
+      <div class="warn-box">
+        ⏰ <strong>The UTC Rule:</strong> If your pipeline ingests events from New York (EST),
+        London (GMT), and Tokyo (JST), storing raw local times makes it impossible to sort
+        events in the correct global order. Always convert to
+        <strong>UTC (Coordinated Universal Time)</strong> at the point of ingestion —
+        before the data ever hits S3.
+      </div>
+
+      <h3><span class="icon">💥</span>Common Data Corruption Scenarios</h3>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Mistake</th>
+              <th>What Goes Wrong</th>
+              <th>Prevention</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Storing <code>"$50.00"</code> as a String</td>
+              <td><code>SUM(price)</code> returns an error or <code>0</code></td>
+              <td>Cast to <code>DECIMAL(10,2)</code> during Glue ETL</td>
+            </tr>
+            <tr>
+              <td>Storing dates as <code>"March 10, 2026"</code></td>
+              <td>Can't sort, filter, or do date arithmetic</td>
+              <td>Normalize to <code>ISO 8601: 2026-03-10T00:00:00Z</code></td>
+            </tr>
+            <tr>
+              <td>Using local time instead of UTC</td>
+              <td>Events appear out of order across time zones</td>
+              <td>Convert to UTC at ingestion (Kinesis / Lambda)</td>
+            </tr>
+            <tr>
+              <td>Storing <code>NULL</code> vs. empty string <code>""</code></td>
+              <td>COUNT and JOIN queries behave unexpectedly</td>
+              <td>Define explicit NULL handling in your Glue schema</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+
+    <!-- ─── SECTION 7: Strategy ─── -->
+    <section id="strategy">
+      <div class="section-label">Section 07 · Putting It All Together</div>
+      <h2>Module 04 Strategy: The Master Plan</h2>
+
+      <p>
+        Combine everything in this module into a single, repeatable strategy.
+        This is the <strong>standard data engineering workflow</strong> on AWS — from raw chaos to clean, fast, queryable data.
+      </p>
+
+      <div class="pipeline" style="flex-direction:column; align-items:flex-start; gap:14px;">
+        <div style="display:flex;align-items:flex-start;gap:14px;">
+          <div class="pipeline-step" style="min-width:180px;">📥 Step 1 · Collect</div>
+          <span style="color:#94a3b8;font-size:14px;line-height:1.6;">
+            Ingest <strong style="color:#f1f5f9;">everything</strong> (Unstructured, Semi-Structured, Structured)
+            into your <span class="badge badge-orange">Amazon S3</span> Data Lake as raw files.
+            Don't filter anything at this stage — store it all.
+          </span>
+        </div>
+        <div style="padding-left:20px;color:#ff9900;">▼</div>
+        <div style="display:flex;align-items:flex-start;gap:14px;">
+          <div class="pipeline-step" style="min-width:180px;">🧠 Step 2 · Catalog</div>
+          <span style="color:#94a3b8;font-size:14px;line-height:1.6;">
+            Run <span class="badge badge-yellow">AWS Glue Crawlers</span> to automatically scan
+            S3 and discover the schema of your files. This populates the
+            <strong style="color:#f1f5f9;">Glue Data Catalog</strong> — your pipeline's brain.
+          </span>
+        </div>
+        <div style="padding-left:20px;color:#ff9900;">▼</div>
+        <div style="display:flex;align-items:flex-start;gap:14px;">
+          <div class="pipeline-step" style="min-width:180px;">🔄 Step 3 · Convert</div>
+          <span style="color:#94a3b8;font-size:14px;line-height:1.6;">
+            Use <span class="badge badge-yellow">AWS Glue ETL</span> jobs to convert raw
+            CSV/JSON files into <strong style="color:#22c55e;">Parquet columnar format.</strong>
+            Fix data types, enforce UTC timestamps, and handle NULLs.
+          </span>
+        </div>
+        <div style="padding-left:20px;color:#ff9900;">▼</div>
+        <div style="display:flex;align-items:flex-start;gap:14px;">
+          <div class="pipeline-step" style="min-width:180px;">🏢 Step 4 · Load</div>
+          <span style="color:#94a3b8;font-size:14px;line-height:1.6;">
+            Load the clean, structured Parquet data into
+            <span class="badge badge-purple">Amazon Redshift</span> for fast SQL analytics,
+            or leave it in S3 and query it cheaply with
+            <span class="badge badge-blue">Amazon Athena.</span>
+          </span>
+        </div>
+      </div>
+
+      <div class="success-box" style="margin-top:28px;">
+        ✅ <strong>The Four-Step Mantra:</strong> Collect everything into S3 →
+        Catalog with Glue → Convert to Parquet → Load into Redshift / query with Athena.
+        Master this loop and you've mastered the core of AWS Data Engineering.
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+
+    <!-- ─── QUIZ ─── -->
+    <section id="quiz">
+      <div class="section-label">Knowledge Check</div>
+      <h2>Quiz — Module 04</h2>
+      <p>Test your understanding of data types, file formats, and data elements. All questions must be answered to see your final score.</p>
+
+
+      <!-- Q1 — Single Answer -->
+      <div class="quiz-question">
+        <div class="quiz-number">Q1 · Single Choice</div>
+        <div class="quiz-q-text">Which schema approach requires you to define the data structure <em>before</em> saving any records?</div>
+        <div class="options">
+          <button class="option-btn" onclick="answer(this,'A','B')">
+            <span class="opt-label">A</span> Schema-on-Read
+          </button>
+          <button class="option-btn" onclick="answer(this,'B','B')">
+            <span class="opt-label">B</span> Schema-on-Write
+          </button>
+          <button class="option-btn" onclick="answer(this,'C','B')">
+            <span class="opt-label">C</span> Schema-on-Demand
+          </button>
+          <button class="option-btn" onclick="answer(this,'D','B')">
+            <span class="opt-label">D</span> Schema-on-Query
+          </button>
+        </div>
+        <div class="explanation">
+          ✅ <strong>Schema-on-Write</strong> is used by structured databases like Amazon RDS.
+          You must define all columns and types before inserting any data. Schema-on-Read
+          (used by S3 + Athena/Glue) lets you store first and define structure later at query time.
+        </div>
+      </div>
+
+
+      <!-- Q2 — Single Answer -->
+      <div class="quiz-question">
+        <div class="quiz-number">Q2 · Single Choice</div>
+        <div class="quiz-q-text">You have a 1 TB CSV file and you want to run a query that only needs the "Revenue" column. Which file format would dramatically reduce the cost and time of this query?</div>
+        <div class="options">
+          <button class="option-btn" onclick="answer(this,'A','C')">
+            <span class="opt-label">A</span> .JSON
+          </button>
+          <button class="option-btn" onclick="answer(this,'B','C')">
+            <span class="opt-label">B</span> .CSV
+          </button>
+          <button class="option-btn" onclick="answer(this,'C','C')">
+            <span class="opt-label">C</span> .Parquet
+          </button>
+          <button class="option-btn" onclick="answer(this,'D','C')">
+            <span class="opt-label">D</span> .TXT
+          </button>
+        </div>
+        <div class="explanation">
+          ✅ <strong>Parquet</strong> is a columnar format — it stores each column separately,
+          so Athena only reads the "Revenue" column (~10 GB) instead of the entire 1 TB file.
+          This can reduce query cost by up to 99% compared to CSV.
+        </div>
+      </div>
+
+
+      <!-- Q3 — Single Answer -->
+      <div class="quiz-question">
+        <div class="quiz-number">Q3 · Single Choice</div>
+        <div class="quiz-q-text">Which AWS service is specifically designed to store Semi-Structured JSON data at lightning-fast read/write speeds?</div>
+        <div class="options">
+          <button class="option-btn" onclick="answer(this,'A','C')">
+            <span class="opt-label">A</span> Amazon RDS
+          </button>
+          <button class="option-btn" onclick="answer(this,'B','C')">
+            <span class="opt-label">B</span> Amazon Redshift
+          </button>
+          <button class="option-btn" onclick="answer(this,'C','C')">
+            <span class="opt-label">C</span> Amazon DynamoDB
+          </button>
+          <button class="option-btn" onclick="answer(this,'D','C')">
+            <span class="opt-label">D</span> Amazon S3 Glacier
+          </button>
+        </div>
+        <div class="explanation">
+          ✅ <strong>Amazon DynamoDB</strong> is a NoSQL database built specifically for
+          Semi-Structured JSON data. It handles variable schemas (different fields per item)
+          and delivers millisecond read/write performance at any scale.
+        </div>
+      </div>
+
+
+      <!-- Q4 — Multi-Select -->
+      <div class="quiz-multi" id="q4">
+        <div class="quiz-number">Q4 · Multi-Select</div>
+        <div class="quiz-q-text">Which of the following are examples of <strong>Unstructured data</strong>? (Select all that apply)</div>
+        <div class="select-hint">Select all correct answers, then click Check.</div>
+
+        <label class="checkbox-option">
+          <input type="checkbox" value="A" />
+          <span class="opt-text">A — A <code>.mp4</code> video recording of a meeting</span>
+        </label>
+        <label class="checkbox-option">
+          <input type="checkbox" value="B" />
+          <span class="opt-text">B — A customer transaction table in Amazon RDS with defined columns</span>
+        </label>
+        <label class="checkbox-option">
+          <input type="checkbox" value="C" />
+          <span class="opt-text">C — A scanned PDF of a signed contract</span>
+        </label>
+        <label class="checkbox-option">
+          <input type="checkbox" value="D" />
+          <span class="opt-text">D — An audio recording of a customer support call</span>
+        </label>
+        <label class="checkbox-option">
+          <input type="checkbox" value="E" />
+          <span class="opt-text">E — A JSON payload from an API response</span>
+        </label>
+
+        <button class="check-btn" onclick="checkMulti('q4', ['A','C','D'])">Check Answer</button>
+        <div class="multi-explanation">
+          ✅ <strong>A, C, and D</strong> are Unstructured — video, scanned PDFs, and audio
+          have no queryable schema. Option B is Structured (table with defined columns).
+          Option E is Semi-Structured (JSON has self-describing labels but no rigid schema).
+        </div>
+      </div>
+
+
+      <!-- Q5 — Single Answer -->
+      <div class="quiz-question">
+        <div class="quiz-number">Q5 · Single Choice</div>
+        <div class="quiz-q-text">Why should all timestamps in a global data pipeline always be stored in UTC?</div>
+        <div class="options">
+          <button class="option-btn" onclick="answer(this,'A','D')">
+            <span class="opt-label">A</span> Because UTC uses less storage space than local time formats
+          </button>
+          <button class="option-btn" onclick="answer(this,'B','D')">
+            <span class="opt-label">B</span> Because Kinesis only accepts UTC timestamps
+          </button>
+          <button class="option-btn" onclick="answer(this,'C','D')">
+            <span class="opt-label">C</span> Because it is required by the AWS Certification exam
+          </button>
+          <button class="option-btn" onclick="answer(this,'D','D')">
+            <span class="opt-label">D</span> To ensure events from different time zones can be correctly sorted and compared
+          </button>
+        </div>
+        <div class="explanation">
+          ✅ Using <strong>UTC</strong> means every event — whether from New York, London, or Tokyo —
+          has a single, consistent time reference. Without it, sorting events globally
+          produces incorrect orderings and causes subtle, hard-to-debug pipeline errors.
+        </div>
+      </div>
+
+
+      <!-- Q6 — Multi-Select -->
+      <div class="quiz-multi" id="q6">
+        <div class="quiz-number">Q6 · Multi-Select</div>
+        <div class="quiz-q-text">Which of the following are part of the recommended Module 04 strategy for AWS Data Engineering? (Select all that apply)</div>
+        <div class="select-hint">Select all correct answers, then click Check.</div>
+
+        <label class="checkbox-option">
+          <input type="checkbox" value="A" />
+          <span class="opt-text">A — Collect everything (all data types) into Amazon S3 as the initial landing zone</span>
+        </label>
+        <label class="checkbox-option">
+          <input type="checkbox" value="B" />
+          <span class="opt-text">B — Use AWS Glue Crawlers to catalog and discover the schema of raw files</span>
+        </label>
+        <label class="checkbox-option">
+          <input type="checkbox" value="C" />
+          <span class="opt-text">C — Convert raw CSV/JSON files into Parquet columnar format using Glue ETL</span>
+        </label>
+        <label class="checkbox-option">
+          <input type="checkbox" value="D" />
+          <span class="opt-text">D — Store all data directly in RDS before running any transformation</span>
+        </label>
+        <label class="checkbox-option">
+          <input type="checkbox" value="E" />
+          <span class="opt-text">E — Load clean Parquet data into Redshift or query via Athena for analytics</span>
+        </label>
+
+        <button class="check-btn" onclick="checkMulti('q6', ['A','B','C','E'])">Check Answer</button>
+        <div class="multi-explanation">
+          ✅ <strong>A, B, C, and E</strong> are the four correct strategy steps: Collect (S3) →
+          Catalog (Glue Crawlers) → Convert (Parquet) → Load / Query (Redshift / Athena).
+          Option D is wrong — storing unstructured or semi-structured data directly in RDS
+          is inefficient and potentially impossible without transformation first.
+        </div>
+      </div>
+
+
+      <!-- Q7 — Single Answer -->
+      <div class="quiz-question">
+        <div class="quiz-number">Q7 · Single Choice</div>
+        <div class="quiz-q-text">What does "metadata" mean in the context of an unstructured file stored in Amazon S3?</div>
+        <div class="options">
+          <button class="option-btn" onclick="answer(this,'A','B')">
+            <span class="opt-label">A</span> The binary content of the file itself
+          </button>
+          <button class="option-btn" onclick="answer(this,'B','B')">
+            <span class="opt-label">B</span> Descriptive tags that provide information about the file — like project name, date, or owner
+          </button>
+          <button class="option-btn" onclick="answer(this,'C','B')">
+            <span class="opt-label">C</span> The IAM permissions attached to the S3 bucket
+          </button>
+          <button class="option-btn" onclick="answer(this,'D','B')">
+            <span class="opt-label">D</span> The Parquet schema embedded inside a CSV file
+          </button>
+        </div>
+        <div class="explanation">
+          ✅ <strong>Metadata</strong> is "data about the data." For an S3 object, it includes
+          key-value tags like <code>Project: Marketing</code> or <code>Date: 2026-03-10</code>.
+          This is what allows AWS Glue to understand raw files without opening them, and what
+          lets you filter thousands of objects in S3 without reading their actual contents.
+        </div>
+      </div>
+
+
+      <!-- Score Bar -->
+      <div id="scoreBar" class="score-bar" style="display:none;">
+        <div class="score-title">Your Score</div>
+        <div class="score-count" id="scoreCount">0 / 7</div>
+        <div class="score-sub" id="scoreMsg"></div>
+      </div>
+
+    </section>
+
+    <hr class="divider" />
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+      <a class="btn" href="notes-2.html">← Notes 2</a>
+      <a class="btn" href="notes-4.html">Notes 4 →</a>
+    </div>
+
+  </div><!-- /.container -->
+
+
+  <!-- Scroll-to-top button -->
+  <button id="topBtn" title="Back to top">↑</button>
+
+  <!-- JS -->
+  <script src="../assets/js/template.js"></script>
+
+</body>
+</html>

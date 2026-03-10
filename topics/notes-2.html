@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notes 2 — Module 03: Understanding Data-Driven Organizations</title>
+  <link rel="stylesheet" href="../assets/css/template.css" />
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════
+       HERO
+  ══════════════════════════════════════════════ -->
+  <div class="hero">
+    <div class="hero-eyebrow">Extra · Notes 2</div>
+
+    <h1>
+      Module 03:<br />
+      <span>Understanding Data-Driven Organizations</span>
+    </h1>
+
+    <p>
+      Now that we've seen the <strong style="color:#ff9900;">"how"</strong> (the AWS tools
+      and automation), we need to focus on the <strong style="color:#ff9900;">"why."</strong>
+      In the modern business world, being "Data-Driven" isn't just a buzzword — it's a
+      <em>survival strategy</em>. Your job is to transform a company from one that makes
+      decisions based on gut feelings to one that makes decisions based on hard evidence.
+    </p>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <strong>4</strong>
+        <span>Maturity Stages</span>
+      </div>
+      <div class="hero-stat">
+        <strong>4</strong>
+        <span>Business Goals</span>
+      </div>
+      <div class="hero-stat">
+        <strong>1</strong>
+        <span>Real-World Case</span>
+      </div>
+      <div class="hero-stat">
+        <strong>∞</strong>
+        <span>Your Impact</span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ══════════════════════════════════════════════
+       MAIN CONTENT
+  ══════════════════════════════════════════════ -->
+  <div class="container">
+
+    <!-- Anchor Nav -->
+    <nav class="anchor-nav">
+      <span>Jump to</span>
+      <a href="#what-is">What Is It?</a>
+      <a href="#role">Your Role</a>
+      <a href="#maturity">Maturity Model</a>
+      <a href="#example">Real-World Example</a>
+      <a href="#summary">Summary</a>
+      <a href="#quiz">Quiz</a>
+    </nav>
+
+
+    <!-- ─── SECTION 1: What Is a Data-Driven Organization? ─── -->
+    <section id="what-is">
+      <div class="section-label">Section 01</div>
+      <h2>What is a Data-Driven Organization?</h2>
+
+      <p>
+        A data-driven organization is one that <strong>embeds data into its DNA.</strong>
+        Every department — from Marketing to Logistics — uses analyzed data to guide their next move,
+        not instinct or assumption.
+      </p>
+
+      <h3><span class="icon">🔄</span>The Shift in Decision Making</h3>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Traditional Thinking</th>
+              <th>Data-Driven Thinking</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="color:#94a3b8;">"I <em>think</em> we should launch in summer because people like the sun."</td>
+              <td style="color:#86efac;">"Our historical data shows a <strong>25% spike</strong> in engagement when temperature exceeds 28°C. We launch exactly then."</td>
+            </tr>
+            <tr>
+              <td style="color:#94a3b8;">"I <em>feel</em> that our checkout process is fast enough."</td>
+              <td style="color:#86efac;">"Our pipeline shows that pages loading over 2.4s increase cart abandonment by 18%. We optimize immediately."</td>
+            </tr>
+            <tr>
+              <td style="color:#94a3b8;">"Let's restock everything — just in case."</td>
+              <td style="color:#86efac;">"Trend data from Redshift shows only 3 SKUs need restocking in the next 7 days. We buy only those."</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="info-box">
+        💡 <strong>The Key Insight:</strong> Data doesn't replace human judgement — it
+        <em>sharpens</em> it. A Data Engineer's job is to make sure decision-makers have the
+        right data, at the right time, in the right format.
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+
+    <!-- ─── SECTION 2: The Role of the Data Engineer ─── -->
+    <section id="role">
+      <div class="section-label">Section 02</div>
+      <h2>The Role of the Data Engineer in the Business</h2>
+
+      <p>
+        You are the <strong style="color:#ff9900;">Enabler.</strong> Without a Data Engineer,
+        data is <em>"siloed"</em> — locked away in separate systems, inaccessible to the people
+        who need it. You break those silos down and build the bridges between raw information
+        and business intelligence.
+      </p>
+
+      <div class="pipeline">
+        <div class="pipeline-step">🏢 Raw Business Data</div>
+        <div class="pipeline-arrow">▶</div>
+        <div class="pipeline-step">🔧 Data Engineer</div>
+        <div class="pipeline-arrow">▶</div>
+        <div class="pipeline-step">✨ Clean, Accessible Data</div>
+        <div class="pipeline-arrow">▶</div>
+        <div class="pipeline-step">📈 Business Decisions</div>
+      </div>
+
+      <h3><span class="icon">🎯</span>How You Enable Each Business Goal</h3>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Business Goal</th>
+              <th>How the Data Engineer Helps</th>
+              <th>AWS Tool</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="badge badge-orange">Personalization</span></td>
+              <td>Build pipelines that feed customer behavior data into a Recommendation Engine.</td>
+              <td>Kinesis + SageMaker</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-blue">Operational Efficiency</span></td>
+              <td>Automate collection of factory sensor data so managers can see real-time bottlenecks.</td>
+              <td>IoT Core + Kinesis</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-yellow">Risk Management</span></td>
+              <td>Ensure data is encrypted and backed up, meeting legal and security compliance standards.</td>
+              <td>IAM + S3 + KMS</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-green">Cost Reduction</span></td>
+              <td>Move data from expensive "Active" storage to cheap "Cold" storage when it's no longer needed daily.</td>
+              <td>S3 Lifecycle → Glacier</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="warn-box">
+        ⚠️ <strong>Siloed Data is the Enemy.</strong> When each department stores its own data
+        in its own format, no one can see the full picture. Your pipelines are the cure — they
+        centralize and standardize everything into a single source of truth.
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+
+    <!-- ─── SECTION 3: The Data Maturity Model ─── -->
+    <section id="maturity">
+      <div class="section-label">Section 03</div>
+      <h2>The Data Maturity Model</h2>
+
+      <p>
+        Companies usually move through <strong>four stages</strong> of data maturity.
+        Your goal as an AWS Data Engineer is to help them climb this ladder — ideally
+        all the way to Stage 4.
+      </p>
+
+      <div class="role-grid">
+
+        <div class="role-card" style="--card-color:#60a5fa;">
+          <div class="role-icon">📋</div>
+          <div class="role-title">Stage 1 — Descriptive</div>
+          <div class="role-desc">
+            <strong style="color:#60a5fa;">"What happened?"</strong><br /><br />
+            Pulling basic reports from an S3 bucket or RDS database. Most companies start here.
+          </div>
+          <div class="role-skills">
+            <span class="skill-tag">S3</span>
+            <span class="skill-tag">RDS</span>
+            <span class="skill-tag">QuickSight</span>
+          </div>
+        </div>
+
+        <div class="role-card" style="--card-color:#a78bfa;">
+          <div class="role-icon">🔍</div>
+          <div class="role-title">Stage 2 — Diagnostic</div>
+          <div class="role-desc">
+            <strong style="color:#a78bfa;">"Why did it happen?"</strong><br /><br />
+            Using Amazon Athena to query multiple data sources and find correlations between events.
+          </div>
+          <div class="role-skills">
+            <span class="skill-tag">Athena</span>
+            <span class="skill-tag">Glue</span>
+            <span class="skill-tag">S3</span>
+          </div>
+        </div>
+
+        <div class="role-card" style="--card-color:#ff9900;">
+          <div class="role-icon">🔮</div>
+          <div class="role-title">Stage 3 — Predictive</div>
+          <div class="role-desc">
+            <strong style="color:#ff9900;">"What will happen?"</strong><br /><br />
+            Feeding clean, well-structured data into Amazon SageMaker to build Machine Learning models.
+          </div>
+          <div class="role-skills">
+            <span class="skill-tag">SageMaker</span>
+            <span class="skill-tag">Redshift</span>
+            <span class="skill-tag">Glue</span>
+          </div>
+        </div>
+
+        <div class="role-card" style="--card-color:#22c55e;">
+          <div class="role-icon">🤖</div>
+          <div class="role-title">Stage 4 — Prescriptive</div>
+          <div class="role-desc">
+            <strong style="color:#22c55e;">"How can we make it happen?"</strong><br /><br />
+            Fully automated systems that adjust prices or inventory in real-time based on Kinesis streams.
+          </div>
+          <div class="role-skills">
+            <span class="skill-tag">Kinesis</span>
+            <span class="skill-tag">Lambda</span>
+            <span class="skill-tag">Step Functions</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="info-box">
+        🪜 <strong>The Ladder Analogy:</strong> Most companies are stuck at Stage 1 or 2.
+        When you build reliable, automated AWS pipelines that flow clean data to the right tools,
+        you physically move the business up this ladder. That is your direct business impact.
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+
+    <!-- ─── SECTION 4: Real-World Example ─── -->
+    <section id="example">
+      <div class="section-label">Section 04 · Case Study</div>
+      <h2>Real-World Example: An E-Commerce Giant</h2>
+
+      <p>
+        Imagine an online retailer with millions of users. They have a critical problem:
+        <strong>they don't know which items to restock in their warehouse</strong> before they run out.
+        Here is how a Data Engineer solves this end-to-end.
+      </p>
+
+      <h3><span class="icon">❌</span>The Problem (Before Data Engineering)</h3>
+
+      <div class="warn-box" style="border-left-color:#ef4444;">
+        🔴 <strong>The Chaos:</strong> Warehouse managers rely on weekly emails and spreadsheets.
+        By the time they identify a trending item, it's already sold out. Revenue is lost.
+        Customers are frustrated. There is no single source of truth.
+      </div>
+
+      <h3><span class="icon">✅</span>The Solution (The Data-Driven Pipeline)</h3>
+
+      <div class="pipeline" style="flex-direction:column; align-items:flex-start; gap:14px;">
+        <div style="display:flex;align-items:flex-start;gap:14px;">
+          <div class="pipeline-step" style="min-width:160px;">📥 Step 1 · Ingestion</div>
+          <span style="color:#94a3b8;font-size:14px;line-height:1.6;">
+            The Data Engineer builds a pipeline that collects every <strong style="color:#f1f5f9;">"Click"</strong>
+            and <strong style="color:#f1f5f9;">"Purchase"</strong> event in real-time using
+            <span class="badge badge-orange">Amazon Kinesis</span>.
+          </span>
+        </div>
+        <div style="padding-left:20px;color:#ff9900;">▼</div>
+        <div style="display:flex;align-items:flex-start;gap:14px;">
+          <div class="pipeline-step" style="min-width:160px;">🗄️ Step 2 · Storage</div>
+          <span style="color:#94a3b8;font-size:14px;line-height:1.6;">
+            Raw events land in <span class="badge badge-blue">Amazon S3</span>.
+            AWS Glue cleans and structures the data, then loads it into
+            <span class="badge badge-purple">Amazon Redshift</span> for fast querying.
+          </span>
+        </div>
+        <div style="padding-left:20px;color:#ff9900;">▼</div>
+        <div style="display:flex;align-items:flex-start;gap:14px;">
+          <div class="pipeline-step" style="min-width:160px;">📊 Step 3 · Analysis</div>
+          <span style="color:#94a3b8;font-size:14px;line-height:1.6;">
+            A Data Analyst builds a live dashboard in
+            <span class="badge badge-yellow">Amazon QuickSight</span> showing which items
+            are trending, which are depleting, and which categories are spiking.
+          </span>
+        </div>
+        <div style="padding-left:20px;color:#ff9900;">▼</div>
+        <div style="display:flex;align-items:flex-start;gap:14px;">
+          <div class="pipeline-step" style="min-width:160px;">🏆 Step 4 · Result</div>
+          <span style="color:#94a3b8;font-size:14px;line-height:1.6;">
+            The company stocks up <strong style="color:#f1f5f9;">before</strong> the item runs out,
+            increasing revenue by <strong style="color:#facc15;">15%</strong> and reducing
+            stockout complaints by over <strong style="color:#facc15;">40%</strong>.
+          </span>
+        </div>
+      </div>
+
+      <h3><span class="icon">🔑</span>The Key Services in This Example</h3>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">⚡</div>
+          <div class="card-title">Amazon Kinesis</div>
+          <div class="card-desc">Captures every click and purchase event in real-time as it happens.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🪣</div>
+          <div class="card-title">Amazon S3</div>
+          <div class="card-desc">Stores the raw event stream as the central data lake landing zone.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🧠</div>
+          <div class="card-title">AWS Glue</div>
+          <div class="card-desc">Cleans, structures, and transforms raw events for Redshift loading.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🏢</div>
+          <div class="card-title">Amazon Redshift</div>
+          <div class="card-desc">The high-speed warehouse powering complex trend queries at scale.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">📊</div>
+          <div class="card-title">Amazon QuickSight</div>
+          <div class="card-desc">The business-facing dashboard where analysts see live inventory trends.</div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+
+    <!-- ─── SECTION 5: Summary ─── -->
+    <section id="summary">
+      <div class="section-label">Section 05</div>
+      <h2>Summary: Your Impact</h2>
+
+      <p>
+        As an AWS Data Engineer, you aren't just "managing servers." You are providing
+        the <strong style="color:#ff9900;">fuel (data)</strong> for the
+        <strong style="color:#facc15;">engine (the business).</strong>
+      </p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">🐢</div>
+          <div class="card-title">Slow / Dirty Pipelines</div>
+          <div class="card-desc">The engine stalls. Decisions are delayed or wrong. Revenue is lost.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🚀</div>
+          <div class="card-title">Fast / Clean Pipelines</div>
+          <div class="card-desc">The engine roars. Decisions are instant and accurate. The business wins.</div>
+        </div>
+      </div>
+
+      <div class="success-box">
+        ✅ <strong>Remember this mental model:</strong> Every pipeline you build moves your
+        organization up the Data Maturity Ladder — from <em>Descriptive</em> all the way to
+        <em>Prescriptive</em>. That is the definition of a Data-Driven Organization, and
+        <strong>you are the one who builds it.</strong>
+      </div>
+
+      <h3><span class="icon">📋</span>The Full Picture at a Glance</h3>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Maturity Stage</th>
+              <th>Question Answered</th>
+              <th>Primary AWS Tools</th>
+              <th>Who Benefits?</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="badge badge-blue">1 · Descriptive</span></td>
+              <td>What happened?</td>
+              <td>S3, RDS, QuickSight</td>
+              <td>Managers, Executives</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-purple">2 · Diagnostic</span></td>
+              <td>Why did it happen?</td>
+              <td>Athena, Glue, S3</td>
+              <td>Analysts, Engineers</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-orange">3 · Predictive</span></td>
+              <td>What will happen?</td>
+              <td>SageMaker, Redshift, Glue</td>
+              <td>Data Scientists, Product Teams</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-green">4 · Prescriptive</span></td>
+              <td>How do we make it happen?</td>
+              <td>Kinesis, Lambda, Step Functions</td>
+              <td>The Entire Business</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <hr class="divider" />
+
+
+    <!-- ─── QUIZ ─── -->
+    <section id="quiz">
+      <div class="section-label">Knowledge Check</div>
+      <h2>Quiz — Module 03</h2>
+      <p>Test your understanding of data-driven organizations and the maturity model. All questions must be answered to see your final score.</p>
+
+
+      <!-- Q1 — Single Answer -->
+      <div class="quiz-question">
+        <div class="quiz-number">Q1 · Single Choice</div>
+        <div class="quiz-q-text">What does it mean when data is described as "siloed" within an organization?</div>
+        <div class="options">
+          <button class="option-btn" onclick="answer(this,'A','C')">
+            <span class="opt-label">A</span> Data is stored in a single, centralized location
+          </button>
+          <button class="option-btn" onclick="answer(this,'B','C')">
+            <span class="opt-label">B</span> Data is encrypted and unavailable to all users
+          </button>
+          <button class="option-btn" onclick="answer(this,'C','C')">
+            <span class="opt-label">C</span> Data is locked in separate systems, inaccessible to those who need it
+          </button>
+          <button class="option-btn" onclick="answer(this,'D','C')">
+            <span class="opt-label">D</span> Data is stored in Amazon S3 Glacier cold storage
+          </button>
+        </div>
+        <div class="explanation">
+          ✅ <strong>Siloed data</strong> means each department keeps its own data in its own
+          format, making it impossible for others to access or combine it. The Data Engineer's
+          job is to break these silos down with unified pipelines.
+        </div>
+      </div>
+
+
+      <!-- Q2 — Single Answer -->
+      <div class="quiz-question">
+        <div class="quiz-number">Q2 · Single Choice</div>
+        <div class="quiz-q-text">A company uses Amazon Athena to query multiple datasets and understand <em>why</em> their Q3 sales dropped. Which maturity stage is this?</div>
+        <div class="options">
+          <button class="option-btn" onclick="answer(this,'A','B')">
+            <span class="opt-label">A</span> Descriptive — What happened?
+          </button>
+          <button class="option-btn" onclick="answer(this,'B','B')">
+            <span class="opt-label">B</span> Diagnostic — Why did it happen?
+          </button>
+          <button class="option-btn" onclick="answer(this,'C','B')">
+            <span class="opt-label">C</span> Predictive — What will happen?
+          </button>
+          <button class="option-btn" onclick="answer(this,'D','B')">
+            <span class="opt-label">D</span> Prescriptive — How do we make it happen?
+          </button>
+        </div>
+        <div class="explanation">
+          ✅ <strong>Diagnostic</strong> is Stage 2 — it answers "Why did it happen?" by correlating
+          multiple data sources. Using Athena to find the root cause of a sales drop is a
+          perfect example of this stage.
+        </div>
+      </div>
+
+
+      <!-- Q3 — Single Answer -->
+      <div class="quiz-question">
+        <div class="quiz-number">Q3 · Single Choice</div>
+        <div class="quiz-q-text">In the e-commerce case study, which service was used to capture "Click" and "Purchase" events in real-time?</div>
+        <div class="options">
+          <button class="option-btn" onclick="answer(this,'A','C')">
+            <span class="opt-label">A</span> Amazon Redshift
+          </button>
+          <button class="option-btn" onclick="answer(this,'B','C')">
+            <span class="opt-label">B</span> AWS Glue
+          </button>
+          <button class="option-btn" onclick="answer(this,'C','C')">
+            <span class="opt-label">C</span> Amazon Kinesis
+          </button>
+          <button class="option-btn" onclick="answer(this,'D','C')">
+            <span class="opt-label">D</span> Amazon QuickSight
+          </button>
+        </div>
+        <div class="explanation">
+          ✅ <strong>Amazon Kinesis</strong> handles real-time streaming data capture — like
+          user clicks and purchase events. Redshift stores structured data, Glue transforms it,
+          and QuickSight visualizes the final output.
+        </div>
+      </div>
+
+
+      <!-- Q4 — Single Answer -->
+      <div class="quiz-question">
+        <div class="quiz-number">Q4 · Single Choice</div>
+        <div class="quiz-q-text">A retailer builds a system that automatically adjusts product prices in real-time based on live demand data from Kinesis. Which maturity stage does this represent?</div>
+        <div class="options">
+          <button class="option-btn" onclick="answer(this,'A','D')">
+            <span class="opt-label">A</span> Descriptive
+          </button>
+          <button class="option-btn" onclick="answer(this,'B','D')">
+            <span class="opt-label">B</span> Diagnostic
+          </button>
+          <button class="option-btn" onclick="answer(this,'C','D')">
+            <span class="opt-label">C</span> Predictive
+          </button>
+          <button class="option-btn" onclick="answer(this,'D','D')">
+            <span class="opt-label">D</span> Prescriptive
+          </button>
+        </div>
+        <div class="explanation">
+          ✅ <strong>Prescriptive</strong> is Stage 4 — the system doesn't just predict what will
+          happen; it <em>acts</em> on it automatically. Adjusting prices in real-time without human
+          intervention is the hallmark of a fully prescriptive, data-driven organization.
+        </div>
+      </div>
+
+
+      <!-- Q5 — Multi-Select -->
+      <div class="quiz-multi" id="q5">
+        <div class="quiz-number">Q5 · Multi-Select</div>
+        <div class="quiz-q-text">Which of the following are valid ways a Data Engineer directly enables a business goal? (Select all that apply)</div>
+        <div class="select-hint">Select all correct answers, then click Check.</div>
+
+        <label class="checkbox-option">
+          <input type="checkbox" value="A" />
+          <span class="opt-text">A — Building pipelines that feed customer behavior data into a recommendation engine for Personalization</span>
+        </label>
+        <label class="checkbox-option">
+          <input type="checkbox" value="B" />
+          <span class="opt-text">B — Automating collection of factory sensor data for real-time Operational Efficiency dashboards</span>
+        </label>
+        <label class="checkbox-option">
+          <input type="checkbox" value="C" />
+          <span class="opt-text">C — Moving old data to S3 Glacier to reduce storage costs</span>
+        </label>
+        <label class="checkbox-option">
+          <input type="checkbox" value="D" />
+          <span class="opt-text">D — Personally designing the marketing campaigns that use the data</span>
+        </label>
+
+        <button class="check-btn" onclick="checkMulti('q5', ['A','B','C'])">Check Answer</button>
+        <div class="multi-explanation">
+          ✅ <strong>A, B, and C</strong> are all direct data engineering activities. Option D
+          is incorrect — designing marketing campaigns is the responsibility of the Marketing
+          team (a consumer of the data), not the Data Engineer who builds the pipelines.
+        </div>
+      </div>
+
+
+      <!-- Q6 — Multi-Select -->
+      <div class="quiz-multi" id="q6">
+        <div class="quiz-number">Q6 · Multi-Select</div>
+        <div class="quiz-q-text">Which AWS services were used in the e-commerce restocking pipeline case study? (Select all that apply)</div>
+        <div class="select-hint">Select all correct answers, then click Check.</div>
+
+        <label class="checkbox-option">
+          <input type="checkbox" value="A" />
+          <span class="opt-text">A — Amazon Kinesis (for real-time event capture)</span>
+        </label>
+        <label class="checkbox-option">
+          <input type="checkbox" value="B" />
+          <span class="opt-text">B — Amazon S3 (as the raw data landing zone)</span>
+        </label>
+        <label class="checkbox-option">
+          <input type="checkbox" value="C" />
+          <span class="opt-text">C — Amazon Redshift (for structured query storage)</span>
+        </label>
+        <label class="checkbox-option">
+          <input type="checkbox" value="D" />
+          <span class="opt-text">D — Amazon EC2 (for managing virtual machines)</span>
+        </label>
+        <label class="checkbox-option">
+          <input type="checkbox" value="E" />
+          <span class="opt-text">E — Amazon QuickSight (for the business dashboard)</span>
+        </label>
+
+        <button class="check-btn" onclick="checkMulti('q6', ['A','B','C','E'])">Check Answer</button>
+        <div class="multi-explanation">
+          ✅ <strong>A, B, C, and E</strong> were all part of the pipeline.
+          Option D (EC2) was not mentioned — the case study used managed, serverless services
+          so the team didn't need to manage any virtual machines directly.
+        </div>
+      </div>
+
+
+      <!-- Q7 — Single Answer -->
+      <div class="quiz-question">
+        <div class="quiz-number">Q7 · Single Choice</div>
+        <div class="quiz-q-text">What is the correct order of the Data Maturity Model from least to most advanced?</div>
+        <div class="options">
+          <button class="option-btn" onclick="answer(this,'A','C')">
+            <span class="opt-label">A</span> Predictive → Descriptive → Diagnostic → Prescriptive
+          </button>
+          <button class="option-btn" onclick="answer(this,'B','C')">
+            <span class="opt-label">B</span> Prescriptive → Predictive → Diagnostic → Descriptive
+          </button>
+          <button class="option-btn" onclick="answer(this,'C','C')">
+            <span class="opt-label">C</span> Descriptive → Diagnostic → Predictive → Prescriptive
+          </button>
+          <button class="option-btn" onclick="answer(this,'D','C')">
+            <span class="opt-label">D</span> Diagnostic → Descriptive → Prescriptive → Predictive
+          </button>
+        </div>
+        <div class="explanation">
+          ✅ The correct order is <strong>Descriptive → Diagnostic → Predictive → Prescriptive</strong>.
+          Think of it as climbing a ladder: first you understand <em>what</em> happened, then <em>why</em>,
+          then <em>what will</em> happen, and finally you build systems that <em>act</em> on that knowledge automatically.
+        </div>
+      </div>
+
+
+      <!-- Score Bar -->
+      <div id="scoreBar" class="score-bar" style="display:none;">
+        <div class="score-title">Your Score</div>
+        <div class="score-count" id="scoreCount">0 / 7</div>
+        <div class="score-sub" id="scoreMsg"></div>
+      </div>
+
+    </section>
+
+    <hr class="divider" />
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+      <a class="btn" href="notes-1.html">← Notes 1</a>
+      <a class="btn" href="notes-3.html">Notes 3 →</a>
+    </div>
+
+  </div><!-- /.container -->
+
+
+  <!-- Scroll-to-top button -->
+  <button id="topBtn" title="Back to top">↑</button>
+
+  <!-- JS -->
+  <script src="../assets/js/template.js"></script>
+
+</body>
+</html>
