@@ -326,7 +326,7 @@ if (enterBtn) {
   enterBtn.addEventListener('click', function () {
     // Play sound (optional)
     try {
-      const audio = new Audio('Sound/harry_potter.mp3');
+      const audio = new Audio('Sound/dragon-studio-epic-glitch-intro.mp3');
       audio.volume = 0.5;
       audio.play().catch(() => {});
     } catch(e) {}
@@ -336,7 +336,7 @@ if (enterBtn) {
 
     let pct = 0;
     let startTime = Date.now();
-    const totalTime = 9000; // 8 seconds
+    const totalTime = 4000; // 8 seconds
     
     const interval = setInterval(() => {
     
@@ -354,12 +354,12 @@ if (enterBtn) {
     
           setTimeout(() => {
             window.location.href = 'content.html';
-          }, 500);
+          }, 400);
     
-        }, 300);
+        }, 200);
       }
     
-    }, 70); 
+    }, 50); 
   });
 }
 
