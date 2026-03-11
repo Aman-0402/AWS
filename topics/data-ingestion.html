@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Module 7 – Ingesting and Preparing Data</title>
+  <link rel="stylesheet" href="../assets/css/template.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&family=IBM+Plex+Mono:wght@400;500&family=Nunito:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-eyebrow">Module 07 · AWS Academy Data Engineering</div>
+  <h1>Ingesting and<br><span>Preparing Data</span></h1>
+  <p>Learn how raw data is collected from diverse sources, cleaned through the data wrangling pipeline, and published as analysis-ready datasets for dashboards and machine learning.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><strong>2</strong><span>Ingestion Methods</span></div>
+    <div class="hero-stat"><strong>6</strong><span>Wrangling Steps</span></div>
+    <div class="hero-stat"><strong>ETL</strong><span>vs ELT</span></div>
+  </div>
+</div>
+
+<!-- ── STICKY NAV ── -->
+<nav class="anchor-nav">
+  <span>Jump to →</span>
+  <a href="#ingestion">Ingestion</a>
+  <a href="#etl-elt">ETL vs ELT</a>
+  <a href="#wrangling">Data Wrangling</a>
+  <a href="#discovery">Discovery</a>
+  <a href="#structuring">Structuring</a>
+  <a href="#cleaning">Cleaning</a>
+  <a href="#enriching">Enriching</a>
+  <a href="#validating">Validating</a>
+  <a href="#publishing">Publishing</a>
+  <a href="#quiz">Quiz</a>
+</nav>
+
+<div class="container">
+
+  <!-- ────────────────────────────────────────
+       SECTION 1 — DATA INGESTION
+  ──────────────────────────────────────── -->
+  <section id="ingestion">
+    <div class="section-label">Section 01</div>
+    <h2>Introduction to Data Ingestion</h2>
+
+    <p><strong>Data Ingestion</strong> is the process of collecting data from different sources and bringing it into a storage or processing system — such as a data lake or data warehouse — where it can be cleaned, transformed, and analysed.</p>
+
+    <div class="info-box">
+      💡 <strong>Think of ingestion as the entry door of your pipeline.</strong> No data enters the system without passing through it. Every downstream stage — storage, processing, analytics — depends on ingestion being reliable, fast, and complete.
+    </div>
+
+    <h3><span class="icon">📡</span>Where Data Comes From</h3>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🛒</div>
+        <div class="card-title">Applications &amp; Databases</div>
+        <div class="card-desc">E-commerce orders, CRM records, ERP systems, internal business databases — structured transactional data.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🌐</div>
+        <div class="card-title">Websites &amp; APIs</div>
+        <div class="card-desc">Clickstream events, form submissions, REST API responses in JSON or XML — semi-structured data arriving continuously.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📡</div>
+        <div class="card-title">IoT Sensors &amp; Devices</div>
+        <div class="card-desc">Factory machines, weather stations, wearables, connected vehicles — continuous time-series streams with timestamps.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📄</div>
+        <div class="card-title">Logs &amp; Files</div>
+        <div class="card-desc">Server access logs, application error logs, CSV exports, Parquet files — batch files transferred on a schedule.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">💳</div>
+        <div class="card-title">Payment &amp; Transaction Systems</div>
+        <div class="card-desc">POS terminals, payment gateways, banking systems — high-frequency transactional data requiring secure handling.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📦</div>
+        <div class="card-title">Third-Party &amp; Public Data</div>
+        <div class="card-desc">SaaS platforms (Salesforce, HubSpot), government datasets, social media feeds, open data portals.</div>
+      </div>
+    </div>
+
+    <h3><span class="icon">🏪</span>Real-World Example — E-Commerce Company</h3>
+    <p>An online retail company receives data from five different systems simultaneously. Without a proper ingestion layer, none of this data can be analysed together.</p>
+
+    <div class="pipeline">
+      <div class="pipeline-step">Website Orders</div>
+      <span class="pipeline-arrow">+</span>
+      <div class="pipeline-step">Mobile App</div>
+      <span class="pipeline-arrow">+</span>
+      <div class="pipeline-step">Payment Gateway</div>
+      <span class="pipeline-arrow">+</span>
+      <div class="pipeline-step">Customer DB</div>
+      <span class="pipeline-arrow">+</span>
+      <div class="pipeline-step">Delivery Tracking</div>
+    </div>
+    <div class="pipeline">
+      <div class="pipeline-step" style="grid-column:span 5">↓ Ingestion Layer ↓</div>
+    </div>
+    <div class="pipeline">
+      <div class="pipeline-step">Central Data Lake<br><small>Amazon S3</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Processing<br><small>AWS Glue</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Warehouse<br><small>Redshift</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Analytics<br><small>QuickSight</small></div>
+    </div>
+
+    <h3><span class="icon">⏱️</span>Batch vs Real-Time Ingestion</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th></th>
+          <th>Batch Ingestion</th>
+          <th>Real-Time Ingestion</th>
+        </tr>
+        <tr>
+          <td><strong>When data is collected</strong></td>
+          <td>At scheduled intervals — hourly, daily, weekly</td>
+          <td>Continuously as it is generated</td>
+        </tr>
+        <tr>
+          <td><strong>Latency</strong></td>
+          <td>Minutes to hours</td>
+          <td>Milliseconds to seconds</td>
+        </tr>
+        <tr>
+          <td><strong>Cost</strong></td>
+          <td>Lower — infrastructure runs only when scheduled</td>
+          <td>Higher — always-on infrastructure</td>
+        </tr>
+        <tr>
+          <td><strong>Example</strong></td>
+          <td>Daily sales report, nightly database backup, weekly inventory sync</td>
+          <td>Stock market prices, Uber ride tracking, fraud detection, IoT monitoring</td>
+        </tr>
+        <tr>
+          <td><strong>AWS tools</strong></td>
+          <td>AWS Glue, Apache Spark, AWS DMS (scheduled)</td>
+          <td>Amazon Kinesis, Apache Kafka, AWS Lambda</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">🔄</span>How Pipelines Evolve Over Time</h3>
+    <p>Ingestion pipelines are not built once and left unchanged. As organisations grow, their pipelines evolve to handle more sources, higher volume, and more complex requirements.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Stage</th>
+          <th>Pipeline Design</th>
+          <th>Why It Changes</th>
+        </tr>
+        <tr>
+          <td><span class="badge badge-blue">Early Stage</span></td>
+          <td>Application → Database → Data Warehouse</td>
+          <td>Simple, few sources, low volume</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-yellow">Growth Stage</span></td>
+          <td>Multiple sources → Kafka/Kinesis → S3 Data Lake → Warehouse</td>
+          <td>More sources added, volume increases, need for flexibility</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-orange">Mature Stage</span></td>
+          <td>Streaming + batch + IoT → Data Lake → Processing → Warehouse → ML</td>
+          <td>Petabyte-scale, real-time needs, ML use cases emerge</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="info-box">
+      💡 <strong>Netflix example:</strong> Netflix collects user clicks, watch history, device data, and recommendation signals — evolving their pipeline continuously to handle petabytes of data and power the recommendation engine that accounts for 80% of content watched.
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 2 — ETL vs ELT
+  ──────────────────────────────────────── -->
+  <section id="etl-elt">
+    <div class="section-label">Section 02</div>
+    <h2>ETL vs ELT</h2>
+
+    <p>Two fundamental approaches exist for moving and preparing data. Understanding when to use each is one of the most important decisions a data engineer makes.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Feature</th>
+          <th>ETL<br><small>Extract → Transform → Load</small></th>
+          <th>ELT<br><small>Extract → Load → Transform</small></th>
+        </tr>
+        <tr>
+          <td>Transformation timing</td>
+          <td>Before data is loaded into storage</td>
+          <td>After data is loaded — inside the warehouse or lake</td>
+        </tr>
+        <tr>
+          <td>What gets stored</td>
+          <td>Only clean, transformed data</td>
+          <td>Raw data first, transformed copies later</td>
+        </tr>
+        <tr>
+          <td>Speed of ingestion</td>
+          <td>Slower — transformation blocks loading</td>
+          <td>Faster — raw data lands immediately</td>
+        </tr>
+        <tr>
+          <td>Raw data preserved</td>
+          <td>No — transformation happens before storage</td>
+          <td>Yes — original data always available for reprocessing</td>
+        </tr>
+        <tr>
+          <td>Storage cost</td>
+          <td>Lower — only clean data stored</td>
+          <td>Higher — raw + transformed data both stored</td>
+        </tr>
+        <tr>
+          <td>Best for</td>
+          <td>Traditional on-premise warehouses with strict schemas</td>
+          <td>Modern cloud data lakes and warehouses</td>
+        </tr>
+        <tr>
+          <td>Example tools</td>
+          <td>Informatica, Talend, IBM DataStage</td>
+          <td>AWS Glue + S3 + Redshift, Snowflake, BigQuery</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">🔄</span>ETL — Extract, Transform, Load</h3>
+    <p>In ETL, data is cleaned and transformed <em>before</em> it enters the storage system. Only structured, validated data reaches the warehouse.</p>
+
+    <div class="pipeline">
+      <div class="pipeline-step">1. Extract<br><small>Collect from sources</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">2. Transform<br><small>Clean &amp; convert</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">3. Load<br><small>Store clean data</small></div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th colspan="3">ETL Example — Multi-Currency Sales Data</th>
+        </tr>
+        <tr>
+          <th>Before Transformation (Raw)</th>
+          <th>→</th>
+          <th>After Transformation (Loaded)</th>
+        </tr>
+        <tr>
+          <td>India: ₹10,000 INR</td>
+          <td>Convert to USD</td>
+          <td>India: $120 USD</td>
+        </tr>
+        <tr>
+          <td>USA: $200 USD</td>
+          <td>Already USD</td>
+          <td>USA: $200 USD</td>
+        </tr>
+        <tr>
+          <td>EU: €150 EUR</td>
+          <td>Convert to USD</td>
+          <td>EU: $165 USD</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">☁️</span>ELT — Extract, Load, Transform</h3>
+    <p>In ELT, raw data is loaded into the data lake or warehouse first. Transformation queries run later using the cloud's computing power — giving more flexibility and faster ingestion.</p>
+
+    <div class="pipeline">
+      <div class="pipeline-step">1. Extract<br><small>Collect from sources</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">2. Load<br><small>Raw data → S3 / Lake</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">3. Transform<br><small>Inside warehouse</small></div>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🚀</div>
+        <div class="card-title">Faster Ingestion</div>
+        <div class="card-desc">No waiting for transformation. Raw data lands in S3 immediately — analysts can start working while engineers build transformation logic.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔁</div>
+        <div class="card-title">Reprocess Anytime</div>
+        <div class="card-desc">If business rules change, re-run the transformation on the raw data. With ETL, you would need to re-ingest from the source.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">💪</div>
+        <div class="card-title">Cloud Computing Power</div>
+        <div class="card-desc">Redshift, Snowflake, and BigQuery can run massive transformation queries efficiently. No need for a separate transformation server.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔬</div>
+        <div class="card-title">Data Scientists Get Raw Data</div>
+        <div class="card-desc">Raw data in the lake can be used directly by data scientists for exploration — they aren't limited to the pre-transformed version.</div>
+      </div>
+    </div>
+
+    <h3><span class="icon">🏆</span>Benefits Comparison</h3>
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>ETL Benefits</th>
+          <th>ELT Benefits</th>
+        </tr>
+        <tr>
+          <td>Clean data before storage — warehouse stays organised</td>
+          <td>Raw data preserved — always available for reprocessing</td>
+        </tr>
+        <tr>
+          <td>Better data quality from the start</td>
+          <td>Faster ingestion — no transformation bottleneck</td>
+        </tr>
+        <tr>
+          <td>Sensitive data masked before reaching storage</td>
+          <td>Leverages cloud compute for transformation at scale</td>
+        </tr>
+        <tr>
+          <td>Required by traditional warehouses with strict schemas</td>
+          <td>Flexible — transformation logic can be updated without re-ingesting</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 3 — DATA WRANGLING OVERVIEW
+  ──────────────────────────────────────── -->
+  <section id="wrangling">
+    <div class="section-label">Section 03</div>
+    <h2>Data Wrangling</h2>
+
+    <p><strong>Data Wrangling</strong> (also called Data Munging or Data Preparation) is the process of cleaning, transforming, and organising raw data into a usable format. It is one of the most time-consuming tasks in data engineering — studies show data professionals spend <strong>70–80% of their time</strong> on data preparation rather than building models or dashboards.</p>
+
+    <div class="warn-box">
+      ⚠️ <strong>Without data wrangling:</strong> dashboards show incorrect results, machine learning models learn from bad examples and produce wrong predictions, and business decisions are made on flawed data.
+    </div>
+
+    <h3><span class="icon">🗺️</span>The Full Wrangling Pipeline</h3>
+
+    <div class="pipeline">
+      <div class="pipeline-step">Raw Data</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Discovery</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Structuring</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Cleaning</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Enriching</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Validating</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Publishing</div>
+    </div>
+
+    <h3><span class="icon">🧰</span>Common Raw Data Problems</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Problem</th>
+          <th>Raw Example</th>
+          <th>After Wrangling</th>
+        </tr>
+        <tr>
+          <td>Different name formats</td>
+          <td>"aman", "Aman Raj", "A. Raj"</td>
+          <td>"Aman Raj"</td>
+        </tr>
+        <tr>
+          <td>Missing values</td>
+          <td>Phone: NULL</td>
+          <td>Phone: 9876543210 (filled or flagged)</td>
+        </tr>
+        <tr>
+          <td>Inconsistent country codes</td>
+          <td>"India", "IN", "IND"</td>
+          <td>"India" (standardised)</td>
+        </tr>
+        <tr>
+          <td>Date format differences</td>
+          <td>"12/03/2026", "2026-03-12", "03-12-26"</td>
+          <td>"2026-03-12" (ISO format)</td>
+        </tr>
+        <tr>
+          <td>Duplicate records</td>
+          <td>Same row appears twice with same ID</td>
+          <td>One record kept, duplicate removed</td>
+        </tr>
+        <tr>
+          <td>Impossible values</td>
+          <td>Age: 350, Price: -50</td>
+          <td>Flagged as invalid, excluded or corrected</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">🛠️</span>Common Wrangling Tools</h3>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🐍</div>
+        <div class="card-title">Python (Pandas)</div>
+        <div class="card-desc">Most widely used tool. DataFrames make it easy to clean, reshape, and transform data with code that is readable and reusable.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚡</div>
+        <div class="card-title">Apache Spark</div>
+        <div class="card-desc">Distributed wrangling at scale. When Pandas runs out of memory, Spark distributes the work across a cluster — handles petabytes.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">☁️</div>
+        <div class="card-title">AWS Glue</div>
+        <div class="card-desc">Serverless ETL on AWS. Automatically discovers schema, runs PySpark transformations, and writes output to S3 or Redshift.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🗄️</div>
+        <div class="card-title">SQL</div>
+        <div class="card-desc">Powerful for transformation inside data warehouses (Redshift, Athena, BigQuery). CASE statements, window functions, and CTEs handle complex wrangling logic.</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 4 — DATA DISCOVERY
+  ──────────────────────────────────────── -->
+  <section id="discovery">
+    <div class="section-label">Section 04</div>
+    <h2>Step 1 — Data Discovery</h2>
+
+    <p><strong>Data Discovery</strong> is the first step in wrangling — the process of exploring and understanding data before working with it. You cannot clean or transform data you don't understand.</p>
+
+    <h3><span class="icon">❓</span>Questions Data Discovery Answers</h3>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">📍</div>
+        <div class="card-title">What data exists?</div>
+        <div class="card-desc">Identify all available datasets — databases, S3 buckets, APIs, file shares, SaaS exports. Use the Glue Data Catalog to browse registered datasets.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📋</div>
+        <div class="card-title">What does it look like?</div>
+        <div class="card-desc">Understand column names, data types, and sample values. Run <code>SELECT * FROM table LIMIT 10</code> to preview structure.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📏</div>
+        <div class="card-title">How big is it?</div>
+        <div class="card-desc">Understand volume — <code>SELECT COUNT(*) FROM table</code>. Large datasets need distributed processing (EMR/Spark) rather than single-machine tools.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔗</div>
+        <div class="card-title">How are datasets related?</div>
+        <div class="card-desc">Identify join keys between tables — CustomerID linking orders to customers, ProductID linking orders to inventory.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚠️</div>
+        <div class="card-title">What quality problems exist?</div>
+        <div class="card-desc">Find missing values, duplicates, and outliers before building pipelines. Use <code>SELECT COUNT(*) WHERE column IS NULL</code>.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">✅</div>
+        <div class="card-title">Is the data useful?</div>
+        <div class="card-desc">Determine whether the dataset actually answers the business question. Some data may be available but irrelevant or outdated.</div>
+      </div>
+    </div>
+
+    <h3><span class="icon">💻</span>Discovery with SQL Queries</h3>
+
+<pre><span class="cm">-- 1. Preview the structure and sample data</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> customers <span class="kw">LIMIT</span> <span class="num">10</span>;
+
+<span class="cm">-- 2. Count total records</span>
+<span class="kw">SELECT</span> <span class="fn">COUNT</span>(*) <span class="kw">AS</span> total_records <span class="kw">FROM</span> orders;
+
+<span class="cm">-- 3. Find missing values in a column</span>
+<span class="kw">SELECT</span> <span class="fn">COUNT</span>(*) <span class="kw">AS</span> missing_emails
+<span class="kw">FROM</span> customers
+<span class="kw">WHERE</span> email <span class="kw">IS NULL</span>;
+
+<span class="cm">-- 4. Find duplicate records by key</span>
+<span class="kw">SELECT</span> order_id, <span class="fn">COUNT</span>(*) <span class="kw">AS</span> occurrences
+<span class="kw">FROM</span> orders
+<span class="kw">GROUP BY</span> order_id
+<span class="kw">HAVING</span> <span class="fn">COUNT</span>(*) > <span class="num">1</span>;
+
+<span class="cm">-- 5. Understand date range of data</span>
+<span class="kw">SELECT</span> <span class="fn">MIN</span>(order_date) <span class="kw">AS</span> earliest,
+       <span class="fn">MAX</span>(order_date) <span class="kw">AS</span> latest
+<span class="kw">FROM</span> orders;</pre>
+
+    <h3><span class="icon">🔍</span>Discovery Scenario — Customer Churn Analysis</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Discovery Task</th>
+          <th>Finding</th>
+          <th>Impact on Pipeline Design</th>
+        </tr>
+        <tr>
+          <td>Identify required datasets</td>
+          <td>Customer DB, Subscription data, Support tickets, Billing history</td>
+          <td>Need to ingest from 4 different sources</td>
+        </tr>
+        <tr>
+          <td>Check data freshness</td>
+          <td>Support tickets only updated weekly; others daily</td>
+          <td>Pipeline must handle mixed update frequencies</td>
+        </tr>
+        <tr>
+          <td>Identify join keys</td>
+          <td>CustomerID links all four datasets</td>
+          <td>Must validate CustomerID consistency across systems</td>
+        </tr>
+        <tr>
+          <td>Find missing values</td>
+          <td>30% of customers have no billing record</td>
+          <td>Missing data must be handled before ML model training</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 5 — DATA STRUCTURING
+  ──────────────────────────────────────── -->
+  <section id="structuring">
+    <div class="section-label">Section 05</div>
+    <h2>Step 2 — Data Structuring</h2>
+
+    <p><strong>Data Structuring</strong> converts raw unorganised data into a structured format that systems can consistently process. Raw data arrives as text files, JSON blobs, CSV exports, or logs — structuring converts these into clean, typed columns in a table.</p>
+
+    <h3><span class="icon">📄</span>Why Structuring Is Needed</h3>
+    <p>Raw data from different sources rarely has the same format or organisation. A server log, a CSV file, and a JSON API response all look completely different — but they may all contain data that needs to end up in the same analytics table.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Decisions Engineers Make During Structuring</th>
+          <th>Example</th>
+        </tr>
+        <tr>
+          <td>What fields to extract from raw data</td>
+          <td>Log line contains 10 fields — extract only date, user, action, country</td>
+        </tr>
+        <tr>
+          <td>What data types each column should have</td>
+          <td>price should be decimal, not string; order_date should be DATE, not VARCHAR</td>
+        </tr>
+        <tr>
+          <td>How to organise rows and columns</td>
+          <td>Nested JSON objects must be flattened into a single table row</td>
+        </tr>
+        <tr>
+          <td>Which schema to use</td>
+          <td>Star schema for analytics warehouse vs flat table for ML features</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">📋</span>Example — Structuring a Server Log File</h3>
+
+<pre><span class="cm"># Raw server log — one event per line, comma-separated</span>
+<span class="str">2026-03-11,user123,login,India</span>
+<span class="str">2026-03-11,user456,purchase,USA</span>
+<span class="str">2026-03-12,user123,logout,India</span></pre>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>date</th>
+          <th>user_id</th>
+          <th>action</th>
+          <th>country</th>
+        </tr>
+        <tr>
+          <td>2026-03-11</td>
+          <td>user123</td>
+          <td>login</td>
+          <td>India</td>
+        </tr>
+        <tr>
+          <td>2026-03-11</td>
+          <td>user456</td>
+          <td>purchase</td>
+          <td>USA</td>
+        </tr>
+        <tr>
+          <td>2026-03-12</td>
+          <td>user123</td>
+          <td>logout</td>
+          <td>India</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">📦</span>Example — Structuring a Supplier CSV</h3>
+    <p>A supplier file <code>supp2.csv</code> arrives with raw column names. Structuring maps these to standardised database field names.</p>
+
+<pre><span class="cm"># Raw supplier file — supp2.csv</span>
+SUP_ID,NAME,COUNTRY,CONTACT
+<span class="num">101</span>,ABC Corp,India,<span class="num">9876543210</span>
+<span class="num">102</span>,XYZ Ltd,USA,<span class="num">1234567890</span></pre>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Supplier_ID</th>
+          <th>Supplier_Name</th>
+          <th>Country</th>
+          <th>Contact_Number</th>
+        </tr>
+        <tr>
+          <td>101</td>
+          <td>ABC Corp</td>
+          <td>India</td>
+          <td>9876543210</td>
+        </tr>
+        <tr>
+          <td>102</td>
+          <td>XYZ Ltd</td>
+          <td>USA</td>
+          <td>1234567890</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">🔀</span>Handling Data Variety During Structuring</h3>
+    <p>Modern organisations receive the same type of information from sources in completely different formats. Structuring unifies them.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Source</th>
+          <th>Format</th>
+          <th>Structuring Action</th>
+        </tr>
+        <tr>
+          <td>Internal database</td>
+          <td>SQL table — already structured</td>
+          <td>Map column names to unified schema</td>
+        </tr>
+        <tr>
+          <td>REST API response</td>
+          <td>Nested JSON</td>
+          <td>Flatten nested objects, extract required fields</td>
+        </tr>
+        <tr>
+          <td>Server logs</td>
+          <td>Unstructured text lines</td>
+          <td>Parse with regex, extract fields, assign column names</td>
+        </tr>
+        <tr>
+          <td>CSV file export</td>
+          <td>Comma-separated, inconsistent headers</td>
+          <td>Rename columns, cast types, handle encoding issues</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 6 — DATA CLEANING
+  ──────────────────────────────────────── -->
+  <section id="cleaning">
+    <div class="section-label">Section 06</div>
+    <h2>Step 3 — Data Cleaning</h2>
+
+    <p><strong>Data Cleaning</strong> removes errors, inconsistencies, and invalid values from structured data. After data is structured into columns and rows, cleaning fixes what is wrong with the values themselves.</p>
+
+    <h3><span class="icon">🧹</span>Common Cleaning Tasks</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Problem</th>
+          <th>Example</th>
+          <th>Cleaning Action</th>
+        </tr>
+        <tr>
+          <td>Duplicate records</td>
+          <td>CustomerID 101 appears twice with identical data</td>
+          <td>Keep one record using <code>DISTINCT</code> or deduplication on primary key</td>
+        </tr>
+        <tr>
+          <td>Missing values (NULL)</td>
+          <td>Product price is NULL</td>
+          <td>Replace with default value, median, or flag for manual review; remove row if critical field is missing</td>
+        </tr>
+        <tr>
+          <td>Incorrect values</td>
+          <td>Country = "Indai" (typo)</td>
+          <td>Correct to "India" using lookup table or fuzzy matching</td>
+        </tr>
+        <tr>
+          <td>Inconsistent date formats</td>
+          <td>"12-03-2026", "2026/03/12", "03-12-26"</td>
+          <td>Standardise to ISO 8601: "2026-03-12"</td>
+        </tr>
+        <tr>
+          <td>Wrong casing</td>
+          <td>"aman", "AMAN", "Aman"</td>
+          <td>Apply consistent title case or lowercase across all records</td>
+        </tr>
+        <tr>
+          <td>Impossible values</td>
+          <td>Age = -5, Price = -50, Temperature = 5000°C</td>
+          <td>Apply range validation rules; flag or remove invalid rows</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">🔧</span>Full Cleaning Example</h3>
+    <p>Raw customer dataset with multiple problems:</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Customer</th>
+          <th>Email</th>
+          <th>Age</th>
+        </tr>
+        <tr>
+          <td>Aman</td>
+          <td>aman@email.com</td>
+          <td>25</td>
+        </tr>
+        <tr>
+          <td>Aman</td>
+          <td>aman@email.com</td>
+          <td>25</td>
+        </tr>
+        <tr>
+          <td>Rahul</td>
+          <td>NULL</td>
+          <td>30</td>
+        </tr>
+      </table>
+    </div>
+
+    <p>After cleaning — duplicate removed, missing email filled:</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Customer</th>
+          <th>Email</th>
+          <th>Age</th>
+        </tr>
+        <tr>
+          <td>Aman</td>
+          <td>aman@email.com</td>
+          <td>25</td>
+        </tr>
+        <tr>
+          <td>Rahul</td>
+          <td>rahul@email.com</td>
+          <td>30</td>
+        </tr>
+      </table>
+    </div>
+
+<pre><span class="cm">-- AWS Athena / Redshift: cleaning with SQL</span>
+<span class="kw">SELECT</span>
+    <span class="fn">INITCAP</span>(<span class="fn">TRIM</span>(customer_name))     <span class="kw">AS</span> customer_name,
+    <span class="fn">LOWER</span>(email)                       <span class="kw">AS</span> email,
+    <span class="kw">CASE</span>
+        <span class="kw">WHEN</span> age < <span class="num">0</span> <span class="kw">OR</span> age > <span class="num">120</span> <span class="kw">THEN</span> <span class="kw">NULL</span>
+        <span class="kw">ELSE</span> age
+    <span class="kw">END</span>                                <span class="kw">AS</span> age,
+    <span class="fn">TO_DATE</span>(order_date, <span class="str">'YYYY-MM-DD'</span>)  <span class="kw">AS</span> order_date
+<span class="kw">FROM</span> (
+    <span class="kw">SELECT</span> *, <span class="fn">ROW_NUMBER</span>() <span class="fn">OVER</span> (<span class="kw">PARTITION BY</span> customer_id <span class="kw">ORDER BY</span> updated_at <span class="kw">DESC</span>) <span class="kw">AS</span> rn
+    <span class="kw">FROM</span> raw_customers
+) <span class="kw">WHERE</span> rn = <span class="num">1</span>;   <span class="cm">-- keep only the latest record per customer (deduplication)</span></pre>
+
+    <div class="info-box">
+      💡 <strong>Important rule:</strong> Always retain the original raw data — never overwrite it. Store both the raw version (in the landing/raw zone of your data lake) and the cleaned version (in the trusted zone). If cleaning logic changes, you can reprocess from raw without re-ingesting from the source.
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 7 — DATA ENRICHING
+  ──────────────────────────────────────── -->
+  <section id="enriching">
+    <div class="section-label">Section 07</div>
+    <h2>Step 4 — Data Enriching</h2>
+
+    <p><strong>Data Enrichment</strong> adds additional useful information to existing data — combining multiple datasets or adding context that makes the data more valuable for analysis.</p>
+
+    <h3><span class="icon">➕</span>Common Enrichment Tasks</h3>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🔗</div>
+        <div class="card-title">Combine Datasets</div>
+        <div class="card-desc">Join orders with customer profiles to add name, city, and segment to each order record — enabling "sales by city" analysis.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🌍</div>
+        <div class="card-title">Add External Data</div>
+        <div class="card-desc">Add public weather data to retail sales data — enabling analysis of how rain affects in-store footfall vs online orders.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🧮</div>
+        <div class="card-title">Derive New Fields</div>
+        <div class="card-desc">Calculate derived columns from existing data — age from birth date, days since last purchase, order value tier (low/medium/high).</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📌</div>
+        <div class="card-title">Add Missing Attributes</div>
+        <div class="card-desc">A transaction record may only have CustomerID — enrich by joining to the customer master to add Name, Location, and Segment.</div>
+      </div>
+    </div>
+
+    <h3><span class="icon">🛒</span>Enrichment Example — E-Commerce Orders</h3>
+    <p>Combining the orders table with the customer table creates a richer dataset for analysis:</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th colspan="3">Source 1 — Orders Table</th>
+        </tr>
+        <tr>
+          <th>Order_ID</th><th>Customer_ID</th><th>Product</th>
+        </tr>
+        <tr><td>101</td><td>2001</td><td>Laptop</td></tr>
+        <tr><td>102</td><td>2002</td><td>Phone</td></tr>
+      </table>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th colspan="3">Source 2 — Customer Table</th>
+        </tr>
+        <tr>
+          <th>Customer_ID</th><th>Name</th><th>City</th>
+        </tr>
+        <tr><td>2001</td><td>Aman</td><td>Surat</td></tr>
+        <tr><td>2002</td><td>Rahul</td><td>Mumbai</td></tr>
+      </table>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th colspan="4">After Enrichment — Combined Dataset</th>
+        </tr>
+        <tr>
+          <th>Order_ID</th><th>Customer_Name</th><th>Product</th><th>City</th>
+        </tr>
+        <tr><td>101</td><td>Aman</td><td>Laptop</td><td>Surat</td></tr>
+        <tr><td>102</td><td>Rahul</td><td>Phone</td><td>Mumbai</td></tr>
+      </table>
+    </div>
+
+<pre><span class="cm">-- SQL enrichment: join orders with customer details</span>
+<span class="kw">SELECT</span>
+    o.order_id,
+    c.name         <span class="kw">AS</span> customer_name,
+    o.product,
+    c.city,
+    o.amount,
+    <span class="cm">-- Derived field: classify order size</span>
+    <span class="kw">CASE</span>
+        <span class="kw">WHEN</span> o.amount >= <span class="num">1000</span> <span class="kw">THEN</span> <span class="str">'High Value'</span>
+        <span class="kw">WHEN</span> o.amount >= <span class="num">500</span>  <span class="kw">THEN</span> <span class="str">'Medium Value'</span>
+        <span class="kw">ELSE</span>                       <span class="str">'Low Value'</span>
+    <span class="kw">END</span> <span class="kw">AS</span> order_tier
+<span class="kw">FROM</span> orders o
+<span class="kw">JOIN</span> customers c <span class="kw">ON</span> o.customer_id = c.customer_id;</pre>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 8 — DATA VALIDATING
+  ──────────────────────────────────────── -->
+  <section id="validating">
+    <div class="section-label">Section 08</div>
+    <h2>Step 5 — Data Validating</h2>
+
+    <p><strong>Data Validation</strong> ensures that the final dataset is accurate, consistent, and follows defined rules before it is published for use. Validation is different from cleaning — cleaning fixes problems, validation confirms the fixes were applied correctly and no new problems were introduced.</p>
+
+    <h3><span class="icon">📏</span>Types of Validation Checks</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Validation Type</th>
+          <th>Rule</th>
+          <th>Invalid Example</th>
+          <th>What Happens</th>
+        </tr>
+        <tr>
+          <td><span class="badge badge-orange">Range Validation</span></td>
+          <td>Value must be within acceptable range</td>
+          <td>Age = 350</td>
+          <td>Row flagged as invalid, quarantined for review</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-yellow">Format Validation</span></td>
+          <td>Value must match expected pattern</td>
+          <td>Email = "aman@email" (missing TLD)</td>
+          <td>Row rejected — email field does not match regex</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-blue">Type Validation</span></td>
+          <td>Value must be of the correct data type</td>
+          <td>Price = "twenty" (string, not number)</td>
+          <td>Pipeline fails with type cast error — must be corrected</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-green">Relationship Validation</span></td>
+          <td>Referenced key must exist in another table</td>
+          <td>Order with CustomerID 9999 — no such customer</td>
+          <td>Referential integrity violation — row quarantined</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-purple">Completeness Validation</span></td>
+          <td>Required fields must not be NULL</td>
+          <td>Order with no product_id</td>
+          <td>Row rejected — required field missing</td>
+        </tr>
+      </table>
+    </div>
+
+<pre><span class="cm">-- Validation query: find rows violating business rules</span>
+<span class="kw">SELECT</span>
+    order_id,
+    price,
+    customer_id,
+    <span class="kw">CASE</span>
+        <span class="kw">WHEN</span> price < <span class="num">0</span>           <span class="kw">THEN</span> <span class="str">'INVALID: negative price'</span>
+        <span class="kw">WHEN</span> price > <span class="num">1000000</span>    <span class="kw">THEN</span> <span class="str">'INVALID: price exceeds maximum'</span>
+        <span class="kw">WHEN</span> customer_id <span class="kw">IS NULL</span> <span class="kw">THEN</span> <span class="str">'INVALID: missing customer'</span>
+        <span class="kw">ELSE</span>                          <span class="str">'VALID'</span>
+    <span class="kw">END</span> <span class="kw">AS</span> validation_status
+<span class="kw">FROM</span> orders
+<span class="kw">WHERE</span> price < <span class="num">0</span>
+   <span class="kw">OR</span> price > <span class="num">1000000</span>
+   <span class="kw">OR</span> customer_id <span class="kw">IS NULL</span>;</pre>
+
+    <div class="warn-box">
+      ⚠️ <strong>Best practice:</strong> Never silently drop invalid rows. Log every validation failure with the reason, row ID, and timestamp. Invalid data should go to a quarantine or error table so engineers can investigate root causes.
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 9 — DATA PUBLISHING
+  ──────────────────────────────────────── -->
+  <section id="publishing">
+    <div class="section-label">Section 09</div>
+    <h2>Step 6 — Data Publishing</h2>
+
+    <p><strong>Data Publishing</strong> is the final step — making the prepared, validated data available to users, applications, dashboards, and machine learning systems. At this point, the data moves from the trusted or curated zone into consumption-ready storage.</p>
+
+    <h3><span class="icon">📤</span>Publishing Decisions</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Decision</th>
+          <th>Options</th>
+          <th>Example</th>
+        </tr>
+        <tr>
+          <td>Where to store published data</td>
+          <td>Data warehouse, data lake curated zone, operational database, API</td>
+          <td>Curated Parquet files in S3 + loaded into Redshift for BI</td>
+        </tr>
+        <tr>
+          <td>Who can access it</td>
+          <td>Controlled via IAM policies, Lake Formation, database user permissions</td>
+          <td>Finance team = full access; Marketing = read-only on aggregated view</td>
+        </tr>
+        <tr>
+          <td>How often to refresh</td>
+          <td>Real-time (streaming), hourly, daily, weekly</td>
+          <td>Sales dashboard refreshes daily at 6 AM from overnight batch job</td>
+        </tr>
+        <tr>
+          <td>What format to publish in</td>
+          <td>Parquet (analytics), CSV (export), JSON (API), Avro (streaming)</td>
+          <td>Parquet for Athena/Redshift; JSON for REST API consumers</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="pipeline">
+      <div class="pipeline-step">S3 Raw Zone</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Glue ETL<br><small>Wrangle</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">S3 Curated Zone<br><small>Parquet</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Redshift<br><small>Warehouse</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">QuickSight<br><small>Dashboard</small></div>
+    </div>
+
+    <h3><span class="icon">🍕</span>Full Industry Example — Food Delivery Company</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Stage</th>
+          <th>Action</th>
+          <th>AWS Service</th>
+        </tr>
+        <tr>
+          <td>Ingestion</td>
+          <td>Collect restaurant orders, delivery GPS, customer profiles, payments</td>
+          <td>Kinesis Streams (real-time), Glue (batch)</td>
+        </tr>
+        <tr>
+          <td>Discovery</td>
+          <td>Explore datasets, identify join keys (OrderID, CustomerID, DriverID)</td>
+          <td>Glue Data Catalog, Athena</td>
+        </tr>
+        <tr>
+          <td>Structuring</td>
+          <td>Parse GPS events into lat/lng columns; flatten nested JSON orders</td>
+          <td>AWS Glue, Lambda</td>
+        </tr>
+        <tr>
+          <td>Cleaning</td>
+          <td>Remove cancelled orders, fix null delivery times, standardise city names</td>
+          <td>AWS Glue PySpark jobs</td>
+        </tr>
+        <tr>
+          <td>Enriching</td>
+          <td>Join orders with restaurant ratings; calculate delivery time duration</td>
+          <td>Redshift SQL</td>
+        </tr>
+        <tr>
+          <td>Validating</td>
+          <td>Confirm delivery time &gt; 0 min; confirm all orders have valid restaurant ID</td>
+          <td>Glue data quality rules</td>
+        </tr>
+        <tr>
+          <td>Publishing</td>
+          <td>Load final dataset to Redshift; expose via QuickSight dashboard</td>
+          <td>Redshift, QuickSight</td>
+        </tr>
+      </table>
+    </div>
+
+    <p>After publishing, the analytics team can answer:</p>
+    <ul class="styled">
+      <li>Which city has the highest number of orders per day?</li>
+      <li>Which restaurant consistently sells the most items?</li>
+      <li>Which delivery partner has the fastest average delivery time?</li>
+      <li>How does order volume change during weekends vs weekdays?</li>
+    </ul>
+
+    <div class="success-box">
+      ✅ <strong>The complete wrangling pipeline transforms:</strong><br>
+      <strong>Raw, messy, multi-source data</strong> → Discovery → Structuring → Cleaning → Enriching → Validating → <strong>Trusted, analysis-ready published datasets</strong>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 10 — QUIZ
+  ──────────────────────────────────────── -->
+  <section id="quiz">
+    <div class="section-label">Module 7 Quiz</div>
+    <h2>🧠 Test Your Knowledge</h2>
+    <p>Answer all questions to see your final score.</p>
+
+    <!-- Q1 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 01</div>
+      <div class="quiz-q-text">What is data ingestion?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','B')"><span class="opt-label">A</span>The process of creating dashboards and reports from clean data</button>
+        <button class="option-btn" onclick="answer(this,'B','B')"><span class="opt-label">B</span>The process of collecting data from different sources and bringing it into a storage or processing system</button>
+        <button class="option-btn" onclick="answer(this,'C','B')"><span class="opt-label">C</span>The process of encrypting data before it is sent to analysts</button>
+        <button class="option-btn" onclick="answer(this,'D','B')"><span class="opt-label">D</span>The process of deleting outdated records from a data warehouse</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>Data ingestion</strong> is the entry point of every pipeline — collecting data from applications, databases, IoT devices, APIs, and files, and bringing it into a central storage system (data lake or warehouse) for downstream processing and analysis.
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 02</div>
+      <div class="quiz-q-text">In the ETL process, in which order do the steps occur?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','C')"><span class="opt-label">A</span>Load → Extract → Transform</button>
+        <button class="option-btn" onclick="answer(this,'B','C')"><span class="opt-label">B</span>Transform → Extract → Load</button>
+        <button class="option-btn" onclick="answer(this,'C','C')"><span class="opt-label">C</span>Extract → Transform → Load</button>
+        <button class="option-btn" onclick="answer(this,'D','C')"><span class="opt-label">D</span>Extract → Load → Transform</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>ETL = Extract → Transform → Load.</strong> Data is first collected (Extract), then cleaned and converted to the required format (Transform), and finally stored in the warehouse (Load). In ELT the order is different — Extract → Load → Transform.
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 03</div>
+      <div class="quiz-q-text">What is the key advantage of ELT over ETL in modern cloud systems?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','C')"><span class="opt-label">A</span>ELT stores only clean data, reducing storage costs</button>
+        <button class="option-btn" onclick="answer(this,'B','C')"><span class="opt-label">B</span>ELT is required by traditional on-premise data warehouses</button>
+        <button class="option-btn" onclick="answer(this,'C','C')"><span class="opt-label">C</span>ELT allows raw data to be loaded quickly and transformed later using cloud computing power, with the flexibility to reprocess when business rules change</button>
+        <button class="option-btn" onclick="answer(this,'D','C')"><span class="opt-label">D</span>ELT automatically encrypts all data during the loading phase</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ ELT's key advantages are speed (raw data loads immediately without waiting for transformation), flexibility (transformation logic can be updated and re-run without re-ingesting data), and the ability to leverage cloud warehouse computing power (Redshift, BigQuery) for massive transformation jobs.
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 04</div>
+      <div class="quiz-q-text">What is data wrangling?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','B')"><span class="opt-label">A</span>The process of ingesting data from IoT sensors</button>
+        <button class="option-btn" onclick="answer(this,'B','B')"><span class="opt-label">B</span>The process of cleaning, transforming, and organising raw data into a usable format</button>
+        <button class="option-btn" onclick="answer(this,'C','B')"><span class="opt-label">C</span>The process of building machine learning models from raw data</button>
+        <button class="option-btn" onclick="answer(this,'D','B')"><span class="opt-label">D</span>The process of scaling infrastructure to handle more data volume</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>Data wrangling</strong> (also called data munging or data preparation) covers all the steps that convert messy raw data into clean, structured, analysis-ready datasets: discovery, structuring, cleaning, enriching, validating, and publishing.
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 05</div>
+      <div class="quiz-q-text">What is the correct order of steps in the data wrangling pipeline?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','B')"><span class="opt-label">A</span>Cleaning → Discovery → Structuring → Enriching → Validating → Publishing</button>
+        <button class="option-btn" onclick="answer(this,'B','B')"><span class="opt-label">B</span>Discovery → Structuring → Cleaning → Enriching → Validating → Publishing</button>
+        <button class="option-btn" onclick="answer(this,'C','B')"><span class="opt-label">C</span>Structuring → Cleaning → Discovery → Publishing → Validating → Enriching</button>
+        <button class="option-btn" onclick="answer(this,'D','B')"><span class="opt-label">D</span>Validating → Cleaning → Structuring → Discovery → Enriching → Publishing</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ The correct order is: <strong>Discovery</strong> (understand what data exists) → <strong>Structuring</strong> (organise into columns/rows) → <strong>Cleaning</strong> (fix errors) → <strong>Enriching</strong> (add more context) → <strong>Validating</strong> (confirm rules are met) → <strong>Publishing</strong> (make available to users).
+      </div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 06</div>
+      <div class="quiz-q-text">A data engineer runs <code>SELECT COUNT(*) FROM orders WHERE customer_id IS NULL</code>. Which data wrangling step is this part of?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','A')"><span class="opt-label">A</span>Data Discovery</button>
+        <button class="option-btn" onclick="answer(this,'B','A')"><span class="opt-label">B</span>Data Cleaning</button>
+        <button class="option-btn" onclick="answer(this,'C','A')"><span class="opt-label">C</span>Data Enriching</button>
+        <button class="option-btn" onclick="answer(this,'D','A')"><span class="opt-label">D</span>Data Publishing</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ This is <strong>Data Discovery</strong>. The engineer is exploring the dataset to understand what quality problems exist — specifically, how many rows have a missing customer ID. Cleaning would fix them; discovery identifies them first.
+      </div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 07</div>
+      <div class="quiz-q-text">A raw CSV file arrives with column names "SUP_ID", "NAME", "COUNTRY". An engineer renames them to "Supplier_ID", "Supplier_Name", "Country" and assigns correct data types. Which wrangling step is this?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','C')"><span class="opt-label">A</span>Data Discovery</button>
+        <button class="option-btn" onclick="answer(this,'B','C')"><span class="opt-label">B</span>Data Cleaning</button>
+        <button class="option-btn" onclick="answer(this,'C','C')"><span class="opt-label">C</span>Data Structuring</button>
+        <button class="option-btn" onclick="answer(this,'D','C')"><span class="opt-label">D</span>Data Validating</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ This is <strong>Data Structuring</strong> — organising raw fields into a standardised schema with correct column names and data types. Cleaning fixes values that are wrong; structuring establishes the shape and organisation of the data.
+      </div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 08</div>
+      <div class="quiz-q-text">An engineer joins an orders table with a customers table to add customer name and city to each order record. Which wrangling step is this?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','C')"><span class="opt-label">A</span>Data Structuring</button>
+        <button class="option-btn" onclick="answer(this,'B','C')"><span class="opt-label">B</span>Data Cleaning</button>
+        <button class="option-btn" onclick="answer(this,'C','C')"><span class="opt-label">C</span>Data Enriching</button>
+        <button class="option-btn" onclick="answer(this,'D','C')"><span class="opt-label">D</span>Data Publishing</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ This is <strong>Data Enriching</strong> — combining datasets to add new attributes that make the data more valuable. Joining orders with customers adds city information, enabling "sales by city" analysis that was not possible with the orders table alone.
+      </div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 09</div>
+      <div class="quiz-q-text">A validation rule states "price must be greater than 0". An order with price = -50 is found. What should happen?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','B')"><span class="opt-label">A</span>Replace -50 with 0 automatically</button>
+        <button class="option-btn" onclick="answer(this,'B','B')"><span class="opt-label">B</span>Flag the row as invalid, log the reason, and quarantine it for engineer review</button>
+        <button class="option-btn" onclick="answer(this,'C','B')"><span class="opt-label">C</span>Delete the row silently to keep the dataset clean</button>
+        <button class="option-btn" onclick="answer(this,'D','B')"><span class="opt-label">D</span>Publish the row as-is and let analysts decide what to do with it</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ The correct action is to <strong>flag and quarantine</strong> the invalid row. Silently deleting data destroys information about what went wrong. Automatically replacing -50 with 0 makes an assumption that may be incorrect. Engineers need to investigate the root cause — was it a refund? A system bug? A data entry error?
+      </div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 10</div>
+      <div class="quiz-q-text">A food delivery company publishes its wrangled dataset to Amazon Redshift and connects it to a QuickSight dashboard. Which wrangling step has just been completed?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','D')"><span class="opt-label">A</span>Data Enriching</button>
+        <button class="option-btn" onclick="answer(this,'B','D')"><span class="opt-label">B</span>Data Validating</button>
+        <button class="option-btn" onclick="answer(this,'C','D')"><span class="opt-label">C</span>Data Cleaning</button>
+        <button class="option-btn" onclick="answer(this,'D','D')"><span class="opt-label">D</span>Data Publishing</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ This is <strong>Data Publishing</strong> — the final step where prepared, validated data is made available to its consumers. Moving data to Redshift and connecting QuickSight makes the data accessible to analysts and managers who need it for business decisions.
+      </div>
+    </div>
+
+    <!-- SCORE BAR -->
+    <div class="score-bar" id="scoreBar" style="display:none">
+      <div class="score-title">Your Score</div>
+      <div class="score-count" id="scoreCount">0 / 10</div>
+      <div class="score-sub" id="scoreMsg">Keep practising!</div>
+    </div>
+
+  </section>
+
+  <!-- ── BOTTOM NAV ── -->
+  <div class="bottom-nav">
+    <a href="security-scaling.html" class="btn">⬅ Module 6</a>
+    <a href="batch-streaming.html" class="btn">Module 8 ➡</a>
+  </div>
+
+</div>
+
+<!-- GO TO TOP -->
+<button id="topBtn">↑</button>
+<script src="../assets/js/template.js"></script>
+</body>
+</html>
