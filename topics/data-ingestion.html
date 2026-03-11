@@ -1102,84 +1102,69 @@ SUP_ID,NAME,COUNTRY,CONTACT
     <h2>🧠 Test Your Knowledge</h2>
     <p>Answer all questions to see your final score.</p>
 
-    <!-- Q1 -->
+    <!-- Q1 — correct: A -->
     <div class="quiz-question">
       <div class="quiz-number">Q 01</div>
-      <div class="quiz-q-text">What is data ingestion?</div>
+      <div class="quiz-q-text">Which statement best describes data wrangling?</div>
       <div class="options">
-        <button class="option-btn" onclick="answer(this,'A','B')"><span class="opt-label">A</span>The process of creating dashboards and reports from clean data</button>
-        <button class="option-btn" onclick="answer(this,'B','B')"><span class="opt-label">B</span>The process of collecting data from different sources and bringing it into a storage or processing system</button>
-        <button class="option-btn" onclick="answer(this,'C','B')"><span class="opt-label">C</span>The process of encrypting data before it is sent to analysts</button>
-        <button class="option-btn" onclick="answer(this,'D','B')"><span class="opt-label">D</span>The process of deleting outdated records from a data warehouse</button>
+        <button class="option-btn" onclick="answer(this,'A','A')"><span class="opt-label">A</span>Data wrangling is a set of steps performed to transform large amounts of data from multiple sources into a meaningful dataset.</button>
+        <button class="option-btn" onclick="answer(this,'B','A')"><span class="opt-label">B</span>Data wrangling provides rigid guidance for transformations used in ML models.</button>
+        <button class="option-btn" onclick="answer(this,'C','A')"><span class="opt-label">C</span>Data wrangling steps are performed only once in sequence during ingestion.</button>
+        <button class="option-btn" onclick="answer(this,'D','A')"><span class="opt-label">D</span>Data wrangling requires sophisticated tools to review and transform data.</button>
       </div>
       <div class="explanation correct-exp">
-        ✅ <strong>Data ingestion</strong> is the entry point of every pipeline — collecting data from applications, databases, IoT devices, APIs, and files, and bringing it into a central storage system (data lake or warehouse) for downstream processing and analysis.
+        ✅ <strong>Data wrangling</strong> (also called data munging or data preparation) means cleaning, transforming, and organising data from multiple sources to make it ready for analysis — covering discovery, structuring, cleaning, enriching, validating, and publishing.
       </div>
     </div>
 
-    <!-- Q2 -->
+    <!-- Q2 — correct: A -->
     <div class="quiz-question">
       <div class="quiz-number">Q 02</div>
-      <div class="quiz-q-text">In the ETL process, in which order do the steps occur?</div>
+      <div class="quiz-q-text">Which statement about the data validating step is true?</div>
       <div class="options">
-        <button class="option-btn" onclick="answer(this,'A','C')"><span class="opt-label">A</span>Load → Extract → Transform</button>
-        <button class="option-btn" onclick="answer(this,'B','C')"><span class="opt-label">B</span>Transform → Extract → Load</button>
-        <button class="option-btn" onclick="answer(this,'C','C')"><span class="opt-label">C</span>Extract → Transform → Load</button>
-        <button class="option-btn" onclick="answer(this,'D','C')"><span class="opt-label">D</span>Extract → Load → Transform</button>
+        <button class="option-btn" onclick="answer(this,'A','A')"><span class="opt-label">A</span>The data validating step shares some similarities with the data cleaning step.</button>
+        <button class="option-btn" onclick="answer(this,'B','A')"><span class="opt-label">B</span>A data analyst must perform all validating tasks.</button>
+        <button class="option-btn" onclick="answer(this,'C','A')"><span class="opt-label">C</span>A data engineer must perform all validating tasks.</button>
+        <button class="option-btn" onclick="answer(this,'D','A')"><span class="opt-label">D</span>Validating is an entirely manual process.</button>
       </div>
       <div class="explanation correct-exp">
-        ✅ <strong>ETL = Extract → Transform → Load.</strong> Data is first collected (Extract), then cleaned and converted to the required format (Transform), and finally stored in the warehouse (Load). In ELT the order is different — Extract → Load → Transform.
+        ✅ Both data cleaning and data validating involve checking data quality and correctness — they <strong>share similarities</strong> but occur at different stages. Validating confirms that business rules are met after cleaning; it can be automated and is not limited to any single role.
       </div>
     </div>
 
-    <!-- Q3 -->
+    <!-- Q3 — correct: A -->
     <div class="quiz-question">
       <div class="quiz-number">Q 03</div>
-      <div class="quiz-q-text">What is the key advantage of ELT over ETL in modern cloud systems?</div>
+      <div class="quiz-q-text">Which task is part of the data publishing step of the data wrangling process?</div>
       <div class="options">
-        <button class="option-btn" onclick="answer(this,'A','C')"><span class="opt-label">A</span>ELT stores only clean data, reducing storage costs</button>
-        <button class="option-btn" onclick="answer(this,'B','C')"><span class="opt-label">B</span>ELT is required by traditional on-premise data warehouses</button>
-        <button class="option-btn" onclick="answer(this,'C','C')"><span class="opt-label">C</span>ELT allows raw data to be loaded quickly and transformed later using cloud computing power, with the flexibility to reprocess when business rules change</button>
-        <button class="option-btn" onclick="answer(this,'D','C')"><span class="opt-label">D</span>ELT automatically encrypts all data during the loading phase</button>
+        <button class="option-btn" onclick="answer(this,'A','A')"><span class="opt-label">A</span>Apply appropriate access controls.</button>
+        <button class="option-btn" onclick="answer(this,'B','A')"><span class="opt-label">B</span>Review the dataset before writing it to pipeline storage.</button>
+        <button class="option-btn" onclick="answer(this,'C','A')"><span class="opt-label">C</span>Fix outliers in the data before it is published.</button>
+        <button class="option-btn" onclick="answer(this,'D','A')"><span class="opt-label">D</span>Decide how to map source fields to those in the data warehouse.</button>
       </div>
       <div class="explanation correct-exp">
-        ✅ ELT's key advantages are speed (raw data loads immediately without waiting for transformation), flexibility (transformation logic can be updated and re-run without re-ingesting data), and the ability to leverage cloud warehouse computing power (Redshift, BigQuery) for massive transformation jobs.
+        ✅ <strong>Data publishing</strong> is the final step where prepared data is made available to its consumers. Applying access controls ensures only authorised users can query the data. Fixing outliers belongs to cleaning; field mapping belongs to structuring.
       </div>
     </div>
 
-    <!-- Q4 -->
+    <!-- Q4 — correct: A -->
     <div class="quiz-question">
       <div class="quiz-number">Q 04</div>
-      <div class="quiz-q-text">What is data wrangling?</div>
+      <div class="quiz-q-text">A data engineer is designing a pipeline to ingest semistructured data from customer service systems. Which approach should they take?</div>
       <div class="options">
-        <button class="option-btn" onclick="answer(this,'A','B')"><span class="opt-label">A</span>The process of ingesting data from IoT sensors</button>
-        <button class="option-btn" onclick="answer(this,'B','B')"><span class="opt-label">B</span>The process of cleaning, transforming, and organising raw data into a usable format</button>
-        <button class="option-btn" onclick="answer(this,'C','B')"><span class="opt-label">C</span>The process of building machine learning models from raw data</button>
-        <button class="option-btn" onclick="answer(this,'D','B')"><span class="opt-label">D</span>The process of scaling infrastructure to handle more data volume</button>
+        <button class="option-btn" onclick="answer(this,'A','A')"><span class="opt-label">A</span>Work with business users to understand the primary use case and build a process that suits the use case and evolving needs.</button>
+        <button class="option-btn" onclick="answer(this,'B','A')"><span class="opt-label">B</span>Ask business users which method they prefer because it cannot easily be changed later.</button>
+        <button class="option-btn" onclick="answer(this,'C','A')"><span class="opt-label">C</span>Build an ETL process to transform data for fast SQL queries in a data warehouse.</button>
+        <button class="option-btn" onclick="answer(this,'D','A')"><span class="opt-label">D</span>Build an ELT process that keeps the data raw for all use cases.</button>
       </div>
       <div class="explanation correct-exp">
-        ✅ <strong>Data wrangling</strong> (also called data munging or data preparation) covers all the steps that convert messy raw data into clean, structured, analysis-ready datasets: discovery, structuring, cleaning, enriching, validating, and publishing.
+        ✅ Data pipelines should be <strong>designed based on business requirements</strong> and built with flexibility for evolving needs. No single pattern (ETL or ELT) is universally correct — the right choice depends on the use case identified by working with business stakeholders first.
       </div>
     </div>
 
-    <!-- Q5 -->
+    <!-- Q5 — correct: A -->
     <div class="quiz-question">
       <div class="quiz-number">Q 05</div>
-      <div class="quiz-q-text">What is the correct order of steps in the data wrangling pipeline?</div>
-      <div class="options">
-        <button class="option-btn" onclick="answer(this,'A','B')"><span class="opt-label">A</span>Cleaning → Discovery → Structuring → Enriching → Validating → Publishing</button>
-        <button class="option-btn" onclick="answer(this,'B','B')"><span class="opt-label">B</span>Discovery → Structuring → Cleaning → Enriching → Validating → Publishing</button>
-        <button class="option-btn" onclick="answer(this,'C','B')"><span class="opt-label">C</span>Structuring → Cleaning → Discovery → Publishing → Validating → Enriching</button>
-        <button class="option-btn" onclick="answer(this,'D','B')"><span class="opt-label">D</span>Validating → Cleaning → Structuring → Discovery → Enriching → Publishing</button>
-      </div>
-      <div class="explanation correct-exp">
-        ✅ The correct order is: <strong>Discovery</strong> (understand what data exists) → <strong>Structuring</strong> (organise into columns/rows) → <strong>Cleaning</strong> (fix errors) → <strong>Enriching</strong> (add more context) → <strong>Validating</strong> (confirm rules are met) → <strong>Publishing</strong> (make available to users).
-      </div>
-    </div>
-
-    <!-- Q6 -->
-    <div class="quiz-question">
-      <div class="quiz-number">Q 06</div>
       <div class="quiz-q-text">A data engineer runs <code>SELECT COUNT(*) FROM orders WHERE customer_id IS NULL</code>. Which data wrangling step is this part of?</div>
       <div class="options">
         <button class="option-btn" onclick="answer(this,'A','A')"><span class="opt-label">A</span>Data Discovery</button>
@@ -1192,37 +1177,52 @@ SUP_ID,NAME,COUNTRY,CONTACT
       </div>
     </div>
 
-    <!-- Q7 -->
+    <!-- Q6 — correct: B -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 06</div>
+      <div class="quiz-q-text">What is data ingestion?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','B')"><span class="opt-label">A</span>The process of creating dashboards and reports from clean data</button>
+        <button class="option-btn" onclick="answer(this,'B','B')"><span class="opt-label">B</span>The process of collecting data from different sources and bringing it into a storage or processing system</button>
+        <button class="option-btn" onclick="answer(this,'C','B')"><span class="opt-label">C</span>The process of encrypting data before it is sent to analysts</button>
+        <button class="option-btn" onclick="answer(this,'D','B')"><span class="opt-label">D</span>The process of deleting outdated records from a data warehouse</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>Data ingestion</strong> is the entry point of every pipeline — collecting data from applications, databases, IoT devices, APIs, and files, and bringing it into a central storage system (data lake or warehouse) for downstream processing and analysis.
+      </div>
+    </div>
+
+    <!-- Q7 — correct: B -->
     <div class="quiz-question">
       <div class="quiz-number">Q 07</div>
-      <div class="quiz-q-text">A raw CSV file arrives with column names "SUP_ID", "NAME", "COUNTRY". An engineer renames them to "Supplier_ID", "Supplier_Name", "Country" and assigns correct data types. Which wrangling step is this?</div>
+      <div class="quiz-q-text">What is the correct order of steps in the data wrangling pipeline?</div>
       <div class="options">
-        <button class="option-btn" onclick="answer(this,'A','C')"><span class="opt-label">A</span>Data Discovery</button>
-        <button class="option-btn" onclick="answer(this,'B','C')"><span class="opt-label">B</span>Data Cleaning</button>
-        <button class="option-btn" onclick="answer(this,'C','C')"><span class="opt-label">C</span>Data Structuring</button>
-        <button class="option-btn" onclick="answer(this,'D','C')"><span class="opt-label">D</span>Data Validating</button>
+        <button class="option-btn" onclick="answer(this,'A','B')"><span class="opt-label">A</span>Cleaning → Discovery → Structuring → Enriching → Validating → Publishing</button>
+        <button class="option-btn" onclick="answer(this,'B','B')"><span class="opt-label">B</span>Discovery → Structuring → Cleaning → Enriching → Validating → Publishing</button>
+        <button class="option-btn" onclick="answer(this,'C','B')"><span class="opt-label">C</span>Structuring → Cleaning → Discovery → Publishing → Validating → Enriching</button>
+        <button class="option-btn" onclick="answer(this,'D','B')"><span class="opt-label">D</span>Validating → Cleaning → Structuring → Discovery → Enriching → Publishing</button>
       </div>
       <div class="explanation correct-exp">
-        ✅ This is <strong>Data Structuring</strong> — organising raw fields into a standardised schema with correct column names and data types. Cleaning fixes values that are wrong; structuring establishes the shape and organisation of the data.
+        ✅ The correct order is: <strong>Discovery</strong> (understand what data exists) → <strong>Structuring</strong> (organise into columns/rows) → <strong>Cleaning</strong> (fix errors) → <strong>Enriching</strong> (add more context) → <strong>Validating</strong> (confirm rules are met) → <strong>Publishing</strong> (make available to users).
       </div>
     </div>
 
-    <!-- Q8 -->
+    <!-- Q8 — correct: B -->
     <div class="quiz-question">
       <div class="quiz-number">Q 08</div>
-      <div class="quiz-q-text">An engineer joins an orders table with a customers table to add customer name and city to each order record. Which wrangling step is this?</div>
+      <div class="quiz-q-text">What is data wrangling?</div>
       <div class="options">
-        <button class="option-btn" onclick="answer(this,'A','C')"><span class="opt-label">A</span>Data Structuring</button>
-        <button class="option-btn" onclick="answer(this,'B','C')"><span class="opt-label">B</span>Data Cleaning</button>
-        <button class="option-btn" onclick="answer(this,'C','C')"><span class="opt-label">C</span>Data Enriching</button>
-        <button class="option-btn" onclick="answer(this,'D','C')"><span class="opt-label">D</span>Data Publishing</button>
+        <button class="option-btn" onclick="answer(this,'A','B')"><span class="opt-label">A</span>The process of ingesting data from IoT sensors</button>
+        <button class="option-btn" onclick="answer(this,'B','B')"><span class="opt-label">B</span>The process of cleaning, transforming, and organising raw data into a usable format</button>
+        <button class="option-btn" onclick="answer(this,'C','B')"><span class="opt-label">C</span>The process of building machine learning models from raw data</button>
+        <button class="option-btn" onclick="answer(this,'D','B')"><span class="opt-label">D</span>The process of scaling infrastructure to handle more data volume</button>
       </div>
       <div class="explanation correct-exp">
-        ✅ This is <strong>Data Enriching</strong> — combining datasets to add new attributes that make the data more valuable. Joining orders with customers adds city information, enabling "sales by city" analysis that was not possible with the orders table alone.
+        ✅ <strong>Data wrangling</strong> (also called data munging or data preparation) covers all the steps that convert messy raw data into clean, structured, analysis-ready datasets: discovery, structuring, cleaning, enriching, validating, and publishing.
       </div>
     </div>
 
-    <!-- Q9 -->
+    <!-- Q9 — correct: B -->
     <div class="quiz-question">
       <div class="quiz-number">Q 09</div>
       <div class="quiz-q-text">A validation rule states "price must be greater than 0". An order with price = -50 is found. What should happen?</div>
@@ -1237,9 +1237,99 @@ SUP_ID,NAME,COUNTRY,CONTACT
       </div>
     </div>
 
-    <!-- Q10 -->
+    <!-- Q10 — correct: B -->
     <div class="quiz-question">
       <div class="quiz-number">Q 10</div>
+      <div class="quiz-q-text">A data engineer is building a pipeline to ingest unstructured and semi-structured data for exploration by a data scientist. Which ingestion approach is best?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','B')"><span class="opt-label">A</span>Use an ETL approach and load highly transformed data into Amazon Redshift.</button>
+        <button class="option-btn" onclick="answer(this,'B','B')"><span class="opt-label">B</span>Use an ELT approach and load nearly raw data into an S3 data lake.</button>
+        <button class="option-btn" onclick="answer(this,'C','B')"><span class="opt-label">C</span>Use an ELT approach and load minimally transformed data into Amazon Redshift.</button>
+        <button class="option-btn" onclick="answer(this,'D','B')"><span class="opt-label">D</span>Use an ETL approach and load highly transformed data into an S3 data lake.</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ A <strong>data lake (Amazon S3) with ELT</strong> is the right choice for unstructured and semi-structured data. Raw or near-raw data is loaded immediately, allowing data scientists to explore and transform it later using their own tools and logic. A data warehouse (Redshift) with ETL requires a rigid schema upfront.
+      </div>
+    </div>
+
+    <!-- Q11 — correct: C -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 11</div>
+      <div class="quiz-q-text">In the ETL process, in which order do the steps occur?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','C')"><span class="opt-label">A</span>Load → Extract → Transform</button>
+        <button class="option-btn" onclick="answer(this,'B','C')"><span class="opt-label">B</span>Transform → Extract → Load</button>
+        <button class="option-btn" onclick="answer(this,'C','C')"><span class="opt-label">C</span>Extract → Transform → Load</button>
+        <button class="option-btn" onclick="answer(this,'D','C')"><span class="opt-label">D</span>Extract → Load → Transform</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>ETL = Extract → Transform → Load.</strong> Data is first collected (Extract), then cleaned and converted to the required format (Transform), and finally stored in the warehouse (Load). In ELT the order differs — Extract → Load → Transform.
+      </div>
+    </div>
+
+    <!-- Q12 — correct: C -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 12</div>
+      <div class="quiz-q-text">What is the key advantage of ELT over ETL in modern cloud systems?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','C')"><span class="opt-label">A</span>ELT stores only clean data, reducing storage costs</button>
+        <button class="option-btn" onclick="answer(this,'B','C')"><span class="opt-label">B</span>ELT is required by traditional on-premise data warehouses</button>
+        <button class="option-btn" onclick="answer(this,'C','C')"><span class="opt-label">C</span>ELT allows raw data to be loaded quickly and transformed later using cloud computing power, with the flexibility to reprocess when business rules change</button>
+        <button class="option-btn" onclick="answer(this,'D','C')"><span class="opt-label">D</span>ELT automatically encrypts all data during the loading phase</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ ELT's key advantages are speed (raw data loads immediately without waiting for transformation), flexibility (transformation logic can be updated and re-run without re-ingesting data), and the ability to leverage cloud warehouse computing power (Redshift, BigQuery) for massive transformation jobs.
+      </div>
+    </div>
+
+    <!-- Q13 — correct: C -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 13</div>
+      <div class="quiz-q-text">A raw CSV file arrives with column names "SUP_ID", "NAME", "COUNTRY". An engineer renames them to "Supplier_ID", "Supplier_Name", "Country" and assigns correct data types. Which wrangling step is this?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','C')"><span class="opt-label">A</span>Data Discovery</button>
+        <button class="option-btn" onclick="answer(this,'B','C')"><span class="opt-label">B</span>Data Cleaning</button>
+        <button class="option-btn" onclick="answer(this,'C','C')"><span class="opt-label">C</span>Data Structuring</button>
+        <button class="option-btn" onclick="answer(this,'D','C')"><span class="opt-label">D</span>Data Validating</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ This is <strong>Data Structuring</strong> — organising raw fields into a standardised schema with correct column names and data types. Cleaning fixes values that are wrong; structuring establishes the shape and organisation of the data.
+      </div>
+    </div>
+
+    <!-- Q14 — correct: C -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 14</div>
+      <div class="quiz-q-text">An engineer joins an orders table with a customers table to add customer name and city to each order record. Which wrangling step is this?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','C')"><span class="opt-label">A</span>Data Structuring</button>
+        <button class="option-btn" onclick="answer(this,'B','C')"><span class="opt-label">B</span>Data Cleaning</button>
+        <button class="option-btn" onclick="answer(this,'C','C')"><span class="opt-label">C</span>Data Enriching</button>
+        <button class="option-btn" onclick="answer(this,'D','C')"><span class="opt-label">D</span>Data Publishing</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ This is <strong>Data Enriching</strong> — combining datasets to add new attributes that make the data more valuable. Joining orders with customers adds city information, enabling "sales by city" analysis that was not possible with the orders table alone.
+      </div>
+    </div>
+
+    <!-- Q15 — correct: C -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 15</div>
+      <div class="quiz-q-text">Which task might be performed as part of data structuring within the data wrangling process?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','C')"><span class="opt-label">A</span>Fill in missing data.</button>
+        <button class="option-btn" onclick="answer(this,'B','C')"><span class="opt-label">B</span>Merge multiple data sources into a single dataset.</button>
+        <button class="option-btn" onclick="answer(this,'C','C')"><span class="opt-label">C</span>Map data from a source file into a format that can be used with existing sources and in the pipeline.</button>
+        <button class="option-btn" onclick="answer(this,'D','C')"><span class="opt-label">D</span>Determine which visualisation tools should be used.</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>Data structuring</strong> involves organising and formatting data so it fits the required structure for processing and analysis. Filling in missing data = cleaning. Merging sources = enriching. Choosing visualisation tools = a separate business decision.
+      </div>
+    </div>
+
+    <!-- Q16 — correct: D -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 16</div>
       <div class="quiz-q-text">A food delivery company publishes its wrangled dataset to Amazon Redshift and connects it to a QuickSight dashboard. Which wrangling step has just been completed?</div>
       <div class="options">
         <button class="option-btn" onclick="answer(this,'A','D')"><span class="opt-label">A</span>Data Enriching</button>
@@ -1252,10 +1342,70 @@ SUP_ID,NAME,COUNTRY,CONTACT
       </div>
     </div>
 
+    <!-- Q17 — correct: D -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 17</div>
+      <div class="quiz-q-text">A business analyst wants to add a new data source for analysing customer interactions. Which data discovery task should be performed first?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','D')"><span class="opt-label">A</span>Determine whether the team has the correct tools to analyse the data.</button>
+        <button class="option-btn" onclick="answer(this,'B','D')"><span class="opt-label">B</span>Query the source to see whether it provides data related to customer interactions.</button>
+        <button class="option-btn" onclick="answer(this,'C','D')"><span class="opt-label">C</span>Determine how to organise the data in the pipeline storage layer.</button>
+        <button class="option-btn" onclick="answer(this,'D','D')"><span class="opt-label">D</span>Evaluate the value of the data compared to the cost of extracting it.</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ The very first discovery task is to <strong>evaluate whether the data is worth collecting</strong>. If the cost of extraction, cleaning, and maintenance exceeds the business value, the pipeline should not be built at all. Tool selection and storage design come later.
+      </div>
+    </div>
+
+    <!-- Q18 — correct: D -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 18</div>
+      <div class="quiz-q-text">Which option describes a task that a data engineer would likely perform during data cleaning?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','D')"><span class="opt-label">A</span>Research values that appear to be outliers and replace them with values within the normal range.</button>
+        <button class="option-btn" onclick="answer(this,'B','D')"><span class="opt-label">B</span>Modify the format of a date field to match the format of a target data store.</button>
+        <button class="option-btn" onclick="answer(this,'C','D')"><span class="opt-label">C</span>Update column headings to match the headings in the target data store.</button>
+        <button class="option-btn" onclick="answer(this,'D','D')"><span class="opt-label">D</span>Check that postal codes fall within the valid range for the state in the record.</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>Data cleaning</strong> involves validating and correcting data quality issues such as verifying postal codes, fixing formats, removing duplicates, and handling missing values. Reformatting dates and renaming columns belong to structuring; blindly replacing outliers without investigation is risky practice.
+      </div>
+    </div>
+
+    <!-- Q19 — correct: D -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 19</div>
+      <div class="quiz-q-text">Which statement describes a key task in the data enriching step?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','D')"><span class="opt-label">A</span>Ingest data sources into the target data store in the pipeline.</button>
+        <button class="option-btn" onclick="answer(this,'B','D')"><span class="opt-label">B</span>Give business users access to the data to build reports.</button>
+        <button class="option-btn" onclick="answer(this,'C','D')"><span class="opt-label">C</span>Run scripts to perform row counts for each data source.</button>
+        <button class="option-btn" onclick="answer(this,'D','D')"><span class="opt-label">D</span>Combine data from different sources into a single dataset.</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>Data enrichment</strong> means enhancing data by combining it with additional data sources to provide more context and value. Giving users access = publishing. Row counts = discovery. Ingesting data = ingestion, not wrangling.
+      </div>
+    </div>
+
+    <!-- Q20 — correct: D -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 20</div>
+      <div class="quiz-q-text">An analyst wants to ingest customer feedback data (emails, text notes, screenshots) for ML. The data is 2 years old and many records have missing customer IDs. What should the data engineer do first?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','D')"><span class="opt-label">A</span>Create scripts to structure and clean the data.</button>
+        <button class="option-btn" onclick="answer(this,'B','D')"><span class="opt-label">B</span>Create a folder structure in the data lake to separate data by type.</button>
+        <button class="option-btn" onclick="answer(this,'C','D')"><span class="opt-label">C</span>Buy an extraction tool to extract email content into structured form.</button>
+        <button class="option-btn" onclick="answer(this,'D','D')"><span class="opt-label">D</span>Evaluate whether the potential value of the data is worth the effort to extract and prepare it.</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ Before building any pipeline, the engineer should <strong>assess whether the data is valuable and usable</strong> compared to the effort required to prepare it. Two-year-old data with many missing IDs may not justify the cost. Discovery and value assessment always precede tool selection or infrastructure work.
+      </div>
+    </div>
+
     <!-- SCORE BAR -->
     <div class="score-bar" id="scoreBar" style="display:none">
       <div class="score-title">Your Score</div>
-      <div class="score-count" id="scoreCount">0 / 10</div>
+      <div class="score-count" id="scoreCount">0 / 20</div>
       <div class="score-sub" id="scoreMsg">Keep practising!</div>
     </div>
 
