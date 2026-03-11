@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Module 8 – Ingesting Data by Batch or by Stream</title>
+  <link rel="stylesheet" href="../assets/css/template.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&family=IBM+Plex+Mono:wght@400;500&family=Nunito:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-eyebrow">Module 08 · AWS Academy Data Engineering</div>
+  <h1>Ingesting Data by<br><span>Batch or by Stream</span></h1>
+  <p>Understand when to use batch vs streaming ingestion, how AWS Glue powers batch ETL pipelines, how Amazon Kinesis handles real-time streams, and how IoT devices connect to AWS analytics.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><strong>2</strong><span>Ingestion Methods</span></div>
+    <div class="hero-stat"><strong>4</strong><span>Kinesis Services</span></div>
+    <div class="hero-stat"><strong>IoT</strong><span>MQTT &amp; Pub/Sub</span></div>
+  </div>
+</div>
+
+<!-- ── STICKY NAV ── -->
+<nav class="anchor-nav">
+  <span>Jump to →</span>
+  <a href="#batch-vs-stream">Batch vs Stream</a>
+  <a href="#batch-tools">Batch Tools</a>
+  <a href="#glue">AWS Glue</a>
+  <a href="#kinesis">Kinesis Streaming</a>
+  <a href="#iot">IoT Ingestion</a>
+  <a href="#quiz">Quiz</a>
+</nav>
+
+<div class="container">
+
+  <!-- ────────────────────────────────────────
+       SECTION 1 — BATCH VS STREAM
+  ──────────────────────────────────────── -->
+  <section id="batch-vs-stream">
+    <div class="section-label">Section 01</div>
+    <h2>Batch vs Stream Ingestion</h2>
+
+    <p>One of the most fundamental architecture decisions in data engineering is choosing how data enters the pipeline. The two primary methods are <strong>batch ingestion</strong> and <strong>stream ingestion</strong>, and the right choice depends on how quickly the business needs to act on data.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Feature</th>
+          <th>Batch Processing</th>
+          <th>Stream Processing</th>
+        </tr>
+        <tr>
+          <td>When data is processed</td>
+          <td>Scheduled intervals — hourly, daily, weekly</td>
+          <td>Continuously — as each event arrives</td>
+        </tr>
+        <tr>
+          <td>Data volume per job</td>
+          <td>Large chunks — millions of records at once</td>
+          <td>Small continuous events — one record at a time</td>
+        </tr>
+        <tr>
+          <td>Latency</td>
+          <td>High — results available after batch completes</td>
+          <td>Very low — results available within milliseconds</td>
+        </tr>
+        <tr>
+          <td>Complexity</td>
+          <td>Simpler to build and maintain</td>
+          <td>More complex — requires always-on infrastructure</td>
+        </tr>
+        <tr>
+          <td>Cost</td>
+          <td>Lower — compute runs only when scheduled</td>
+          <td>Higher — infrastructure runs 24/7</td>
+        </tr>
+        <tr>
+          <td>Example use case</td>
+          <td>Daily revenue report, monthly invoice generation</td>
+          <td>Credit card fraud detection, live GPS tracking</td>
+        </tr>
+        <tr>
+          <td>AWS tools</td>
+          <td>AWS Glue, EMR, DMS, AppFlow</td>
+          <td>Kinesis, Kafka, Lambda, Apache Flink</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">🛒</span>Batch Example — Daily Retail Revenue Report</h3>
+    <div class="pipeline">
+      <div class="pipeline-step">Sales Data<br><small>Collected all day</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Nightly Batch Job<br><small>Midnight trigger</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Transform &amp; Clean<br><small>AWS Glue</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Load to Redshift</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Morning Dashboard<br><small>QuickSight</small></div>
+    </div>
+
+    <h3><span class="icon">🚗</span>Streaming Example — Uber Live Driver Tracking</h3>
+    <div class="pipeline">
+      <div class="pipeline-step">Driver GPS<br><small>Every second</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Kinesis Streams</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Lambda<br><small>Real-time process</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Map Updated<br><small>Live</small></div>
+    </div>
+
+    <h3><span class="icon">🎯</span>Choosing the Right Method</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Condition</th>
+          <th>Best Method</th>
+          <th>Why</th>
+        </tr>
+        <tr>
+          <td>Data comes slowly and in large batches</td>
+          <td><span class="badge badge-blue">Batch</span></td>
+          <td>No need to process until a full dataset is ready — cheaper to run once</td>
+        </tr>
+        <tr>
+          <td>Data arrives continuously from many sources</td>
+          <td><span class="badge badge-orange">Streaming</span></td>
+          <td>Events must be captured immediately — batch would lose the real-time context</td>
+        </tr>
+        <tr>
+          <td>Business needs instant decisions (fraud, alerts)</td>
+          <td><span class="badge badge-orange">Streaming</span></td>
+          <td>Waiting hours for a batch result would make the decision too late</td>
+        </tr>
+        <tr>
+          <td>Historical analysis and reports are the goal</td>
+          <td><span class="badge badge-blue">Batch</span></td>
+          <td>All the data must be present to run historical aggregations accurately</td>
+        </tr>
+        <tr>
+          <td>Both monthly reports AND real-time dashboard needed</td>
+          <td><span class="badge badge-yellow">Both</span></td>
+          <td>Use Kinesis Firehose for S3 batch + Apache Flink for real-time dashboard</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">📦</span>Data Volume and Velocity as Primary Drivers</h3>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">📦</div>
+        <div class="card-title">Volume → Batch</div>
+        <div class="card-desc">Large datasets — millions of sales records, 10 TB log files — are efficiently processed together in batch. Processing them one by one in real time would be unnecessary and expensive.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚡</div>
+        <div class="card-title">Velocity → Streaming</div>
+        <div class="card-desc">High-velocity data — thousands of events per second from website clicks or IoT sensors — must be processed continuously. Accumulating it for a daily batch would waste the value of real-time insight.</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 2 — BATCH INGESTION TOOLS
+  ──────────────────────────────────────── -->
+  <section id="batch-tools">
+    <div class="section-label">Section 02</div>
+    <h2>AWS Purpose-Built Batch Ingestion Tools</h2>
+
+    <p>AWS provides specialised services for ingesting data from different source types. Choosing the right tool saves weeks of custom development — each service is designed for a specific data source category.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>AWS Service</th>
+          <th>Source Type</th>
+          <th>Example Use Case</th>
+        </tr>
+        <tr>
+          <td><span class="badge badge-orange">Amazon AppFlow</span></td>
+          <td>SaaS applications</td>
+          <td>Salesforce CRM → S3 → Redshift for customer analytics</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-yellow">AWS DMS</span></td>
+          <td>Relational databases (on-premise or cloud)</td>
+          <td>MySQL on-premise → Amazon Aurora with minimal downtime, continuous replication</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-blue">AWS DataSync</span></td>
+          <td>On-premise file systems and NAS storage</td>
+          <td>100 TB of files on local NAS → Amazon S3 data lake — faster than standard file transfer</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-green">AWS Data Exchange</span></td>
+          <td>External third-party datasets</td>
+          <td>Subscribe to live stock market, weather, or healthcare data — delivered directly to S3</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">💼</span>Amazon AppFlow</h3>
+    <p>AppFlow transfers data from SaaS platforms to AWS with no custom code required. It supports Salesforce, Slack, Google Analytics, Zendesk, and many others with pre-built connectors.</p>
+
+    <div class="pipeline">
+      <div class="pipeline-step">Salesforce CRM<br><small>Customer data</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Amazon AppFlow<br><small>Connector</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Amazon S3<br><small>Data Lake</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Amazon Redshift<br><small>Warehouse</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Analytics<br><small>Dashboard</small></div>
+    </div>
+
+    <h3><span class="icon">🗄️</span>AWS Database Migration Service (DMS)</h3>
+    <p>DMS migrates or continuously replicates databases into AWS. It supports both <strong>homogeneous</strong> (MySQL → MySQL) and <strong>heterogeneous</strong> (Oracle → Aurora) migrations.</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🔄</div>
+        <div class="card-title">One-Time Migration</div>
+        <div class="card-desc">Move an entire on-premise database to AWS in a single migration event. The source remains available during migration — minimal downtime.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">♾️</div>
+        <div class="card-title">Continuous Replication (CDC)</div>
+        <div class="card-desc">Change Data Capture — DMS continuously replicates ongoing changes from the source database to the target. Source and target stay in sync in near real time.</div>
+      </div>
+    </div>
+
+    <h3><span class="icon">📁</span>AWS DataSync and Data Exchange</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th></th>
+          <th>AWS DataSync</th>
+          <th>AWS Data Exchange</th>
+        </tr>
+        <tr>
+          <td><strong>What it does</strong></td>
+          <td>Accelerated file transfer from on-premise to S3 — up to 10x faster than standard tools</td>
+          <td>Marketplace for subscribing to third-party datasets — financial, weather, healthcare</td>
+        </tr>
+        <tr>
+          <td><strong>Best for</strong></td>
+          <td>Migrating large file stores — NAS, HDFS, or file servers — to the cloud</td>
+          <td>Enriching internal data with external commercial datasets without building collection pipelines</td>
+        </tr>
+        <tr>
+          <td><strong>Example</strong></td>
+          <td>RNA sequencing files from lab file store → S3 data lake for ML project</td>
+          <td>Financial firm subscribes to stock market data → S3 → analytics platform</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">🏗️</span>Complete Batch Pipeline Architecture</h3>
+
+    <div class="pipeline">
+      <div class="pipeline-step">Data Sources<br><small>DB / Files / SaaS</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">AppFlow / DMS<br><small>DataSync</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">S3 Data Lake<br><small>Landing Zone</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">AWS Glue<br><small>ETL Processing</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Redshift / Athena<br><small>Analytics</small></div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 3 — AWS GLUE
+  ──────────────────────────────────────── -->
+  <section id="glue">
+    <div class="section-label">Section 03</div>
+    <h2>AWS Glue for Batch ETL</h2>
+
+    <p><strong>AWS Glue</strong> is a fully managed, serverless ETL service that automates the most time-consuming parts of building batch data pipelines — schema discovery, job authoring, scheduling, and monitoring — so engineers can focus on data logic instead of infrastructure.</p>
+
+    <div class="info-box">
+      💡 <strong>Before AWS Glue:</strong> engineers had to manually provision Spark clusters, manage server configurations, monitor cluster health, and write all transformation code from scratch. Glue removes all of that — you just define what you want to do with the data.
+    </div>
+
+    <h3><span class="icon">🧩</span>Core AWS Glue Components</h3>
+
+    <div class="role-grid">
+      <div class="role-card" style="--card-color: #ff9900">
+        <div class="role-icon">🕷️</div>
+        <div class="role-title">Glue Crawlers</div>
+        <div class="role-desc">Automatically scan S3 buckets or databases, detect schemas, and register datasets in the Glue Data Catalog. Run once or on a schedule. No schema definition code required.</div>
+        <div class="role-skills">
+          <span class="skill-tag">Schema discovery</span>
+          <span class="skill-tag">Auto catalog</span>
+          <span class="skill-tag">Zero code</span>
+        </div>
+      </div>
+      <div class="role-card" style="--card-color: #60a5fa">
+        <div class="role-icon">📖</div>
+        <div class="role-title">Glue Data Catalog</div>
+        <div class="role-desc">Central metadata repository — stores table names, column names, data types, and S3 locations. Shared across Athena, Redshift Spectrum, and EMR so all services find data consistently.</div>
+        <div class="role-skills">
+          <span class="skill-tag">Metadata store</span>
+          <span class="skill-tag">Table registry</span>
+          <span class="skill-tag">Cross-service</span>
+        </div>
+      </div>
+      <div class="role-card" style="--card-color: #22c55e">
+        <div class="role-icon">⚙️</div>
+        <div class="role-title">Glue ETL Jobs</div>
+        <div class="role-desc">PySpark or Python scripts that clean, transform, and load data. Can be created visually in Glue Studio (drag-and-drop) or written as code. Serverless — no cluster to manage.</div>
+        <div class="role-skills">
+          <span class="skill-tag">PySpark</span>
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">Serverless</span>
+        </div>
+      </div>
+      <div class="role-card" style="--card-color: #facc15">
+        <div class="role-icon">🎨</div>
+        <div class="role-title">Glue Studio</div>
+        <div class="role-desc">Visual drag-and-drop interface for building ETL jobs. New engineers can create full pipelines without writing code — ideal for getting started quickly.</div>
+        <div class="role-skills">
+          <span class="skill-tag">Visual UI</span>
+          <span class="skill-tag">No-code option</span>
+          <span class="skill-tag">Quick start</span>
+        </div>
+      </div>
+      <div class="role-card" style="--card-color: #a78bfa">
+        <div class="role-icon">🔄</div>
+        <div class="role-title">Glue Workflows</div>
+        <div class="role-desc">Orchestrate multiple ETL jobs into automated pipelines. Define dependencies: Job A must complete before Job B starts. Run entire pipelines on a schedule.</div>
+        <div class="role-skills">
+          <span class="skill-tag">Orchestration</span>
+          <span class="skill-tag">Scheduling</span>
+          <span class="skill-tag">Dependencies</span>
+        </div>
+      </div>
+      <div class="role-card" style="--card-color: #34d399">
+        <div class="role-icon">🔖</div>
+        <div class="role-title">Job Bookmarks</div>
+        <div class="role-desc">Track which data has already been processed. On the next run, the job only processes new records — not everything from the beginning. Prevents duplicate processing.</div>
+        <div class="role-skills">
+          <span class="skill-tag">Incremental loads</span>
+          <span class="skill-tag">State tracking</span>
+          <span class="skill-tag">Efficiency</span>
+        </div>
+      </div>
+    </div>
+
+    <h3><span class="icon">🔍</span>Schema Inference — How Crawlers Work</h3>
+    <p>When a Glue Crawler scans a dataset, it automatically detects structure without any manual schema definition:</p>
+
+<pre><span class="cm"># Raw CSV file in S3 — s3://my-bucket/customers/data.csv</span>
+customer_id,name,age,city,email
+<span class="num">101</span>,Aman,<span class="num">25</span>,Surat,aman@email.com
+<span class="num">102</span>,Rahul,<span class="num">30</span>,Delhi,rahul@email.com</pre>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Column Detected</th>
+          <th>Inferred Data Type</th>
+          <th>Catalog Entry Created</th>
+        </tr>
+        <tr>
+          <td>customer_id</td>
+          <td>int</td>
+          <td>✅ Table: customers — Location: s3://my-bucket/customers/</td>
+        </tr>
+        <tr>
+          <td>name</td>
+          <td>string</td>
+          <td>✅ Schema visible in Athena, Redshift Spectrum, EMR</td>
+        </tr>
+        <tr>
+          <td>age</td>
+          <td>int</td>
+          <td>✅ No code needed — run SQL immediately after crawl</td>
+        </tr>
+        <tr>
+          <td>city</td>
+          <td>string</td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>email</td>
+          <td>string</td>
+          <td></td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">⚙️</span>Glue ETL Job Example</h3>
+
+<pre><span class="cm"># AWS Glue PySpark ETL job — nightly batch pipeline</span>
+<span class="kw">from</span> awsglue.context <span class="kw">import</span> GlueContext
+<span class="kw">from</span> pyspark.sql.functions <span class="kw">import</span> col, <span class="fn">initcap</span>, <span class="fn">trim</span>, <span class="fn">to_date</span>
+
+glueContext = <span class="fn">GlueContext</span>(SparkContext.<span class="fn">getOrCreate</span>())
+
+<span class="cm"># 1. EXTRACT — read from Glue Data Catalog (maps to S3)</span>
+datasource = glueContext.<span class="fn">create_dynamic_frame</span>.from_catalog(
+    database=<span class="str">"sales_db"</span>,
+    table_name=<span class="str">"raw_orders"</span>
+)
+
+df = datasource.<span class="fn">toDF</span>()
+
+<span class="cm"># 2. TRANSFORM — clean and standardise</span>
+cleaned = df \
+    .<span class="fn">filter</span>(col(<span class="str">"amount"</span>) > <span class="num">0</span>) \                          <span class="cm"># remove invalid amounts</span>
+    .<span class="fn">dropDuplicates</span>([<span class="str">"order_id"</span>]) \                    <span class="cm"># remove duplicates</span>
+    .<span class="fn">withColumn</span>(<span class="str">"customer_name"</span>, <span class="fn">initcap</span>(<span class="fn">trim</span>(col(<span class="str">"customer_name"</span>)))) \
+    .<span class="fn">withColumn</span>(<span class="str">"order_date"</span>, <span class="fn">to_date</span>(col(<span class="str">"order_date"</span>), <span class="str">"yyyy-MM-dd"</span>))
+
+<span class="cm"># 3. LOAD — write Parquet to S3 curated zone</span>
+cleaned.<span class="fn">write</span>.<span class="fn">mode</span>(<span class="str">"overwrite"</span>).<span class="fn">parquet</span>(<span class="str">"s3://data-lake/curated/orders/"</span>)</pre>
+
+    <h3><span class="icon">📈</span>Scaling and Optimising Glue Jobs</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Optimisation Approach</th>
+          <th>How It Helps</th>
+          <th>Example</th>
+        </tr>
+        <tr>
+          <td><span class="badge badge-orange">Horizontal Scaling</span><br>Add more workers</td>
+          <td>More parallel processing — dataset split across more nodes</td>
+          <td>1 worker processes 100 GB. 10 workers process the same 100 GB 10x faster.</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-yellow">Vertical Scaling</span><br>Larger worker type</td>
+          <td>More CPU and RAM per node — handles larger in-memory datasets</td>
+          <td>Standard → G.2X worker doubles memory; good for skewed data or wide rows.</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-blue">Parquet + Splittable Codec</span></td>
+          <td>Columnar format enables parallel reads; splittable codec lets multiple workers read one file</td>
+          <td>100 GB CSV → 20 GB Parquet (Snappy). Queries scan only required columns.</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-green">Avoid Too Many Small Files</span></td>
+          <td>Many tiny files create I/O overhead. Combine into medium-sized files (100 MB – 1 GB).</td>
+          <td>1 million 1 KB files → 100 files of ~10 MB each. Much faster to process.</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-purple">Avoid One Giant File</span></td>
+          <td>One huge file prevents parallel processing — all workers wait for one node</td>
+          <td>Split a 500 GB file into multiple Parquet partitions before processing.</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Compression Format</th>
+          <th>Speed</th>
+          <th>Compression Ratio</th>
+          <th>Splittable?</th>
+          <th>Best For</th>
+        </tr>
+        <tr>
+          <td><span class="badge badge-green">Snappy</span></td>
+          <td>Very fast</td>
+          <td>Medium</td>
+          <td>With Parquet/ORC</td>
+          <td>Analytics — balance of speed and compression</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-yellow">GZIP</span></td>
+          <td>Slow</td>
+          <td>High</td>
+          <td>No</td>
+          <td>Cold archive storage — maximum size reduction</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-orange">Parquet</span></td>
+          <td>Fast reads</td>
+          <td>High (columnar)</td>
+          <td>Yes</td>
+          <td>Analytics — only read columns you need</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-blue">ORC</span></td>
+          <td>Fast</td>
+          <td>High</td>
+          <td>Yes</td>
+          <td>Hive workloads on EMR</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">🔎</span>Monitoring and Troubleshooting Glue Jobs</h3>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">📊</div>
+        <div class="card-title">Amazon CloudWatch Logs</div>
+        <div class="card-desc">Every Glue job writes execution logs to CloudWatch. If a job fails, check the error log first — it shows the exact line and error message from the PySpark script.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📈</div>
+        <div class="card-title">Glue Job Run Insights</div>
+        <div class="card-desc">Visual execution history — success/failure status, duration, records processed, memory usage per run. Instantly see which jobs failed and when.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔔</div>
+        <div class="card-title">CloudWatch Alarms</div>
+        <div class="card-desc">Set alarms for job failures or duration exceeding thresholds. Trigger SNS notifications to alert the on-call engineer automatically when a pipeline breaks.</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 4 — KINESIS STREAMING
+  ──────────────────────────────────────── -->
+  <section id="kinesis">
+    <div class="section-label">Section 04</div>
+    <h2>Amazon Kinesis for Stream Processing</h2>
+
+    <p><strong>Amazon Kinesis</strong> is the AWS family of services for real-time streaming data ingestion and processing. When decisions must be made in seconds — fraud detection, live dashboards, recommendation engines — Kinesis provides the infrastructure to capture, process, and act on data continuously.</p>
+
+    <h3><span class="icon">💳</span>Real-Life Streaming Example — Fraud Detection</h3>
+
+    <div class="pipeline">
+      <div class="pipeline-step">Credit Card<br><small>Transaction</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Kinesis Streams<br><small>Capture event</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Flink / Lambda<br><small>Analyse instantly</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Fraud Check<br><small>Rule engine</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Block or Allow<br><small>Milliseconds</small></div>
+    </div>
+
+    <h3><span class="icon">🌊</span>Four Core Kinesis Services</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Service</th>
+          <th>Purpose</th>
+          <th>Key Characteristic</th>
+          <th>Example Use Case</th>
+        </tr>
+        <tr>
+          <td><span class="badge badge-orange">Kinesis Data Streams</span></td>
+          <td>Capture and store real-time streaming data</td>
+          <td>Multiple consumers can read the same stream independently; data retained up to 365 days</td>
+          <td>Social media activity tracking, clickstream capture</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-yellow">Kinesis Data Firehose</span></td>
+          <td>Automatically deliver streaming data to storage destinations</td>
+          <td>Fully managed — no consumer code needed; buffers and batches automatically</td>
+          <td>Web server logs → S3 + Redshift + OpenSearch simultaneously</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-blue">Managed Apache Flink</span></td>
+          <td>Real-time analytics on streams using SQL or Java</td>
+          <td>Stateful stream processing — windowed aggregations, pattern detection across events</td>
+          <td>Calculate average score per player in a 1-minute sliding window</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-green">Kinesis Video Streams</span></td>
+          <td>Capture, process, and store video from connected devices</td>
+          <td>Manages video codec and playback infrastructure automatically</td>
+          <td>Security camera feeds, smart doorbell video analysis</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">📦</span>Kinesis Data Streams — How Records Work</h3>
+    <p>Every record in a Kinesis Data Stream contains exactly three components:</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Component</th>
+          <th>Purpose</th>
+          <th>Example</th>
+        </tr>
+        <tr>
+          <td><span class="badge badge-orange">Partition Key</span></td>
+          <td>Determines which shard the record goes to. Records with the same partition key always go to the same shard — ensuring order per key.</td>
+          <td><code>"card_id": "4111-1111"</code> — all transactions for this card go to shard 3</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-yellow">Sequence Number</span></td>
+          <td>Unique identifier assigned by Kinesis when the record arrives. Used to track position within the stream.</td>
+          <td><code>"49590338271490256608559692540925702759324208523137515522"</code></td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-blue">Data Blob</span></td>
+          <td>The actual event payload — up to 1 MB of binary data per record.</td>
+          <td><code>{"card_id":"4111","amount":850,"location":"Mumbai","ts":"2026-03-12T10:05:00Z"}</code></td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">🌊</span>Firehose vs Data Streams</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th></th>
+          <th>Kinesis Data Streams</th>
+          <th>Kinesis Data Firehose</th>
+        </tr>
+        <tr>
+          <td><strong>Consumer code needed?</strong></td>
+          <td>Yes — you write consumer applications using KCL or Lambda</td>
+          <td>No — Firehose manages delivery automatically</td>
+        </tr>
+        <tr>
+          <td><strong>Multiple consumers?</strong></td>
+          <td>Yes — many consumers can read independently</td>
+          <td>No — single destination per delivery stream</td>
+        </tr>
+        <tr>
+          <td><strong>Destinations</strong></td>
+          <td>Any application — you control what happens to the data</td>
+          <td>S3, Redshift, OpenSearch, Splunk, third-party tools</td>
+        </tr>
+        <tr>
+          <td><strong>Data retention</strong></td>
+          <td>1 day to 365 days — replay the stream anytime</td>
+          <td>No retention — data delivered and gone</td>
+        </tr>
+        <tr>
+          <td><strong>Best for</strong></td>
+          <td>Custom real-time applications, ML inference, complex stream processing</td>
+          <td>Simple delivery pipelines — logs to S3, clickstream to Redshift</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">📐</span>Scaling Kinesis Data Streams with Shards</h3>
+    <p>A <strong>shard</strong> is the unit of capacity in Kinesis Data Streams. Each shard supports 1 MB/s write and 2 MB/s read. Adding shards scales the stream horizontally.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Scaling Mode</th>
+          <th>How It Works</th>
+          <th>Best For</th>
+        </tr>
+        <tr>
+          <td><span class="badge badge-orange">Manual Scaling</span></td>
+          <td>Engineer manually increases or decreases shard count using the console or API</td>
+          <td>Predictable traffic patterns where you know in advance when to scale</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-yellow">On-Demand Mode</span></td>
+          <td>AWS automatically adjusts shard count based on observed traffic — no manual action</td>
+          <td>Unpredictable or spiky workloads — removes scaling management overhead</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-blue">Auto Scaling</span></td>
+          <td>CloudWatch metric breach → Lambda triggered → UpdateShardCount API called → shards added</td>
+          <td>Automated rule-based scaling with full control over thresholds</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="pipeline">
+      <div class="pipeline-step">CloudWatch<br><small>WriteThroughput &gt;80%</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Alarm Fires</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Lambda Triggered</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">UpdateShardCount<br><small>API call</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">SNS Alert<br><small>Team notified</small></div>
+    </div>
+
+    <h3><span class="icon">📊</span>Key CloudWatch Metrics for Kinesis</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Metric</th>
+          <th>What It Measures</th>
+          <th>What It Signals If High</th>
+        </tr>
+        <tr>
+          <td><code>IncomingRecords</code></td>
+          <td>Number of events written per second</td>
+          <td>High traffic — check if approaching shard write limit</td>
+        </tr>
+        <tr>
+          <td><code>IncomingBytes</code></td>
+          <td>Total data size entering the stream per second</td>
+          <td>Approaching 1 MB/s per shard limit → add shards</td>
+        </tr>
+        <tr>
+          <td><code>WriteThroughputExceeded</code></td>
+          <td>Records rejected because shard capacity exceeded</td>
+          <td>Stream is undersized — immediately increase shard count</td>
+        </tr>
+        <tr>
+          <td><code>GetRecords.IteratorAgeMilliseconds</code></td>
+          <td>How far behind consumers are from the stream head</td>
+          <td>Consumers are processing slower than data arrives — add consumers or shards</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">🎯</span>Dual-Use Architecture — Batch + Real-Time</h3>
+    <p>Some pipelines need both: a real-time dashboard AND a monthly report from the same data stream.</p>
+
+    <div class="pipeline">
+      <div class="pipeline-step">Website Clicks<br><small>Clickstream</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Kinesis<br><small>Data Streams</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Firehose → S3<br><small>Monthly reports</small></div>
+    </div>
+    <div class="pipeline">
+      <div class="pipeline-step" style="visibility:hidden">.</div>
+      <span class="pipeline-arrow" style="visibility:hidden">→</span>
+      <div class="pipeline-step" style="visibility:hidden">.</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Apache Flink<br><small>Real-time dashboard</small></div>
+    </div>
+
+    <div class="success-box">
+      ✅ Kinesis Data Streams supports multiple independent consumers on the same stream. Firehose reads the stream to deliver data to S3 for batch reporting, while Apache Flink simultaneously reads the same stream for real-time analytics.
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 5 — IOT INGESTION
+  ──────────────────────────────────────── -->
+  <section id="iot">
+    <div class="section-label">Section 05</div>
+    <h2>Ingesting IoT Data by Stream</h2>
+
+    <p>IoT (Internet of Things) devices — factory sensors, smart cars, fitness trackers, agricultural monitors — generate <strong>continuous streams of small events</strong> that must be processed in real time. IoT pipelines require specialised protocols and infrastructure designed for low-power devices on constrained networks.</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🏭</div>
+        <div class="card-title">Industrial Sensors</div>
+        <div class="card-desc">Machine temperature, vibration, pressure — every second. Anomaly detection prevents equipment failure before it happens.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🌾</div>
+        <div class="card-title">Smart Agriculture</div>
+        <div class="card-desc">Soil moisture, temperature, humidity sensors in fields. When moisture drops below threshold, irrigation is triggered automatically.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🚗</div>
+        <div class="card-title">Connected Vehicles</div>
+        <div class="card-desc">GPS, fuel level, engine diagnostics streamed from a fleet. Enables real-time tracking, predictive maintenance, and route optimisation.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">⌚</div>
+        <div class="card-title">Wearable Devices</div>
+        <div class="card-desc">Heart rate, steps, sleep quality from smartwatches. Anomalous readings trigger health alerts to users or medical teams.</div>
+      </div>
+    </div>
+
+    <h3><span class="icon">📡</span>MQTT — The IoT Communication Protocol</h3>
+    <p><strong>MQTT (Message Queuing Telemetry Transport)</strong> is the lightweight messaging protocol used by most IoT devices. It is designed for devices with limited battery and bandwidth — far more efficient than HTTP.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>MQTT Concept</th>
+          <th>What It Is</th>
+          <th>Example</th>
+        </tr>
+        <tr>
+          <td><span class="badge badge-orange">Publisher</span></td>
+          <td>A device that sends data to a topic</td>
+          <td>Temperature sensor publishes <code>{"temp": 28, "unit": "C"}</code> to topic <code>factory/machine-1/temp</code></td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-blue">Subscriber</span></td>
+          <td>An application that receives messages from a topic</td>
+          <td>Monitoring system subscribed to <code>factory/machine-1/temp</code> receives every reading</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-yellow">Message Broker</span></td>
+          <td>The central hub that receives from publishers and distributes to subscribers</td>
+          <td>AWS IoT Core acts as the MQTT broker — no direct device-to-application connection needed</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-green">Topic</span></td>
+          <td>Named channel for messages — hierarchical like a file path</td>
+          <td><code>home/livingroom/temperature</code>, <code>fleet/truck-42/gps</code></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="pipeline">
+      <div class="pipeline-step">Temperature Sensor<br><small>Publisher</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">MQTT Topic<br><small>factory/temp</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">AWS IoT Core<br><small>Broker</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Monitoring App<br><small>Subscriber</small></div>
+    </div>
+
+    <h3><span class="icon">🏗️</span>AWS IoT Core Components</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Component</th>
+          <th>Function</th>
+          <th>Example</th>
+        </tr>
+        <tr>
+          <td><span class="badge badge-orange">Device Gateway</span></td>
+          <td>Entry point — devices connect here using MQTT, HTTPS, or WebSockets</td>
+          <td>Smart car connects to AWS using MQTT over TLS on port 8883</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-yellow">Message Broker</span></td>
+          <td>Routes messages from publishers to all matching subscribers</td>
+          <td>Temperature reading published → all subscribers to that topic receive it</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-blue">Rules Engine</span></td>
+          <td>Applies conditional logic to incoming messages and routes them to AWS services</td>
+          <td>If temp &gt; 40°C → invoke Lambda → send SNS alert</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-green">Device Registry</span></td>
+          <td>Stores metadata about each registered device</td>
+          <td>Device ID, model, location, firmware version</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-purple">Security &amp; Auth</span></td>
+          <td>X.509 certificates authenticate each device — no username/password</td>
+          <td>Each sensor has a unique certificate; compromised device can be revoked immediately</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">🔀</span>The Rules Engine — Routing IoT Data</h3>
+    <p>The Rules Engine is what makes AWS IoT Core powerful. It applies logic to incoming MQTT messages and routes them to any AWS service — without writing a consumer application.</p>
+
+<pre><span class="cm"># AWS IoT Core Rule example (SQL-like syntax)</span>
+<span class="cm"># Topic: factory/+/temperature  (+ is wildcard — any machine)</span>
+
+<span class="cm"># Rule 1: Store ALL readings in S3 for historical analysis</span>
+<span class="kw">SELECT</span> machine_id, temperature, timestamp
+<span class="kw">FROM</span> <span class="str">'factory/+/temperature'</span>
+<span class="cm"># Action: Kinesis Firehose → S3</span>
+
+<span class="cm"># Rule 2: Alert when temperature exceeds threshold</span>
+<span class="kw">SELECT</span> machine_id, temperature
+<span class="kw">FROM</span> <span class="str">'factory/+/temperature'</span>
+<span class="kw">WHERE</span> temperature > <span class="num">40</span>
+<span class="cm"># Action: AWS Lambda → SNS alert → engineer's phone</span></pre>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Rules Engine Can Route Data To</th>
+          <th>Example Use Case</th>
+        </tr>
+        <tr>
+          <td>Amazon Kinesis Data Streams</td>
+          <td>All events to a real-time analytics pipeline</td>
+        </tr>
+        <tr>
+          <td>Amazon S3</td>
+          <td>Archive raw sensor data for long-term storage</td>
+        </tr>
+        <tr>
+          <td>Amazon DynamoDB</td>
+          <td>Store latest device state for fast retrieval by apps</td>
+        </tr>
+        <tr>
+          <td>AWS Lambda</td>
+          <td>Execute custom logic — send alerts, call external APIs</td>
+        </tr>
+        <tr>
+          <td>Amazon SNS</td>
+          <td>Push notifications to engineers or users</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">📊</span>Complete IoT Pipeline — Smart Factory</h3>
+
+    <div class="pipeline">
+      <div class="pipeline-step">Machine Sensors<br><small>MQTT events</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">AWS IoT Core<br><small>Broker + Rules</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Kinesis Streams</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">AWS Lambda<br><small>Anomaly detect</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">SageMaker<br><small>Predict failure</small></div>
+    </div>
+
+    <div class="pipeline">
+      <div class="pipeline-step" style="visibility:hidden">.</div>
+      <span class="pipeline-arrow" style="visibility:hidden">→</span>
+      <div class="pipeline-step" style="visibility:hidden">.</div>
+      <span class="pipeline-arrow" style="visibility:hidden">→</span>
+      <div class="pipeline-step">S3 Archive<br><small>Historical data</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Athena / Redshift<br><small>Reports</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">QuickSight<br><small>Dashboard</small></div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Feature</th>
+          <th>IoT Streaming</th>
+          <th>Normal Application Streaming</th>
+        </tr>
+        <tr>
+          <td>Data source</td>
+          <td>Physical devices — sensors, machines, vehicles</td>
+          <td>Software applications — websites, mobile apps</td>
+        </tr>
+        <tr>
+          <td>Protocol</td>
+          <td>MQTT (lightweight, low-bandwidth)</td>
+          <td>HTTP / REST APIs / WebSockets</td>
+        </tr>
+        <tr>
+          <td>Data type</td>
+          <td>Sensor telemetry — numeric readings with timestamps</td>
+          <td>User events — clicks, transactions, form submissions</td>
+        </tr>
+        <tr>
+          <td>Scale</td>
+          <td>Millions of devices, each sending data continuously</td>
+          <td>Millions of users, each sending events intermittently</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 6 — QUIZ
+  ──────────────────────────────────────── -->
+  <section id="quiz">
+    <div class="section-label">Module 8 Quiz</div>
+    <h2>🧠 Test Your Knowledge</h2>
+    <p>Answer all questions to see your score.</p>
+
+    <!-- Q1 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 01</div>
+      <div class="quiz-q-text">A data engineer must build a process to ingest sales transactions from a line-of-business database once per day and load them into a data warehouse. Which task would they perform as part of this batch ingestion process?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','D')"><span class="opt-label">A</span>Write a producer application that listens for new transactions and forwards them to the warehouse in real time</button>
+        <button class="option-btn" onclick="answer(this,'B','D')"><span class="opt-label">B</span>Use Amazon Kinesis Data Streams to analyse the new sales data as it arrives</button>
+        <button class="option-btn" onclick="answer(this,'C','D')"><span class="opt-label">C</span>Query the data warehouse to create a daily report for end users</button>
+        <button class="option-btn" onclick="answer(this,'D','D')"><span class="opt-label">D</span>Connect to the source database that contains the sales transaction data and extract records for the day</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ Batch ingestion requires connecting to the source database to extract records accumulated during the day, then loading them into the warehouse. Real-time producers, Kinesis, and report queries are not batch ingestion steps — they are streaming or consumption activities.
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 02</div>
+      <div class="quiz-q-text">A medical research company stores RNA sequencing results in a file store on their on-premises network. Their data science team wants to ingest these files into a data lake on AWS. Which service should they use?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','B')"><span class="opt-label">A</span>Amazon AppFlow — connect to the on-premises file store and move data into the pipeline</button>
+        <button class="option-btn" onclick="answer(this,'B','B')"><span class="opt-label">B</span>AWS DataSync — transfer data from the on-premises file store to an Amazon S3 bucket in the data lake</button>
+        <button class="option-btn" onclick="answer(this,'C','B')"><span class="opt-label">C</span>AWS Database Migration Service (DMS) — sync data from the file store to Amazon S3</button>
+        <button class="option-btn" onclick="answer(this,'D','B')"><span class="opt-label">D</span>AWS Data Exchange — subscribe to the RNA sequencing data from the laboratory</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>AWS DataSync</strong> is designed for transferring large file datasets from on-premises storage (file servers, NAS) to Amazon S3. AppFlow is for SaaS apps, DMS is for relational databases, and Data Exchange is for third-party commercial datasets — none of these fit on-premise file stores.
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 03</div>
+      <div class="quiz-q-text">A new ETL developer joins a team and needs to quickly author batch processing jobs. Which AWS Glue feature gives them the fastest start with the least coding required?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','C')"><span class="opt-label">A</span>Configure the AWS Glue Spark runtime engine for optimal performance</button>
+        <button class="option-btn" onclick="answer(this,'B','C')"><span class="opt-label">B</span>Establish AWS Glue job bookmarks to track processed data</button>
+        <button class="option-btn" onclick="answer(this,'C','C')"><span class="opt-label">C</span>Use AWS Glue Studio to visually build the ETL pipeline with a drag-and-drop interface</button>
+        <button class="option-btn" onclick="answer(this,'D','C')"><span class="opt-label">D</span>Set up an AWS Glue workflow to orchestrate a set of existing jobs</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>AWS Glue Studio</strong> provides a visual interface for creating ETL jobs — ideal for new developers. You drag sources, transformations, and destinations onto a canvas and Glue generates the PySpark code. Bookmarks track state, runtime configuration is for performance tuning, and workflows are for orchestrating existing jobs.
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 04</div>
+      <div class="quiz-q-text">A data engineer has ingested a new JSON dataset into an S3 bucket. They want data scientists to be able to explore the data immediately with the least amount of coding. Which AWS Glue feature should they use?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','C')"><span class="opt-label">A</span>Use Glue Studio to transform the JSON data and move it into a data warehouse</button>
+        <button class="option-btn" onclick="answer(this,'B','C')"><span class="opt-label">B</span>Write a Glue script to convert the JSON to Parquet format before cataloguing</button>
+        <button class="option-btn" onclick="answer(this,'C','C')"><span class="opt-label">C</span>Run an AWS Glue crawler on the S3 bucket to automatically detect the schema and register it in the Data Catalog</button>
+        <button class="option-btn" onclick="answer(this,'D','C')"><span class="opt-label">D</span>Set up a Glue workflow to orchestrate jobs that transform the JSON into a columnar format</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>Running a Glue Crawler</strong> requires zero coding — point it at the S3 bucket, run it, and it automatically detects the JSON schema and creates a table in the Data Catalog. Data scientists can then immediately query the data using Athena or Redshift Spectrum without any additional setup.
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 05</div>
+      <div class="quiz-q-text">An AWS Glue job is scheduled to run nightly to update sales reports. The reports have not been updated for 2 days. What is the best first step to troubleshoot the issue?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','A')"><span class="opt-label">A</span>Review Amazon CloudWatch logs and AWS Glue job run insights to identify error messages or failures</button>
+        <button class="option-btn" onclick="answer(this,'B','A')"><span class="opt-label">B</span>Update the Glue crawler configuration to address potential schema changes in the source</button>
+        <button class="option-btn" onclick="answer(this,'C','A')"><span class="opt-label">C</span>Modify the Spark runtime engine configuration to improve job performance</button>
+        <button class="option-btn" onclick="answer(this,'D','A')"><span class="opt-label">D</span>Update the schedule in Glue Studio to increase the time between job runs</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ The first step in troubleshooting any pipeline failure is checking <strong>CloudWatch logs and Glue job run insights</strong>. These show whether the job ran, whether it failed, and if so, the exact error message. Changing configurations or schedules without understanding the root cause would be premature.
+      </div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 06</div>
+      <div class="quiz-q-text">An ETL developer wants to optimise the performance of a new AWS Glue job that processes large files. Which approach provides the best performance improvement?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','B')"><span class="opt-label">A</span>Choose a non-splittable compression codec and use the largest available Glue worker type</button>
+        <button class="option-btn" onclick="answer(this,'B','B')"><span class="opt-label">B</span>Choose Parquet as the file format and use a splittable codec such as Snappy to enable parallel processing</button>
+        <button class="option-btn" onclick="answer(this,'C','B')"><span class="opt-label">C</span>Split data into as many small files as possible and maximise CPU on each worker</button>
+        <button class="option-btn" onclick="answer(this,'D','B')"><span class="opt-label">D</span>Send all data as one large GZIP-compressed file and increase the number of workers</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>Parquet + Snappy</strong> is the optimal combination. Parquet is a columnar format that allows queries to read only required columns — dramatically reducing data scanned. Snappy compression is splittable (with Parquet), enabling multiple workers to read different parts of the same file in parallel. Non-splittable GZIP forces one worker to decompress the entire file sequentially.
+      </div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 07</div>
+      <div class="quiz-q-text">A data engineer needs to ingest website clickstream data that will be used for monthly reporting AND transformed in real time for a live dashboard. Which Kinesis-based architecture meets both requirements?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','C')"><span class="opt-label">A</span>Use Redshift Spectrum to run SQL queries on the stream and write results to S3 for both use cases</button>
+        <button class="option-btn" onclick="answer(this,'B','C')"><span class="opt-label">B</span>Use Kinesis Data Firehose to send data to S3 and run a Glue crawler for the real-time dashboard</button>
+        <button class="option-btn" onclick="answer(this,'C','C')"><span class="opt-label">C</span>Configure Kinesis Data Firehose to deliver data to S3 for monthly reports, and Amazon Managed Service for Apache Flink to consume and transform the stream for real-time analytics</button>
+        <button class="option-btn" onclick="answer(this,'D','C')"><span class="opt-label">D</span>Create two separate independent pipelines: one sending directly to Flink and one directly to S3</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ Kinesis Data Streams supports multiple simultaneous consumers. <strong>Firehose</strong> delivers the stream to S3 automatically for batch/monthly reporting. <strong>Apache Flink</strong> reads the same stream in parallel for real-time analytics. Both consume independently without interfering with each other.
+      </div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 08</div>
+      <div class="quiz-q-text">Which statement correctly describes how data is stored in Amazon Kinesis Data Streams?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','B')"><span class="opt-label">A</span>Consumer applications must use the Kinesis Client Library (KCL) — there is no other way to access records</button>
+        <button class="option-btn" onclick="answer(this,'B','B')"><span class="opt-label">B</span>Each data record on the stream includes a unique sequence number, a partition key, and a data blob</button>
+        <button class="option-btn" onclick="answer(this,'C','B')"><span class="opt-label">C</span>Each producer application is allocated its own dedicated shard for writing</button>
+        <button class="option-btn" onclick="answer(this,'D','B')"><span class="opt-label">D</span>Developers must write custom scripts to track record age and write failures manually</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ Every Kinesis record has exactly three components: (1) <strong>Sequence number</strong> — unique ID assigned by Kinesis on arrival; (2) <strong>Partition key</strong> — determines which shard receives the record; (3) <strong>Data blob</strong> — the actual event payload up to 1 MB. CloudWatch tracks metrics automatically, so manual scripts are not needed.
+      </div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 09</div>
+      <div class="quiz-q-text">Users of an application that consumes from a Kinesis Data Stream report periodic gaps in the record sequence. A developer confirms producers are writing correctly and no data is missing. What configuration adjustment is most likely to help?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','A')"><span class="opt-label">A</span>Increase the number of shards allocated to the stream to improve read throughput</button>
+        <button class="option-btn" onclick="answer(this,'B','A')"><span class="opt-label">B</span>Change the stream capacity mode from on-demand to provisioned</button>
+        <button class="option-btn" onclick="answer(this,'C','A')"><span class="opt-label">C</span>Change the consumer type from enhanced fan-out to standard shared fan-out</button>
+        <button class="option-btn" onclick="answer(this,'D','A')"><span class="opt-label">D</span>Increase the retention period for stream records to extend how long data is available</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ Gaps in record sequences visible to consumers usually indicate insufficient <strong>shard read throughput</strong>. Each shard provides 2 MB/s read. If consumers are competing for that capacity, some reads will be throttled causing gaps. Adding shards increases parallel read capacity and resolves consumer throughput issues.
+      </div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 10</div>
+      <div class="quiz-q-text">A data engineer needs to ingest messages from IoT devices publishing to "lighting" and "heating" MQTT topics, and store lighting data for weekly reporting. Which AWS IoT Core configuration should they use?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','D')"><span class="opt-label">A</span>Set up an IoT topic named "lighting" and use Amazon QuickSight to query the topic weekly</button>
+        <button class="option-btn" onclick="answer(this,'B','D')"><span class="opt-label">B</span>Use the AWS IoT Core device registry to capture and store sensor data directly</button>
+        <button class="option-btn" onclick="answer(this,'C','D')"><span class="opt-label">C</span>Create a logging role and enable AWS IoT logging to capture all topic messages</button>
+        <button class="option-btn" onclick="answer(this,'D','D')"><span class="opt-label">D</span>Set up an AWS IoT Core Rules Engine rule that filters messages from the "lighting" topic and routes them to an Amazon DynamoDB table for weekly reporting</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ The <strong>AWS IoT Core Rules Engine</strong> is the correct mechanism — it applies SQL-like conditions to incoming MQTT messages and routes matching messages to AWS services. Routing lighting messages to DynamoDB stores them persistently for later weekly reporting. QuickSight cannot directly query MQTT topics; the device registry stores device metadata, not sensor data.
+      </div>
+    </div>
+
+    <!-- SCORE BAR -->
+    <div class="score-bar" id="scoreBar" style="display:none">
+      <div class="score-title">Your Score</div>
+      <div class="score-count" id="scoreCount">0 / 10</div>
+      <div class="score-sub" id="scoreMsg">Keep practising!</div>
+    </div>
+
+  </section>
+
+  <!-- ── BOTTOM NAV ── -->
+  <div class="bottom-nav">
+    <a href="../content.html" class="btn">⬅ Back to Contents</a>
+    <a href="data-storage.html" class="btn">Module 9 ➡</a>
+  </div>
+
+</div>
+
+<!-- GO TO TOP -->
+<button id="topBtn">↑</button>
+<script src="../assets/js/template.js"></script>
+</body>
+</html>
