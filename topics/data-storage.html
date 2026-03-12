@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Module 9 – Storing and Organizing Data</title>
+  <link rel="stylesheet" href="../assets/css/template.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&family=IBM+Plex+Mono:wght@400;500&family=Nunito:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Module 09 · AWS Academy Data Engineering</div>
+  <h1>Storing and<br><span>Organizing Data</span></h1>
+  <p>Explore how modern data architectures use multiple storage layers — data lakes, warehouses, and purpose-built databases — and how AWS services support each layer securely and at scale.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><strong>3</strong><span>Storage Types</span></div>
+    <div class="hero-stat"><strong>10+</strong><span>AWS Services</span></div>
+    <div class="hero-stat"><strong>Lake</strong><span>vs Warehouse</span></div>
+  </div>
+</div>
+
+<!-- STICKY NAV -->
+<nav class="anchor-nav">
+  <span>Jump to →</span>
+  <a href="#storage-layers">Storage Layers</a>
+  <a href="#storage-types">Storage Types</a>
+  <a href="#data-lake">Data Lake</a>
+  <a href="#data-warehouse">Data Warehouse</a>
+  <a href="#databases">Purpose-Built DBs</a>
+  <a href="#pipeline">Pipeline Storage</a>
+  <a href="#security">Security</a>
+  <a href="#quiz">Quiz</a>
+</nav>
+
+<div class="container">
+
+  <!-- SECTION 1 -->
+  <section id="storage-layers">
+    <div class="section-label">Section 01</div>
+    <h2>Storage in the Modern Data Architecture</h2>
+
+    <p>After data is ingested and processed, it must be stored in a way that supports easy access, efficient querying, security, and scalability. Modern data architectures use <strong>multiple storage layers</strong>, each designed for a specific purpose — raw data storage, analytics-ready storage, and operational storage all have different requirements.</p>
+
+    <div class="info-box">
+      💡 <strong>Why multiple layers?</strong> No single storage system is optimal for every use case. A data lake is cheap and flexible for raw storage; a warehouse is fast and structured for analytics queries; operational databases are optimised for real-time transactions. Using the right tool for each layer saves cost and improves performance.
+    </div>
+
+    <h3><span class="icon">🏗️</span>Key Storage Layers</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Storage Layer</th><th>Purpose</th><th>Data Type</th><th>AWS Service</th></tr>
+        <tr><td><span class="badge badge-blue">Data Lake</span></td><td>Store raw data in original format — all types</td><td>Structured + semi-structured + unstructured</td><td>Amazon S3</td></tr>
+        <tr><td><span class="badge badge-orange">Data Warehouse</span></td><td>Store cleaned, structured data optimised for analytics</td><td>Structured (relational tables)</td><td>Amazon Redshift</td></tr>
+        <tr><td><span class="badge badge-yellow">Operational Database</span></td><td>Handle real-time transactions from applications</td><td>Varies by database type</td><td>RDS, DynamoDB, Aurora</td></tr>
+        <tr><td><span class="badge badge-green">Archive Storage</span></td><td>Low-cost long-term retention of infrequently accessed data</td><td>Any format</td><td>S3 Glacier</td></tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">🔄</span>AWS Modern Data Architecture</h3>
+
+    <div class="pipeline">
+      <div class="pipeline-step">Data Sources<br><small>Apps / DB / IoT</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Kinesis / DMS<br><small>Ingestion</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Amazon S3<br><small>Data Lake</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">AWS Glue<br><small>Processing</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Redshift / Athena<br><small>Analytics</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">QuickSight<br><small>BI Dashboards</small></div>
+    </div>
+
+    <h3><span class="icon">🛒</span>Real-World Example — E-Commerce Platform</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Data Type</th><th>Storage Layer</th><th>AWS Service</th><th>Used For</th></tr>
+        <tr><td>Application logs, raw click events</td><td>Data Lake</td><td>Amazon S3</td><td>ML model training, ad hoc exploration</td></tr>
+        <tr><td>Cleaned sales and order data</td><td>Data Warehouse</td><td>Amazon Redshift</td><td>Revenue dashboards, analyst SQL queries</td></tr>
+        <tr><td>Real-time order transactions</td><td>Operational DB</td><td>Amazon Aurora (MySQL)</td><td>Website order management system</td></tr>
+        <tr><td>Customer profile data</td><td>NoSQL DB</td><td>Amazon DynamoDB</td><td>Fast key-value lookups at millisecond speed</td></tr>
+        <tr><td>7-year-old transaction archives</td><td>Archive</td><td>S3 Glacier</td><td>Compliance and audit requirements</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- SECTION 2 -->
+  <section id="storage-types">
+    <div class="section-label">Section 02</div>
+    <h2>Three Types of Cloud Storage</h2>
+
+    <p>Cloud storage is categorised into three fundamental types based on how data is physically organised and accessed.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Storage Type</th><th>How Data Is Organised</th><th>AWS Service</th><th>Best For</th></tr>
+        <tr><td><span class="badge badge-orange">Object Storage</span></td><td>Files stored as individual objects with metadata and a unique key</td><td>Amazon S3</td><td>Data lakes, backups, images, videos, logs — any scale</td></tr>
+        <tr><td><span class="badge badge-blue">Block Storage</span></td><td>Data split into fixed-size blocks — like a physical hard drive</td><td>Amazon EBS</td><td>EC2 database volumes, boot disks, high-IOPS transactional workloads</td></tr>
+        <tr><td><span class="badge badge-yellow">File Storage</span></td><td>Hierarchical directory tree — folders and files</td><td>Amazon EFS</td><td>Shared file systems accessed simultaneously by multiple servers</td></tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">📦</span>Object Storage — Amazon S3</h3>
+    <p>Amazon S3 is the cornerstone of most AWS data architectures. It stores data as <strong>objects</strong> in <strong>buckets</strong>, each with a key, value (the data), and metadata. S3 provides <strong>11 nines of durability</strong> (99.999999999%) — designed so data is never lost.</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">♾️</div>
+        <div class="card-title">Virtually Unlimited Scale</div>
+        <div class="card-desc">No capacity planning needed — S3 scales automatically from kilobytes to exabytes. A company merger doubling your data requires zero infrastructure changes.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔀</div>
+        <div class="card-title">Any Data Format</div>
+        <div class="card-desc">CSV, JSON, Parquet, images, videos, PDFs, binary files — S3 stores anything without requiring a schema. Ideal for data lakes where format diversity is expected.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">💰</div>
+        <div class="card-title">Tiered Cost Optimisation</div>
+        <div class="card-desc">S3 Standard for active data, S3-IA for infrequent access, S3 Glacier for archiving. Lifecycle policies automatically move data to cheaper tiers as it ages.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔗</div>
+        <div class="card-title">Ecosystem Integration</div>
+        <div class="card-desc">Natively integrated with Athena, Glue, EMR, Redshift Spectrum, SageMaker — every AWS analytics service reads from S3, making it the universal data hub.</div>
+      </div>
+    </div>
+
+<pre><span class="cm"># S3 bucket structure for a data lake</span>
+s3://company-data-lake/
+   ├── raw/                        <span class="cm"># Landing zone — original ingested data</span>
+   │   ├── orders/<span class="num">2026</span>/<span class="num">03</span>/<span class="num">12</span>/
+   │   └── clickstream/<span class="num">2026</span>/<span class="num">03</span>/<span class="num">12</span>/
+   ├── trusted/                    <span class="cm"># Cleaned, processed Parquet files</span>
+   │   ├── orders/
+   │   └── customers/
+   └── curated/                   <span class="cm"># Aggregated, analytics-ready datasets</span>
+       └── daily_revenue/</pre>
+
+    <h3><span class="icon">💾</span>Block Storage — Amazon EBS</h3>
+    <p>Amazon EBS provides <strong>persistent block storage volumes</strong> attached to EC2 instances — like adding a hard drive to a virtual machine. EBS volumes persist after the EC2 instance stops, preserving data between restarts.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>EBS Volume Type</th><th>Performance</th><th>Best For</th></tr>
+        <tr><td>gp3 (General Purpose SSD)</td><td>Up to 16,000 IOPS</td><td>Most workloads — boot volumes, development databases</td></tr>
+        <tr><td>io2 (Provisioned IOPS SSD)</td><td>Up to 256,000 IOPS</td><td>High-transaction databases requiring consistent low latency</td></tr>
+        <tr><td>st1 (Throughput Optimised HDD)</td><td>High sequential throughput</td><td>Large sequential data — log processing, data warehousing</td></tr>
+        <tr><td>sc1 (Cold HDD)</td><td>Lowest cost</td><td>Infrequently accessed large datasets — cold storage on EC2</td></tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">🗂️</span>File Storage — Amazon EFS</h3>
+    <p>Amazon EFS is a managed NFS (Network File System) that allows multiple EC2 instances to read and write the same files simultaneously — like a shared network drive in the cloud.</p>
+
+    <div class="pipeline">
+      <div class="pipeline-step">App Server 1<br><small>EC2</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Amazon EFS<br><small>Shared file system</small></div>
+      <span class="pipeline-arrow">←</span>
+      <div class="pipeline-step">App Server 2<br><small>EC2</small></div>
+    </div>
+
+    <h3><span class="icon">🎬</span>Industry Example — Video Streaming Company</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Data Type</th><th>Storage Type</th><th>AWS Service</th><th>Reason</th></tr>
+        <tr><td>Video files, thumbnails</td><td>Object</td><td>Amazon S3</td><td>Scalable, low cost, CDN-integrated for streaming</td></tr>
+        <tr><td>Transcoding application data</td><td>Block</td><td>Amazon EBS</td><td>High IOPS needed for video processing on EC2</td></tr>
+        <tr><td>Shared media assets for editors</td><td>File</td><td>Amazon EFS</td><td>Multiple editing workstations access same project files</td></tr>
+        <tr><td>7-year-old archived content</td><td>Object (archive)</td><td>S3 Glacier</td><td>Rarely accessed — near-zero storage cost</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- SECTION 3 -->
+  <section id="data-lake">
+    <div class="section-label">Section 03</div>
+    <h2>Data Lake Storage</h2>
+
+    <p>A <strong>Data Lake</strong> is a centralised repository that stores all of an organisation's data — raw, in its original format — at any scale. Unlike a data warehouse which requires data to be structured before loading, a data lake accepts everything first and applies structure later when querying.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Characteristic</th><th>Data Lake</th></tr>
+        <tr><td>Schema approach</td><td><strong>Schema-on-read</strong> — structure is applied when the data is queried, not when stored. Raw data is preserved exactly as received.</td></tr>
+        <tr><td>Data types accepted</td><td>Structured (CSV, tables), semi-structured (JSON, XML, Parquet), unstructured (images, videos, logs, audio)</td></tr>
+        <tr><td>Primary AWS service</td><td>Amazon S3 — unlimited scalability, 11 nines durability, cent-per-GB storage cost</td></tr>
+        <tr><td>Who uses it</td><td>Data engineers, data scientists, ML engineers — raw data for exploration, model training, ad hoc analysis</td></tr>
+        <tr><td>Query tools</td><td>Amazon Athena (serverless SQL on S3), Redshift Spectrum, EMR/Spark, SageMaker</td></tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">🏗️</span>Data Lake Zones</h3>
+
+    <div class="role-grid">
+      <div class="role-card" style="--card-color:#60a5fa">
+        <div class="role-icon">🛬</div>
+        <div class="role-title">Landing / Raw Zone</div>
+        <div class="role-desc">Original data exactly as it arrived — never modified. Acts as the source of truth. If transformation logic changes, data can always be reprocessed from here.</div>
+        <div class="role-skills"><span class="skill-tag">s3://lake/raw/</span><span class="skill-tag">Immutable</span><span class="skill-tag">Original format</span></div>
+      </div>
+      <div class="role-card" style="--card-color:#facc15">
+        <div class="role-icon">🧹</div>
+        <div class="role-title">Trusted / Cleaned Zone</div>
+        <div class="role-desc">Data that has been validated and cleaned — duplicates removed, formats standardised, NULL values handled. Stored as Parquet for efficient querying.</div>
+        <div class="role-skills"><span class="skill-tag">s3://lake/trusted/</span><span class="skill-tag">Parquet</span><span class="skill-tag">Schema validated</span></div>
+      </div>
+      <div class="role-card" style="--card-color:#22c55e">
+        <div class="role-icon">📊</div>
+        <div class="role-title">Curated / Refined Zone</div>
+        <div class="role-desc">Aggregated, enriched, business-ready datasets. Results of joining multiple tables, calculating KPIs, and preparing data for specific analytical use cases.</div>
+        <div class="role-skills"><span class="skill-tag">s3://lake/curated/</span><span class="skill-tag">Aggregated</span><span class="skill-tag">BI-ready</span></div>
+      </div>
+    </div>
+
+    <h3><span class="icon">🏛️</span>AWS Lake Formation</h3>
+    <p><strong>AWS Lake Formation</strong> simplifies setting up, securing, and managing a data lake. Instead of manually configuring S3 buckets, Glue crawlers, IAM policies, and data catalog tables separately — Lake Formation provides a unified control plane for everything.</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">⚡</div>
+        <div class="card-title">Quick Setup</div>
+        <div class="card-desc">Build and secure a data lake in days. Connects directly to RDS (MySQL, PostgreSQL, Oracle, SQL Server) and imports data automatically — no custom pipeline code needed.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔐</div>
+        <div class="card-title">Fine-Grained Access Control</div>
+        <div class="card-desc">Grant column-level and row-level permissions on data lake tables. A marketing analyst can see customer city but not customer email — controlled at the lake level, not individual S3 bucket policies.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🗂️</div>
+        <div class="card-title">Unified Catalog</div>
+        <div class="card-desc">Automatically registers all datasets in the Glue Data Catalog — shared across Athena, EMR, Redshift Spectrum, and Glue jobs without duplicate configuration.</div>
+      </div>
+    </div>
+
+    <div class="warn-box">
+      ⚠️ <strong>Data lake ≠ data swamp.</strong> Without governance, a data lake becomes a "data swamp" — data is dumped in but nobody knows what exists, where it came from, or whether it's trustworthy. Use AWS Lake Formation and the Glue Data Catalog to keep data organised, discoverable, and governed.
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- SECTION 4 -->
+  <section id="data-warehouse">
+    <div class="section-label">Section 04</div>
+    <h2>Data Warehouse Storage</h2>
+
+    <p>A <strong>Data Warehouse</strong> stores structured, processed data optimised for analytical queries. Unlike a data lake which stores raw data for exploration, a warehouse is designed to answer business questions fast — daily revenue, top products, regional performance — using SQL at massive scale.</p>
+
+    <h3><span class="icon">⚖️</span>Data Lake vs Data Warehouse</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Feature</th><th>Data Lake</th><th>Data Warehouse</th></tr>
+        <tr><td>Data types stored</td><td>All types — structured, semi-structured, unstructured</td><td>Structured relational data only</td></tr>
+        <tr><td>Schema approach</td><td>Schema-on-read — defined at query time</td><td>Schema-on-write — defined before data is loaded</td></tr>
+        <tr><td>Storage cost</td><td>Low — S3 cents-per-GB</td><td>Higher — compute + columnar storage nodes</td></tr>
+        <tr><td>Query speed</td><td>Variable — depends on data format and volume</td><td>Fast — columnar storage and MPP engine</td></tr>
+        <tr><td>Primary users</td><td>Data scientists, ML engineers, exploratory analysis</td><td>Business analysts, BI tools, executive dashboards</td></tr>
+        <tr><td>AWS service</td><td>Amazon S3 + Athena</td><td>Amazon Redshift</td></tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">🔴</span>Amazon Redshift — AWS Data Warehouse</h3>
+    <p>Amazon Redshift is AWS's fully managed <strong>massively parallel processing (MPP)</strong> data warehouse. It stores data in columnar format — reading only the columns a query needs — making analytical queries extremely fast even on trillions of rows.</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">⚡</div>
+        <div class="card-title">Columnar Storage</div>
+        <div class="card-desc">Data stored column-by-column. A query for SUM(revenue) reads only the revenue column — not all other columns in the table. Dramatically reduces I/O for analytics workloads.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔀</div>
+        <div class="card-title">Massively Parallel Processing</div>
+        <div class="card-desc">Queries are distributed across multiple compute nodes simultaneously. A query that would take minutes on a single machine completes in seconds across 10+ nodes.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔗</div>
+        <div class="card-title">Redshift Spectrum</div>
+        <div class="card-desc">Query data directly in S3 without loading it into Redshift. Run SQL joins across warehouse tables AND raw data lake files in a single query — bridging lake and warehouse.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🤖</div>
+        <div class="card-title">Serverless Option</div>
+        <div class="card-desc">Redshift Serverless automatically provisions and scales capacity — pay only for queries run. Ideal for intermittent analytics workloads that don't need always-on clusters.</div>
+      </div>
+    </div>
+
+<pre><span class="cm">-- Redshift analytics query example — revenue by city and product category</span>
+<span class="kw">SELECT</span>
+    c.city,
+    p.category                     <span class="kw">AS</span> product_category,
+    <span class="fn">SUM</span>(o.amount)                   <span class="kw">AS</span> total_revenue,
+    <span class="fn">COUNT</span>(o.order_id)               <span class="kw">AS</span> order_count,
+    <span class="fn">AVG</span>(o.amount)                   <span class="kw">AS</span> avg_order_value
+<span class="kw">FROM</span> orders o
+<span class="kw">JOIN</span> customers c <span class="kw">ON</span> o.customer_id = c.customer_id
+<span class="kw">JOIN</span> products  p <span class="kw">ON</span> o.product_id  = p.product_id
+<span class="kw">WHERE</span> o.order_date >= <span class="str">'2026-01-01'</span>
+<span class="kw">GROUP BY</span> c.city, p.category
+<span class="kw">ORDER BY</span> total_revenue <span class="kw">DESC</span>
+<span class="kw">LIMIT</span> <span class="num">20</span>;</pre>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th colspan="3">Data Warehouse Characteristics — Important for Exam</th></tr>
+        <tr><th>Characteristic</th><th>✅ Data Warehouse</th><th>❌ Not Data Warehouse</th></tr>
+        <tr><td>Schema approach</td><td>Schema-on-write — designed before implementation</td><td>Schema-on-read (that's a data lake)</td></tr>
+        <tr><td>Data stored</td><td>Relational data from transactional systems and operational databases</td><td>Unstructured data from IoT, social media, images (that's a data lake)</td></tr>
+        <tr><td>Query speed vs cost</td><td>Faster queries with higher storage cost than a data lake</td><td>Lower cost with more flexible but slower ad hoc queries (data lake)</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- SECTION 5 -->
+  <section id="databases">
+    <div class="section-label">Section 05</div>
+    <h2>Purpose-Built Databases</h2>
+
+    <p>Modern applications use specialised databases designed for specific data models and workloads. AWS's philosophy is <em>"use the right tool for the job"</em> — instead of forcing every use case into a relational database, choose the engine that matches your data shape and access pattern.</p>
+
+    <h3><span class="icon">🎯</span>Three Key Selection Factors</h3>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🗂️</div>
+        <div class="card-title">Data Shape</div>
+        <div class="card-desc">Rows and columns (relational), key-value pairs, nested documents, graph nodes and edges, or time-series events — each data shape has an engine designed specifically for it.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚡</div>
+        <div class="card-title">Application Workload</div>
+        <div class="card-desc">Transactional writes (OLTP), complex analytical reads (OLAP), graph traversal, or time-windowed aggregations — the dominant operation determines the right engine.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📈</div>
+        <div class="card-title">Performance Requirements</div>
+        <div class="card-desc">Sub-millisecond key lookups (DynamoDB), fast analytical scans (Redshift), or consistent ACID transactions (Aurora) — each requires a different storage architecture.</div>
+      </div>
+    </div>
+
+    <h3><span class="icon">🗄️</span>AWS Purpose-Built Database Catalogue</h3>
+
+    <div class="role-grid">
+      <div class="role-card" style="--card-color:#ff9900">
+        <div class="role-icon">🗃️</div>
+        <div class="role-title">Amazon RDS / Aurora</div>
+        <div class="role-desc">Fully managed relational databases — MySQL, PostgreSQL, MariaDB, Oracle, SQL Server. Aurora is MySQL/PostgreSQL compatible with up to 5x performance. ACID transactions guaranteed.</div>
+        <div class="role-skills"><span class="skill-tag">Relational</span><span class="skill-tag">ACID</span><span class="skill-tag">SQL</span><span class="skill-tag">Web apps</span></div>
+      </div>
+      <div class="role-card" style="--card-color:#60a5fa">
+        <div class="role-icon">⚡</div>
+        <div class="role-title">Amazon DynamoDB</div>
+        <div class="role-desc">Fully managed NoSQL key-value and document database. Single-digit millisecond performance at any scale. Serverless — no capacity planning. Scales horizontally by partitioning across nodes.</div>
+        <div class="role-skills"><span class="skill-tag">Key-value</span><span class="skill-tag">&lt;10ms</span><span class="skill-tag">Serverless</span><span class="skill-tag">Horizontal scale</span></div>
+      </div>
+      <div class="role-card" style="--card-color:#22c55e">
+        <div class="role-icon">🕸️</div>
+        <div class="role-title">Amazon Neptune</div>
+        <div class="role-desc">Purpose-built graph database — stores nodes, edges, and relationships. Supports Gremlin and SPARQL queries. Essential for fraud detection graphs and social network analysis.</div>
+        <div class="role-skills"><span class="skill-tag">Graph</span><span class="skill-tag">Fraud detection</span><span class="skill-tag">Relationships</span><span class="skill-tag">Network analysis</span></div>
+      </div>
+      <div class="role-card" style="--card-color:#facc15">
+        <div class="role-icon">📄</div>
+        <div class="role-title">Amazon DocumentDB</div>
+        <div class="role-desc">MongoDB-compatible document database for storing JSON documents. Enables rich queries on nested document structures — ideal for content management and product catalogues.</div>
+        <div class="role-skills"><span class="skill-tag">Document / JSON</span><span class="skill-tag">MongoDB compat.</span><span class="skill-tag">Nested queries</span></div>
+      </div>
+      <div class="role-card" style="--card-color:#a78bfa">
+        <div class="role-icon">⏱️</div>
+        <div class="role-title">Amazon Timestream</div>
+        <div class="role-desc">Purpose-built time-series database — automatically organises and aggregates data by time. 1,000x faster and 1/10th the cost of relational databases for IoT and monitoring workloads.</div>
+        <div class="role-skills"><span class="skill-tag">Time-series</span><span class="skill-tag">IoT</span><span class="skill-tag">Metrics</span><span class="skill-tag">Auto-expiry</span></div>
+      </div>
+      <div class="role-card" style="--card-color:#34d399">
+        <div class="role-icon">🔑</div>
+        <div class="role-title">Key-Value / Wide-Column</div>
+        <div class="role-desc">Databases designed with horizontal scaling built in — data is partitioned across multiple storage nodes. Additional nodes can be added as data grows with no downtime or resharding complexity.</div>
+        <div class="role-skills"><span class="skill-tag">Horizontal scale</span><span class="skill-tag">Partitioned</span><span class="skill-tag">Add nodes</span></div>
+      </div>
+    </div>
+
+    <h3><span class="icon">🗺️</span>Use-Case Matching Guide</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Scenario</th><th>Best Database</th><th>Why</th></tr>
+        <tr><td>New MySQL server on AWS</td><td><span class="badge badge-orange">Amazon Aurora</span></td><td>Aurora is MySQL-compatible, fully managed, higher performance than standard RDS MySQL</td></tr>
+        <tr><td>Real-time web order inventory system</td><td><span class="badge badge-blue">Amazon DynamoDB</span></td><td>Sub-millisecond read/write for high-traffic transactional web apps at any scale</td></tr>
+        <tr><td>Fraud detection graph analysis</td><td><span class="badge badge-green">Amazon Neptune</span></td><td>Graph databases model entity relationships — essential for fraud pattern detection</td></tr>
+        <tr><td>Store and query JSON product catalogue</td><td><span class="badge badge-yellow">Amazon DocumentDB</span></td><td>Document databases handle nested JSON naturally with rich querying</td></tr>
+        <tr><td>IoT sensor time-series metrics</td><td><span class="badge badge-purple">Amazon Timestream</span></td><td>Optimised for time-ordered data with automatic retention policies</td></tr>
+        <tr><td>Database must scale horizontally as data grows</td><td><span class="badge badge-green">Key-value / Wide-column</span></td><td>Partitioned architecture adds storage nodes seamlessly — no single machine limits scale</td></tr>
+        <tr><td>Ride-sharing: driver location + accounts + ride logs</td><td><span class="badge badge-blue">DynamoDB</span> + <span class="badge badge-orange">Aurora</span> + <span class="badge badge-blue">S3</span></td><td>Fast location lookups (DynamoDB) + structured accounts (Aurora) + log archive (S3)</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- SECTION 6 -->
+  <section id="pipeline">
+    <div class="section-label">Section 06</div>
+    <h2>Storage in the Data Pipeline</h2>
+
+    <p>Storage is not just at the end of a pipeline — it appears at every stage. Understanding which storage layer to use at which stage determines pipeline performance, cost, and flexibility.</p>
+
+    <h3><span class="icon">⚖️</span>Storage in ETL vs ELT Pipelines</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Feature</th><th>ETL Pipeline</th><th>ELT Pipeline</th></tr>
+        <tr><td>Transformation location</td><td>Before loading — on a processing server outside the warehouse</td><td>After loading — inside the warehouse or data lake</td></tr>
+        <tr><td>Raw data stored?</td><td>No — only transformed data reaches storage</td><td>Yes — raw data lands in S3 first</td></tr>
+        <tr><td>Storage layers used</td><td>Warehouse only (Redshift)</td><td>Data lake (S3) + warehouse (Redshift)</td></tr>
+        <tr><td>Re-processing if logic changes?</td><td>Must re-ingest from the source system</td><td>Reprocess from raw in S3 — no re-ingestion needed</td></tr>
+        <tr><td>Common in</td><td>Traditional on-premise systems</td><td>Modern cloud architectures</td></tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">🎬</span>Netflix Example — Full Storage Architecture</h3>
+
+    <div class="pipeline">
+      <div class="pipeline-step">User Events<br><small>Play, pause, search</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Kinesis Streams<br><small>Real-time capture</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">S3 Raw Zone<br><small>Data Lake</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Spark / Glue<br><small>Processing</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Redshift<br><small>Analytics</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">SageMaker<br><small>Recommendations</small></div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- SECTION 7 -->
+  <section id="security">
+    <div class="section-label">Section 07</div>
+    <h2>Securing Storage</h2>
+
+    <p>Data stored in the cloud must be protected against unauthorised access, breaches, and accidental deletion. AWS provides multiple layered security mechanisms for every storage service.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Security Layer</th><th>Mechanism</th><th>Amazon S3 Example</th><th>Amazon Redshift Example</th></tr>
+        <tr><td><span class="badge badge-orange">Encryption at Rest</span></td><td>AES-256 — data unreadable without the key even if storage is physically accessed</td><td>S3-SSE with S3-managed or KMS-managed keys</td><td>Cluster-level encryption using AWS KMS — all data files and backups encrypted</td></tr>
+        <tr><td><span class="badge badge-yellow">Encryption in Transit</span></td><td>TLS/HTTPS — data encrypted while moving between services or to clients</td><td>Enforce HTTPS-only with S3 bucket policy condition <code>aws:SecureTransport</code></td><td>SSL connections required for all JDBC/ODBC connections from BI tools</td></tr>
+        <tr><td><span class="badge badge-blue">Access Control</span></td><td>IAM policies define who can read, write, or delete data</td><td>S3 bucket policy + IAM role — only specific services/users access specific prefixes</td><td>IAM roles for cluster access; database users and groups for table-level permissions</td></tr>
+        <tr><td><span class="badge badge-green">Network Isolation</span></td><td>VPC restricts which network traffic can reach the storage service</td><td>S3 VPC endpoint — traffic stays on AWS private network, never crosses public internet</td><td>Redshift cluster inside VPC — only accessible from within the same VPC or via VPN</td></tr>
+        <tr><td><span class="badge badge-purple">Audit Logging</span></td><td>Record every access and change for compliance</td><td>S3 access logs + CloudTrail — every API call recorded with user, time, and action</td><td>Redshift audit logging — all SQL queries, logins, and modifications logged</td></tr>
+      </table>
+    </div>
+
+    <div class="info-box">
+      💡 <strong>Banking example:</strong> Customer transaction data in Redshift is protected by: encryption at rest with KMS, TLS for all connections, IAM roles granting access only to approved analytics applications, the cluster running inside a private VPC subnet, and CloudTrail recording every query for compliance audits.
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- QUIZ -->
+  <section id="quiz">
+    <div class="section-label">Module 9 Quiz</div>
+    <h2>🧠 Test Your Knowledge</h2>
+    <p>Answer all questions to see your final score.</p>
+
+    <!-- Q1 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 01</div>
+      <div class="quiz-q-text">Due to a company merger, a data engineer needs to increase object storage capacity. They are unsure how much storage will be needed and want a highly scalable service for unstructured, semi-structured, and structured data. Which service is the most cost-effective?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','B')"><span class="opt-label">A</span>Amazon RDS — managed relational database with fixed storage</button>
+        <button class="option-btn" onclick="answer(this,'B','B')"><span class="opt-label">B</span>Amazon S3 — virtually unlimited object storage, no capacity planning needed</button>
+        <button class="option-btn" onclick="answer(this,'C','B')"><span class="opt-label">C</span>AWS Storage Gateway — hybrid connector between on-premises and AWS</button>
+        <button class="option-btn" onclick="answer(this,'D','B')"><span class="opt-label">D</span>Amazon EBS — block storage volumes attached to EC2 instances</button>
+      </div>
+      <div class="explanation correct-exp">✅ <strong>Amazon S3</strong> provides virtually unlimited, highly scalable object storage for all data types at low cost — with no upfront capacity planning. EBS requires fixed volumes; RDS is for relational workloads; Storage Gateway is for hybrid scenarios.</div>
+    </div>
+
+    <!-- Q2 multi-select -->
+    <div class="quiz-multi" id="mq2">
+      <div class="quiz-number">Q 02</div>
+      <div class="quiz-q-text">A data engineer is evaluating a new database. Which THREE factors should they consider when choosing a database?</div>
+      <div class="select-hint">Select THREE correct answers</div>
+      <label class="checkbox-option"><input type="checkbox" value="A"><span class="opt-text">Whether the database is fully managed</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="B"><span class="opt-text">Application workload (transactional vs analytical vs graph)</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="C"><span class="opt-text">Performance requirements of the application</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="D"><span class="opt-text">Traceability of data lineage</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="E"><span class="opt-text">Strong identity of the engineering team</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="F"><span class="opt-text">Data shape (relational, key-value, graph, document)</span></label>
+      <button class="check-btn" onclick="checkMulti('mq2',['B','C','F'])">Check Answers</button>
+      <div class="multi-explanation">✅ The three key factors are <strong>application workload</strong> (B), <strong>performance requirements</strong> (C), and <strong>data shape</strong> (F). Whether a database is fully managed and data lineage traceability are operational concerns, not primary criteria for selecting the database engine type.</div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 03</div>
+      <div class="quiz-q-text">A startup is building a web-based order inventory system that requires real-time transactional performance. Which service best meets this need?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','B')"><span class="opt-label">A</span>Amazon Neptune — graph database for relationship analysis</button>
+        <button class="option-btn" onclick="answer(this,'B','B')"><span class="opt-label">B</span>Amazon DynamoDB — fully managed NoSQL with single-digit millisecond performance at scale</button>
+        <button class="option-btn" onclick="answer(this,'C','B')"><span class="opt-label">C</span>Amazon DocumentDB — MongoDB-compatible document database</button>
+        <button class="option-btn" onclick="answer(this,'D','B')"><span class="opt-label">D</span>Amazon Redshift — MPP data warehouse for large-scale analytics</button>
+      </div>
+      <div class="explanation correct-exp">✅ <strong>Amazon DynamoDB</strong> is designed for real-time, high-performance transactional applications — sub-millisecond reads and writes, scales automatically, serverless. Redshift is for analytics, Neptune for graphs, DocumentDB for nested documents.</div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 04</div>
+      <div class="quiz-q-text">A data engineer needs low-cost infrastructure to query data directly from a central repository containing both structured and unstructured data. Which option meets this need?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','A')"><span class="opt-label">A</span>A data lake on Amazon S3 — stores all data types and enables direct querying with Athena at low cost</button>
+        <button class="option-btn" onclick="answer(this,'B','A')"><span class="opt-label">B</span>Amazon QLDB — quantum ledger database for immutable financial records</button>
+        <button class="option-btn" onclick="answer(this,'C','A')"><span class="opt-label">C</span>AWS DMS — database migration service for moving data between systems</button>
+        <button class="option-btn" onclick="answer(this,'D','A')"><span class="opt-label">D</span>Amazon Redshift — structured-only data warehouse with higher storage cost</button>
+      </div>
+      <div class="explanation correct-exp">✅ A <strong>data lake</strong> (on Amazon S3) stores structured, semi-structured, and unstructured data at low cost and enables direct serverless SQL querying with Amazon Athena. Redshift handles only structured data and costs more; DMS and QLDB serve different purposes entirely.</div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 05</div>
+      <div class="quiz-q-text">An organisation is concerned about growing fraud and wants to build fraud detection graphs to analyse relationships between accounts and transactions. Which service is best suited?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','D')"><span class="opt-label">A</span>Amazon Redshift — data warehouse for analytics</button>
+        <button class="option-btn" onclick="answer(this,'B','D')"><span class="opt-label">B</span>Amazon DynamoDB — key-value NoSQL database</button>
+        <button class="option-btn" onclick="answer(this,'C','D')"><span class="opt-label">C</span>Amazon RDS — relational database with SQL support</button>
+        <button class="option-btn" onclick="answer(this,'D','D')"><span class="opt-label">D</span>Amazon Neptune — purpose-built graph database for analysing entity relationships</button>
+      </div>
+      <div class="explanation correct-exp">✅ <strong>Amazon Neptune</strong> is designed for storing and analysing relationships — exactly what fraud detection requires. Fraud patterns emerge through multi-hop connections between accounts, devices, and transactions that relational or key-value databases cannot efficiently traverse.</div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 06</div>
+      <div class="quiz-q-text">A data engineer must host a new MySQL Server database in AWS. Which service should they use?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','A')"><span class="opt-label">A</span>Amazon Aurora — MySQL and PostgreSQL-compatible managed relational database with enhanced performance</button>
+        <button class="option-btn" onclick="answer(this,'B','A')"><span class="opt-label">B</span>Amazon DocumentDB — MongoDB-compatible document database</button>
+        <button class="option-btn" onclick="answer(this,'C','A')"><span class="opt-label">C</span>Amazon Neptune — graph database for relationship analysis</button>
+        <button class="option-btn" onclick="answer(this,'D','A')"><span class="opt-label">D</span>Amazon DynamoDB — serverless NoSQL key-value database</button>
+      </div>
+      <div class="explanation correct-exp">✅ <strong>Amazon Aurora</strong> is fully compatible with MySQL, making it a drop-in replacement that runs existing MySQL applications without code changes — while providing up to 5x the performance of standard RDS MySQL. DocumentDB, Neptune, and DynamoDB are all non-relational.</div>
+    </div>
+
+    <!-- Q7 multi-select -->
+    <div class="quiz-multi" id="mq7">
+      <div class="quiz-number">Q 07</div>
+      <div class="quiz-q-text">Which THREE statements are characteristics of a data warehouse?</div>
+      <div class="select-hint">Select THREE correct answers</div>
+      <label class="checkbox-option"><input type="checkbox" value="A"><span class="opt-text">Stores nonrelational and relational data from IoT devices, websites, mobile apps, and social media</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="B"><span class="opt-text">Is designed prior to implementation — schema on write</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="C"><span class="opt-text">Stores relational data from transactional systems, operational databases, and line-of-business applications</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="D"><span class="opt-text">Has data schema defined at time of analysis — schema on read</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="E"><span class="opt-text">Offers faster query results but uses lower cost storage than a data lake</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="F"><span class="opt-text">Offers faster query results but uses higher cost storage than a data lake</span></label>
+      <button class="check-btn" onclick="checkMulti('mq7',['B','C','F'])">Check Answers</button>
+      <div class="multi-explanation">✅ Data warehouse characteristics: <strong>schema-on-write</strong> (B), <strong>stores relational data</strong> from operational systems (C), and provides <strong>faster queries at higher storage cost</strong> vs a data lake (F). Data lakes store all data types including unstructured (rules out A); schema-on-read describes data lakes (rules out D); data lakes have lower — not higher — storage cost (rules out E).</div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 08</div>
+      <div class="quiz-q-text">A data engineer wants to create a data warehouse in AWS for business intelligence reporting. Which service should they use?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','C')"><span class="opt-label">A</span>Amazon RDS — managed relational OLTP database</button>
+        <button class="option-btn" onclick="answer(this,'B','C')"><span class="opt-label">B</span>Amazon DynamoDB — serverless NoSQL key-value database</button>
+        <button class="option-btn" onclick="answer(this,'C','C')"><span class="opt-label">C</span>Amazon Redshift — fully managed MPP data warehouse optimised for large-scale analytics</button>
+        <button class="option-btn" onclick="answer(this,'D','C')"><span class="opt-label">D</span>Amazon S3 — scalable object storage for data lake workloads</button>
+      </div>
+      <div class="explanation correct-exp">✅ <strong>Amazon Redshift</strong> is AWS's purpose-built data warehouse — designed for analytical SQL queries using columnar storage and MPP. RDS handles OLTP, DynamoDB handles key-value workloads, and S3 is a data lake storage layer; none are optimised for BI analytics.</div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 09</div>
+      <div class="quiz-q-text">A data engineer needs a database where data is split across multiple storage nodes and additional nodes can be added as data grows. Which type of database best fits this requirement?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','A')"><span class="opt-label">A</span>Key-value or wide-column — horizontally partitioned across nodes with seamless scale-out</button>
+        <button class="option-btn" onclick="answer(this,'B','A')"><span class="opt-label">B</span>Relational — normalised tables with JOIN support on a single server</button>
+        <button class="option-btn" onclick="answer(this,'C','A')"><span class="opt-label">C</span>Document — nested JSON documents with rich querying</button>
+        <button class="option-btn" onclick="answer(this,'D','A')"><span class="opt-label">D</span>Graph — nodes and edges for relationship traversal queries</button>
+      </div>
+      <div class="explanation correct-exp">✅ <strong>Key-value and wide-column databases</strong> (like DynamoDB) are built for horizontal scaling — data is partitioned by key across multiple nodes. As data grows, new nodes are added seamlessly with no downtime. Relational databases primarily scale vertically and have limitations on horizontal partitioning.</div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 10</div>
+      <div class="quiz-q-text">A data engineer wants to quickly set up a secure data lake and import data from MySQL, PostgreSQL, SQL Server, and Oracle databases in Amazon RDS. Which service should they use?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','A')"><span class="opt-label">A</span>AWS Lake Formation — unified service to build, secure, and manage data lakes on Amazon S3</button>
+        <button class="option-btn" onclick="answer(this,'B','A')"><span class="opt-label">B</span>Amazon Neptune — graph database for relationship analysis</button>
+        <button class="option-btn" onclick="answer(this,'C','A')"><span class="opt-label">C</span>Amazon Redshift Spectrum — queries S3 data using Redshift's engine</button>
+        <button class="option-btn" onclick="answer(this,'D','A')"><span class="opt-label">D</span>AWS DMS — migrates databases between different database engines</button>
+      </div>
+      <div class="explanation correct-exp">✅ <strong>AWS Lake Formation</strong> is the correct answer. It provides a unified service to build, secure, and manage data lakes — with built-in connectors to import from RDS engines including MySQL, PostgreSQL, SQL Server, and Oracle. It handles IAM, encryption, and the Glue Data Catalog automatically. Redshift Spectrum queries existing lake data but doesn't set up the lake itself.</div>
+    </div>
+
+    <!-- SCORE BAR -->
+    <div class="score-bar" id="scoreBar" style="display:none">
+      <div class="score-title">Your Score</div>
+      <div class="score-count" id="scoreCount">0 / 10</div>
+      <div class="score-sub" id="scoreMsg">Keep practising!</div>
+    </div>
+
+  </section>
+
+  <!-- BOTTOM NAV -->
+  <div class="bottom-nav">
+    <a href="batch-streaming.html" class="btn">⬅ Module 8</a>
+    <a href="big-data.html" class="btn">Module 10 ➡</a>
+  </div>
+
+</div>
+
+<button id="topBtn">↑</button>
+<script src="../assets/js/template.js"></script>
+
+<style>
+.quiz-multi{background:var(--card-bg);border:1px solid var(--border);border-radius:14px;padding:24px 28px;margin-bottom:28px}
+.checkbox-option{display:flex;align-items:flex-start;gap:12px;padding:11px 16px;margin:6px 0;border-radius:8px;border:1px solid var(--border);cursor:pointer;transition:background .2s,border-color .2s;font-family:var(--font-body);font-size:.97rem;color:var(--text)}
+.checkbox-option:hover{background:rgba(255,153,0,.07);border-color:var(--primary)}
+.checkbox-option input[type=checkbox]{margin-top:2px;accent-color:var(--primary);width:16px;height:16px;flex-shrink:0}
+.opt-text{line-height:1.5}
+.select-hint{font-size:.85rem;color:var(--text-muted);font-family:var(--font-mono);margin:6px 0 14px;letter-spacing:.03em}
+.check-btn{margin-top:14px;background:var(--primary);color:#000;border:none;border-radius:8px;padding:10px 24px;font-weight:700;font-family:var(--font-body);font-size:.95rem;cursor:pointer;transition:opacity .2s}
+.check-btn:hover{opacity:.85}
+.check-btn:disabled{opacity:.5;cursor:default}
+.correct-pick{background:rgba(34,197,94,.15)!important;border-color:#22c55e!important}
+.wrong-pick{background:rgba(239,68,68,.15)!important;border-color:#ef4444!important}
+.missed-pick{background:rgba(250,204,21,.15)!important;border-color:#facc15!important}
+.multi-explanation{margin-top:14px;padding:14px 18px;border-radius:8px;background:rgba(255,153,0,.08);border-left:3px solid var(--primary);font-size:.93rem;line-height:1.6;display:none;color:var(--text)}
+.multi-explanation.show{display:block}
+.quiz-q-text{font-size:1.05rem;font-weight:600;color:var(--text);line-height:1.55;margin:8px 0 16px}
+</style>
+
+<script>
+const TOTAL_Q = 10;
+let answered = 0;
+let correct = 0;
+
+function answer(btn, chosen, correctAns) {
+  const qBlock = btn.closest('.quiz-question');
+  if (qBlock.dataset.done) return;
+  qBlock.dataset.done = '1';
+  const btns = qBlock.querySelectorAll('.option-btn');
+  btns.forEach(b => {
+    b.disabled = true;
+    const lbl = b.querySelector('.opt-label').textContent.trim();
+    if (lbl === correctAns) b.classList.add('correct');
+  });
+  const isCorrect = chosen === correctAns;
+  if (isCorrect) { btn.classList.add('correct'); correct++; }
+  else btn.classList.add('wrong');
+  const exp = qBlock.querySelector('.explanation');
+  if (exp) {
+    if (!isCorrect) exp.innerHTML = '❌ ' + exp.innerHTML.replace(/^✅\s*/,'');
+    exp.classList.add('show');
+  }
+  answered++;
+  tryShowScore();
+}
+
+function checkMulti(qId, correctVals) {
+  const qBlock = document.getElementById(qId);
+  if (qBlock.dataset.done) return;
+  qBlock.dataset.done = '1';
+  const checkboxes = qBlock.querySelectorAll('input[type=checkbox]');
+  qBlock.querySelector('.check-btn').disabled = true;
+  let allRight = true;
+  checkboxes.forEach(cb => {
+    cb.disabled = true;
+    const label = cb.closest('.checkbox-option');
+    const isCorrectVal = correctVals.includes(cb.value);
+    if (cb.checked && isCorrectVal)       label.classList.add('correct-pick');
+    else if (cb.checked && !isCorrectVal) { label.classList.add('wrong-pick'); allRight = false; }
+    else if (!cb.checked && isCorrectVal) { label.classList.add('missed-pick'); allRight = false; }
+  });
+  const exp = qBlock.querySelector('.multi-explanation');
+  if (exp) exp.classList.add('show');
+  if (allRight) correct++;
+  answered++;
+  tryShowScore();
+}
+
+function tryShowScore() {
+  if (answered < TOTAL_Q) return;
+  const bar = document.getElementById('scoreBar');
+  if (!bar) return;
+  bar.style.display = 'block';
+  document.getElementById('scoreCount').textContent = correct + ' / ' + TOTAL_Q;
+  const pct = correct / TOTAL_Q;
+  document.getElementById('scoreMsg').textContent =
+    pct === 1    ? '🏆 Perfect! You\'re ready for Module 10!' :
+    pct >= 0.7   ? '✅ Good work! Review any missed questions.' :
+                   '📖 Keep studying — revisit the sections above.';
+}
+
+window.showScore = function() {};
+</script>
+</body>
+</html>
