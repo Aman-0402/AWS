@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Final Exam | AWS Academy Data Engineering</title>
+  <link rel="stylesheet" href="../assets/css/template.css" />
+  <style>
+    .exam-header-bar {
+      background: linear-gradient(135deg, #111827 0%, #0b0f19 100%);
+      border: 1px solid rgba(255,153,0,.18);
+      border-radius: 14px;
+      padding: 24px 28px;
+      margin-bottom: 36px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .exam-header-bar .exam-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .exam-meta-item {
+      display: flex;
+      flex-direction: column;
+    }
+    .exam-meta-item .label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #475569;
+      margin-bottom: 3px;
+    }
+    .exam-meta-item .value {
+      font-family: 'Syne', sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: #f1f5f9;
+    }
+    .exam-meta-item .value.orange { color: #ff9900; }
+    .exam-meta-item .value.yellow { color: #facc15; }
+
+    .progress-tracker {
+      background: #111827;
+      border: 1px solid #1e293b;
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .progress-tracker .pt-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: #475569;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .progress-bar-outer {
+      flex: 1;
+      min-width: 120px;
+      height: 6px;
+      background: #1e293b;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .progress-bar-inner {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #ff9900, #facc15);
+      border-radius: 10px;
+      transition: width 0.4s ease;
+    }
+    .progress-count {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      color: #ff9900;
+      white-space: nowrap;
+    }
+
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 44px 0 24px;
+    }
+    .section-divider .sd-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: #334155;
+      white-space: nowrap;
+    }
+    .section-divider .sd-line {
+      flex: 1;
+      height: 1px;
+      background: #1e293b;
+    }
+    .section-divider .sd-num {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: #ff9900;
+      background: rgba(255,153,0,.08);
+      border: 1px solid rgba(255,153,0,.2);
+      padding: 2px 9px;
+      border-radius: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-eyebrow">AWS Academy · Data Engineering</div>
+  <h1>Final <span>Exam</span></h1>
+  <p>Comprehensive assessment covering all modules — data strategy, ingestion, transformation, storage, ML, and analytics on AWS.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><strong>25</strong><span>Questions</span></div>
+    <div class="hero-stat"><strong>Mixed</strong><span>Question Types</span></div>
+    <div class="hero-stat"><strong>70%</strong><span>Pass Threshold</span></div>
+    <div class="hero-stat"><strong>All</strong><span>Modules Covered</span></div>
+  </div>
+</section>
+
+<!-- ── MAIN CONTENT ── -->
+<div class="container">
+
+  <!-- Anchor Nav -->
+  <nav class="anchor-nav">
+    <span>Jump →</span>
+    <a href="#q1">Q1</a>
+    <a href="#q5">Q5</a>
+    <a href="#q10">Q10</a>
+    <a href="#q15">Q15</a>
+    <a href="#q20">Q20</a>
+    <a href="#q25">Q25</a>
+    <a href="#scoreBar">Score</a>
+  </nav>
+
+  <!-- Exam Header Bar -->
+  <div class="exam-header-bar">
+    <div class="exam-meta">
+      <div class="exam-meta-item">
+        <span class="label">Exam</span>
+        <span class="value orange">Final Certification</span>
+      </div>
+      <div class="exam-meta-item">
+        <span class="label">Coverage</span>
+        <span class="value">All Modules</span>
+      </div>
+      <div class="exam-meta-item">
+        <span class="label">Format</span>
+        <span class="value yellow">Single + Multi-Select</span>
+      </div>
+    </div>
+    <div class="exam-meta-item">
+      <span class="label">Instructions</span>
+      <span style="font-size:13px; color:#64748b; max-width:300px; line-height:1.5;">Select the best answer(s) for each question. Multi-select questions specify how many choices to pick. Your score appears after all questions are answered.</span>
+    </div>
+  </div>
+
+  <!-- Progress Tracker -->
+  <div class="progress-tracker">
+    <span class="pt-label">Progress</span>
+    <div class="progress-bar-outer"><div class="progress-bar-inner" id="progressBar"></div></div>
+    <span class="progress-count" id="progressCount">0 / 25</span>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       SECTION 1 — STRATEGY & BIG DATA FUNDAMENTALS
+  ══════════════════════════════════════════════ -->
+  <div class="section-divider">
+    <span class="sd-label">Section 1</span>
+    <div class="sd-line"></div>
+    <span class="sd-num">Strategy &amp; Big Data</span>
+    <div class="sd-line"></div>
+  </div>
+
+  <!-- Q1 — Multi-select THREE -->
+  <div class="quiz-multi" id="q1">
+    <div class="quiz-number">QUESTION 01 · SELECT THREE</div>
+    <p class="quiz-q-text">Which aspects comprise the three-pronged strategy?</p>
+    <p class="select-hint">Choose exactly three options.</p>
+    <label class="checkbox-option">
+      <input type="checkbox" value="A" /> <span class="opt-text">Discover schema</span>
+    </label>
+    <label class="checkbox-option">
+      <input type="checkbox" value="B" /> <span class="opt-text">Optimize</span>
+    </label>
+    <label class="checkbox-option">
+      <input type="checkbox" value="C" /> <span class="opt-text">Unify</span>
+    </label>
+    <label class="checkbox-option">
+      <input type="checkbox" value="D" /> <span class="opt-text">Modernize</span>
+    </label>
+    <label class="checkbox-option">
+      <input type="checkbox" value="E" /> <span class="opt-text">Enrich and clean the data</span>
+    </label>
+    <label class="checkbox-option">
+      <input type="checkbox" value="F" /> <span class="opt-text">Innovate</span>
+    </label>
+    <br/>
+    <button class="check-btn" onclick="checkMulti('q1',['C','D','F'])">Check Answer</button>
+    <div class="multi-explanation">
+      ✅ The AWS three-pronged data strategy is <strong>Modernize</strong> (move workloads to cloud), <strong>Unify</strong> (centralize data in a data lake), and <strong>Innovate</strong> (build analytics, AI, and ML solutions on top).
+    </div>
+  </div>
+
+  <!-- Q2 — Single -->
+  <div class="quiz-question" id="q2">
+    <div class="quiz-number">QUESTION 02</div>
+    <p class="quiz-q-text">Which scenario describes a challenge to <em>velocity</em>?</p>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'A','D')">
+        <span class="opt-label">A</span>A sales department wants to use a data source but does not have information about its lineage or how it has been maintained.
+      </button>
+      <button class="option-btn" onclick="answer(this,'B','D')">
+        <span class="opt-label">B</span>Regional offices send the same type of data but use different CSV formats for their files.
+      </button>
+      <button class="option-btn" onclick="answer(this,'C','D')">
+        <span class="opt-label">C</span>Data is ingested from regional sales sites, and the overnight batch job fails because it runs out of disk space.
+      </button>
+      <button class="option-btn" onclick="answer(this,'D','D')">
+        <span class="opt-label">D</span>Clickstream data is collected from a shopping website to make personalized recommendations while a user is shopping. When the website is busy, there is a delay in returning results to customers.
+      </button>
+    </div>
+    <div class="explanation">
+      ✅ <strong>Velocity</strong> refers to the speed of data processing. The delay in returning recommendations during high traffic is a data processing speed problem — a classic velocity challenge.
+    </div>
+  </div>
+
+  <!-- Q3 — Multi-select TWO -->
+  <div class="quiz-multi" id="q3">
+    <div class="quiz-number">QUESTION 03 · SELECT TWO</div>
+    <p class="quiz-q-text">Which options are part of the five Vs of big data?</p>
+    <p class="select-hint">Choose exactly two options.</p>
+    <label class="checkbox-option">
+      <input type="checkbox" value="A" /> <span class="opt-text">Verifiability</span>
+    </label>
+    <label class="checkbox-option">
+      <input type="checkbox" value="B" /> <span class="opt-text">Veracity</span>
+    </label>
+    <label class="checkbox-option">
+      <input type="checkbox" value="C" /> <span class="opt-text">Verity</span>
+    </label>
+    <label class="checkbox-option">
+      <input type="checkbox" value="D" /> <span class="opt-text">Value</span>
+    </label>
+    <label class="checkbox-option">
+      <input type="checkbox" value="E" /> <span class="opt-text">Verisimilitude</span>
+    </label>
+    <br/>
+    <button class="check-btn" onclick="checkMulti('q3',['B','D'])">Check Answer</button>
+    <div class="multi-explanation">
+      ✅ The Five Vs of Big Data are <strong>Volume, Velocity, Variety, Veracity</strong>, and <strong>Value</strong>. Veracity = data accuracy &amp; reliability. Value = useful insights generated from data.
+    </div>
+  </div>
+
+  <!-- Q4 — Single -->
+  <div class="quiz-question" id="q4">
+    <div class="quiz-number">QUESTION 04</div>
+    <p class="quiz-q-text">Which option is NOT a pillar of the AWS Well-Architected Framework?</p>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'A','C')">
+        <span class="opt-label">A</span>Reliability
+      </button>
+      <button class="option-btn" onclick="answer(this,'B','C')">
+        <span class="opt-label">B</span>Operational excellence
+      </button>
+      <button class="option-btn" onclick="answer(this,'C','C')">
+        <span class="opt-label">C</span>Disaster recovery
+      </button>
+      <button class="option-btn" onclick="answer(this,'D','C')">
+        <span class="opt-label">D</span>Security
+      </button>
+    </div>
+    <div class="explanation">
+      ✅ The six pillars are <strong>Operational Excellence, Security, Reliability, Performance Efficiency, Cost Optimization,</strong> and <strong>Sustainability</strong>. Disaster Recovery is a concept within Reliability, not a standalone pillar.
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       SECTION 2 — AWS SERVICES & INGESTION
+  ══════════════════════════════════════════════ -->
+  <div class="section-divider">
+    <span class="sd-label">Section 2</span>
+    <div class="sd-line"></div>
+    <span class="sd-num">AWS Services &amp; Ingestion</span>
+    <div class="sd-line"></div>
+  </div>
+
+  <!-- Q5 — Single -->
+  <div class="quiz-question" id="q5">
+    <div class="quiz-number">QUESTION 05</div>
+    <p class="quiz-q-text">An air conditioning company monitors airflow through hospital ducts. Which AWS service would be well-suited to consume the streaming IoT data?</p>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'A','B')">
+        <span class="opt-label">A</span>AWS Amplify
+      </button>
+      <button class="option-btn" onclick="answer(this,'B','B')">
+        <span class="opt-label">B</span>Amazon Data Firehose
+      </button>
+      <button class="option-btn" onclick="answer(this,'C','B')">
+        <span class="opt-label">C</span>Amazon RDS
+      </button>
+      <button class="option-btn" onclick="answer(this,'D','B')">
+        <span class="opt-label">D</span>AWS Lake Formation
+      </button>
+    </div>
+    <div class="explanation">
+      ✅ <strong>Amazon Data Firehose</strong> collects, processes, and delivers real-time streaming data (such as IoT sensor readings) to destinations like S3, Redshift, or OpenSearch.
+    </div>
+  </div>
+
+  <!-- Q6 — Single -->
+  <div class="quiz-question" id="q6">
+    <div class="quiz-number">QUESTION 06</div>
+    <p class="quiz-q-text">Which option is NOT a design principle for data security?</p>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'A','C')">
+        <span class="opt-label">A</span>Implement a strong identity foundation.
+      </button>
+      <button class="option-btn" onclick="answer(this,'B','C')">
+        <span class="opt-label">B</span>Apply security at all layers.
+      </button>
+      <button class="option-btn" onclick="answer(this,'C','C')">
+        <span class="opt-label">C</span>Only provide permissions through AWS Identity and Access Management (IAM) roles.
+      </button>
+      <button class="option-btn" onclick="answer(this,'D','C')">
+        <span class="opt-label">D</span>Activate traceability.
+      </button>
+    </div>
+    <div class="explanation">
+      ✅ The statement is incorrect because AWS permissions can also be managed using <strong>IAM users, groups, and policies</strong> — not only roles. Restricting to roles alone is not a security principle.
+    </div>
+  </div>
+
+  <!-- Q7 — Single -->
+  <div class="quiz-question" id="q7">
+    <div class="quiz-number">QUESTION 07</div>
+    <p class="quiz-q-text">A system administrator wants to create alarms that send notifications when EC2 CPU utilization thresholds are breached. Which AWS service best meets their needs?</p>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'A','C')">
+        <span class="opt-label">A</span>AWS CloudFormation
+      </button>
+      <button class="option-btn" onclick="answer(this,'B','C')">
+        <span class="opt-label">B</span>AWS CloudTrail
+      </button>
+      <button class="option-btn" onclick="answer(this,'C','C')">
+        <span class="opt-label">C</span>Amazon CloudWatch
+      </button>
+      <button class="option-btn" onclick="answer(this,'D','C')">
+        <span class="opt-label">D</span>AWS Key Management Service (AWS KMS)
+      </button>
+    </div>
+    <div class="explanation">
+      ✅ <strong>Amazon CloudWatch</strong> monitors AWS resource metrics like EC2 CPU utilization and can trigger alarms that send notifications (e.g., via SNS) when thresholds are exceeded.
+    </div>
+  </div>
+
+  <!-- Q11 — Single -->
+  <div class="quiz-question" id="q11">
+    <div class="quiz-number">QUESTION 08</div>
+    <p class="quiz-q-text">Which AWS service is designed to ingest data from file systems?</p>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'A','D')">
+        <span class="opt-label">A</span>Amazon Kinesis Data Firehose
+      </button>
+      <button class="option-btn" onclick="answer(this,'B','D')">
+        <span class="opt-label">B</span>AWS Data Exchange
+      </button>
+      <button class="option-btn" onclick="answer(this,'C','D')">
+        <span class="opt-label">C</span>Amazon Cognito
+      </button>
+      <button class="option-btn" onclick="answer(this,'D','D')">
+        <span class="opt-label">D</span>AWS DataSync
+      </button>
+    </div>
+    <div class="explanation">
+      ✅ <strong>AWS DataSync</strong> transfers and ingests data from on-premises file systems (NFS/SMB) to AWS storage services like Amazon S3, EFS, or FSx.
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       SECTION 3 — DATA WRANGLING & STRUCTURING
+  ══════════════════════════════════════════════ -->
+  <div class="section-divider">
+    <span class="sd-label">Section 3</span>
+    <div class="sd-line"></div>
+    <span class="sd-num">Data Wrangling &amp; Structuring</span>
+    <div class="sd-line"></div>
+  </div>
+
+  <!-- Q8 — Single -->
+  <div class="quiz-question" id="q8">
+    <div class="quiz-number">QUESTION 09</div>
+    <p class="quiz-q-text">What is the correct order of tasks in data structuring?</p>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'A','B')">
+        <span class="opt-label">A</span>Parse the source file → map fields → manage file size → organize storage.
+      </button>
+      <button class="option-btn" onclick="answer(this,'B','B')">
+        <span class="opt-label">B</span>Organize storage → parse the source file → map fields → manage file size.
+      </button>
+      <button class="option-btn" onclick="answer(this,'C','B')">
+        <span class="opt-label">C</span>Parse the source file → organize storage → map fields → manage file size.
+      </button>
+      <button class="option-btn" onclick="answer(this,'D','B')">
+        <span class="opt-label">D</span>Organize storage → parse the source file → manage file size → map fields.
+      </button>
+    </div>
+    <div class="explanation">
+      ✅ Correct workflow: <strong>1) Organize storage</strong> (decide where data lives) → <strong>2) Parse</strong> (read raw data) → <strong>3) Map fields</strong> (match to schema) → <strong>4) Manage file size</strong> (optimize for processing).
+    </div>
+  </div>
+
+  <!-- Q9 — Single -->
+  <div class="quiz-question" id="q9">
+    <div class="quiz-number">QUESTION 10</div>
+    <p class="quiz-q-text">Which term is NOT a step in data wrangling?</p>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'A','A')">
+        <span class="opt-label">A</span>Loading
+      </button>
+      <button class="option-btn" onclick="answer(this,'B','A')">
+        <span class="opt-label">B</span>Discovery
+      </button>
+      <button class="option-btn" onclick="answer(this,'C','A')">
+        <span class="opt-label">C</span>Enriching
+      </button>
+      <button class="option-btn" onclick="answer(this,'D','A')">
+        <span class="opt-label">D</span>Structuring
+      </button>
+    </div>
+    <div class="explanation">
+      ✅ Data wrangling steps are <strong>Discovery, Structuring, Cleaning, Enriching,</strong> and <strong>Validating</strong>. <em>Loading</em> belongs to the data ingestion / ETL process, not wrangling.
+    </div>
+  </div>
+
+  <!-- Q10 — Multi-select TWO -->
+  <div class="quiz-multi" id="q10">
+    <div class="quiz-number">QUESTION 11 · SELECT TWO</div>
+    <p class="quiz-q-text">Which AWS services can be used to monitor and troubleshoot an AWS Glue job?</p>
+    <p class="select-hint">Choose exactly two options.</p>
+    <label class="checkbox-option">
+      <input type="checkbox" value="A" /> <span class="opt-text">Amazon Inspector</span>
+    </label>
+    <label class="checkbox-option">
+      <input type="checkbox" value="B" /> <span class="opt-text">Amazon CloudWatch</span>
+    </label>
+    <label class="checkbox-option">
+      <input type="checkbox" value="C" /> <span class="opt-text">Amazon Cognito</span>
+    </label>
+    <label class="checkbox-option">
+      <input type="checkbox" value="D" /> <span class="opt-text">AWS Trusted Advisor</span>
+    </label>
+    <label class="checkbox-option">
+      <input type="checkbox" value="E" /> <span class="opt-text">AWS CloudTrail</span>
+    </label>
+    <br/>
+    <button class="check-btn" onclick="checkMulti('q10',['B','E'])">Check Answer</button>
+    <div class="multi-explanation">
+      ✅ <strong>Amazon CloudWatch</strong> monitors Glue job logs, metrics, and performance. <strong>AWS CloudTrail</strong> tracks API calls and activity history — both are essential for troubleshooting Glue jobs.
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       SECTION 4 — DATABASES & STORAGE
+  ══════════════════════════════════════════════ -->
+  <div class="section-divider">
+    <span class="sd-label">Section 4</span>
+    <div class="sd-line"></div>
+    <span class="sd-num">Databases &amp; Storage</span>
+    <div class="sd-line"></div>
+  </div>
+
+  <!-- Q12 — Single -->
+  <div class="quiz-question" id="q12">
+    <div class="quiz-number">QUESTION 12</div>
+    <p class="quiz-q-text">A company wants to build a website to show leaderboard scores for a high-traffic computer game. Which database would be BEST suited for this purpose?</p>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'A','A')">
+        <span class="opt-label">A</span>Amazon DynamoDB
+      </button>
+      <button class="option-btn" onclick="answer(this,'B','A')">
+        <span class="opt-label">B</span>Amazon AppFlow
+      </button>
+      <button class="option-btn" onclick="answer(this,'C','A')">
+        <span class="opt-label">C</span>Amazon S3
+      </button>
+      <button class="option-btn" onclick="answer(this,'D','A')">
+        <span class="opt-label">D</span>Amazon Aurora
+      </button>
+    </div>
+    <div class="explanation">
+      ✅ <strong>Amazon DynamoDB</strong> is a fully managed NoSQL database with high throughput and low latency — ideal for real-time applications like gaming leaderboards. 🎮
+    </div>
+  </div>
+
+  <!-- Q13 — Single -->
+  <div class="quiz-question" id="q13">
+    <div class="quiz-number">QUESTION 13</div>
+    <p class="quiz-q-text">Which service is MOST commonly associated with data warehousing?</p>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'A','C')">
+        <span class="opt-label">A</span>Amazon Neptune
+      </button>
+      <button class="option-btn" onclick="answer(this,'B','C')">
+        <span class="opt-label">B</span>Amazon Kinesis Data Streams
+      </button>
+      <button class="option-btn" onclick="answer(this,'C','C')">
+        <span class="opt-label">C</span>Amazon Redshift
+      </button>
+      <button class="option-btn" onclick="answer(this,'D','C')">
+        <span class="opt-label">D</span>Amazon S3
+      </button>
+    </div>
+    <div class="explanation">
+      ✅ <strong>Amazon Redshift</strong> is AWS's fully managed data warehouse service used for large-scale analytics and SQL queries on structured data. 📊
+    </div>
+  </div>
+
+  <!-- Q14 — Single -->
+  <div class="quiz-question" id="q14">
+    <div class="quiz-number">QUESTION 14</div>
+    <p class="quiz-q-text">Which service would a data engineer use to encrypt the data in their data lake?</p>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'A','B')">
+        <span class="opt-label">A</span>Amazon S3
+      </button>
+      <button class="option-btn" onclick="answer(this,'B','B')">
+        <span class="opt-label">B</span>AWS Key Management Service (AWS KMS)
+      </button>
+      <button class="option-btn" onclick="answer(this,'C','B')">
+        <span class="opt-label">C</span>Amazon Cognito
+      </button>
+      <button class="option-btn" onclick="answer(this,'D','B')">
+        <span class="opt-label">D</span>AWS Lake Formation
+      </button>
+    </div>
+    <div class="explanation">
+      ✅ <strong>AWS KMS</strong> creates and manages encryption keys used to encrypt data stored in services like Amazon S3 data lakes. 🔐
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       SECTION 5 — AMAZON EMR
+  ══════════════════════════════════════════════ -->
+  <div class="section-divider">
+    <span class="sd-label">Section 5</span>
+    <div class="sd-line"></div>
+    <span class="sd-num">Amazon EMR</span>
+    <div class="sd-line"></div>
+  </div>
+
+  <!-- Q15 — Multi-select THREE -->
+  <div class="quiz-multi" id="q15">
+    <div class="quiz-number">QUESTION 15 · SELECT THREE</div>
+    <p class="quiz-q-text">Which options are Amazon EMR node types?</p>
+    <p class="select-hint">Choose exactly three options.</p>
+    <label class="checkbox-option">
+      <input type="checkbox" value="A" /> <span class="opt-text">Arbiter</span>
+    </label>
+    <label class="checkbox-option">
+      <input type="checkbox" value="B" /> <span class="opt-text">Core</span>
+    </label>
+    <label class="checkbox-option">
+      <input type="checkbox" value="C" /> <span class="opt-text">Worker</span>
+    </label>
+    <label class="checkbox-option">
+      <input type="checkbox" value="D" /> <span class="opt-text">Main</span>
+    </label>
+    <label class="checkbox-option">
+      <input type="checkbox" value="E" /> <span class="opt-text">Cluster</span>
+    </label>
+    <label class="checkbox-option">
+      <input type="checkbox" value="F" /> <span class="opt-text">Task</span>
+    </label>
+    <br/>
+    <button class="check-btn" onclick="checkMulti('q15',['B','D','F'])">Check Answer</button>
+    <div class="multi-explanation">
+      ✅ Amazon EMR has three node types: <strong>Main</strong> (manages the cluster), <strong>Core</strong> (runs tasks + stores data in HDFS), and <strong>Task</strong> (runs processing tasks, no data storage).
+    </div>
+  </div>
+
+  <!-- Q16 — Single -->
+  <div class="quiz-question" id="q16">
+    <div class="quiz-number">QUESTION 16</div>
+    <p class="quiz-q-text">How many layers does the Amazon EMR service architecture consist of?</p>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'A','B')">
+        <span class="opt-label">A</span>Six
+      </button>
+      <button class="option-btn" onclick="answer(this,'B','B')">
+        <span class="opt-label">B</span>Four
+      </button>
+      <button class="option-btn" onclick="answer(this,'C','B')">
+        <span class="opt-label">C</span>Three
+      </button>
+      <button class="option-btn" onclick="answer(this,'D','B')">
+        <span class="opt-label">D</span>Five
+      </button>
+    </div>
+    <div class="explanation">
+      ✅ Amazon EMR has <strong>four architecture layers</strong>: 1) Storage (S3, HDFS), 2) Cluster resource management (YARN), 3) Data processing (Spark, Hive, etc.), 4) Application layer (analytics tools).
+    </div>
+  </div>
+
+  <!-- Q17 — Single -->
+  <div class="quiz-question" id="q17">
+    <div class="quiz-number">QUESTION 17</div>
+    <p class="quiz-q-text">Which tool or service is NOT used to handle near real-time data?</p>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'A','A')">
+        <span class="opt-label">A</span>Apache Pig
+      </button>
+      <button class="option-btn" onclick="answer(this,'B','A')">
+        <span class="opt-label">B</span>Apache Flink
+      </button>
+      <button class="option-btn" onclick="answer(this,'C','A')">
+        <span class="opt-label">C</span>Apache Storm
+      </button>
+      <button class="option-btn" onclick="answer(this,'D','A')">
+        <span class="opt-label">D</span>AWS Lambda
+      </button>
+    </div>
+    <div class="explanation">
+      ✅ <strong>Apache Pig</strong> is primarily used for <em>batch</em> data processing in Hadoop. Apache Flink, Apache Storm, and AWS Lambda are all capable of processing real-time or near real-time data.
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       SECTION 6 — MACHINE LEARNING
+  ══════════════════════════════════════════════ -->
+  <div class="section-divider">
+    <span class="sd-label">Section 6</span>
+    <div class="sd-line"></div>
+    <span class="sd-num">Machine Learning &amp; AI</span>
+    <div class="sd-line"></div>
+  </div>
+
+  <!-- Q18 — Single -->
+  <div class="quiz-question" id="q18">
+    <div class="quiz-number">QUESTION 18</div>
+    <p class="quiz-q-text">Which step is NOT part of framing a typical machine learning (ML) problem?</p>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'A','A')">
+        <span class="opt-label">A</span>Run an initial test set of 20 percent of the data to establish the appropriate schema.
+      </button>
+      <button class="option-btn" onclick="answer(this,'B','A')">
+        <span class="opt-label">B</span>Start with a simple model and iterate.
+      </button>
+      <button class="option-btn" onclick="answer(this,'C','A')">
+        <span class="opt-label">C</span>Establish observable, quantifiable metrics.
+      </button>
+      <button class="option-btn" onclick="answer(this,'D','A')">
+        <span class="opt-label">D</span>Evaluate whether ML is the correct approach.
+      </button>
+    </div>
+    <div class="explanation">
+      ✅ Using a 20% test set to define schema is a <strong>data preparation</strong> step, not part of problem framing. Framing involves checking if ML fits, defining metrics, and planning a simple starting model.
+    </div>
+  </div>
+
+  <!-- Q19 — Single -->
+  <div class="quiz-question" id="q19">
+    <div class="quiz-number">QUESTION 19</div>
+    <p class="quiz-q-text">How does machine learning (ML) differ from traditional data analysis?</p>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'A','C')">
+        <span class="opt-label">A</span>ML is the systematic analysis of large datasets to find patterns and trends.
+      </button>
+      <button class="option-btn" onclick="answer(this,'B','C')">
+        <span class="opt-label">B</span>ML is good for structured data with a limited number of variables.
+      </button>
+      <button class="option-btn" onclick="answer(this,'C','C')">
+        <span class="opt-label">C</span>ML uses examples for large amounts of data to learn about the data and answer questions.
+      </button>
+      <button class="option-btn" onclick="answer(this,'D','C')">
+        <span class="opt-label">D</span>ML uses programming logic to answer questions from data.
+      </button>
+    </div>
+    <div class="explanation">
+      ✅ ML learns patterns from <strong>data examples</strong>, while traditional analysis relies on manually written rules or programming logic to answer questions.
+    </div>
+  </div>
+
+  <!-- Q20 — Single -->
+  <div class="quiz-question" id="q20">
+    <div class="quiz-number">QUESTION 20</div>
+    <p class="quiz-q-text">A developer wants to use a generative AI service embedded in an IDE to help generate code. Which AWS service fits?</p>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'A','B')">
+        <span class="opt-label">A</span>AWS Inferentia
+      </button>
+      <button class="option-btn" onclick="answer(this,'B','B')">
+        <span class="opt-label">B</span>Amazon Q Developer
+      </button>
+      <button class="option-btn" onclick="answer(this,'C','B')">
+        <span class="opt-label">C</span>Foundation models (FMs) with Amazon SageMaker JumpStart
+      </button>
+      <button class="option-btn" onclick="answer(this,'D','B')">
+        <span class="opt-label">D</span>Amazon Bedrock
+      </button>
+    </div>
+    <div class="explanation">
+      ✅ <strong>Amazon Q Developer</strong> is a generative AI coding assistant that integrates with IDEs (VS Code, JetBrains, etc.) to generate code, suggest fixes, and improve developer productivity. 💻
+    </div>
+  </div>
+
+  <!-- Q21 — Single -->
+  <div class="quiz-question" id="q21">
+    <div class="quiz-number">QUESTION 21</div>
+    <p class="quiz-q-text">What percentage of a machine learning (ML) dataset should be allocated to training?</p>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'A','B')">
+        <span class="opt-label">A</span>20–30 percent
+      </button>
+      <button class="option-btn" onclick="answer(this,'B','B')">
+        <span class="opt-label">B</span>70–80 percent
+      </button>
+      <button class="option-btn" onclick="answer(this,'C','B')">
+        <span class="opt-label">C</span>50 percent
+      </button>
+      <button class="option-btn" onclick="answer(this,'D','B')">
+        <span class="opt-label">D</span>10 percent
+      </button>
+    </div>
+    <div class="explanation">
+      ✅ The standard ML split is <strong>70–80% training</strong> and 20–30% testing/validation. This allows the model to learn from most of the data and be evaluated on unseen data.
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════
+       SECTION 7 — ANALYTICS & DEVOPS
+  ══════════════════════════════════════════════ -->
+  <div class="section-divider">
+    <span class="sd-label">Section 7</span>
+    <div class="sd-line"></div>
+    <span class="sd-num">Analytics, BI &amp; DevOps</span>
+    <div class="sd-line"></div>
+  </div>
+
+  <!-- Q22 — Single -->
+  <div class="quiz-question" id="q22">
+    <div class="quiz-number">QUESTION 22</div>
+    <p class="quiz-q-text">Which AWS service provides cloud-scale business intelligence to help deliver insights that are easy to understand?</p>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'A','D')">
+        <span class="opt-label">A</span>AWS Trusted Advisor
+      </button>
+      <button class="option-btn" onclick="answer(this,'B','D')">
+        <span class="opt-label">B</span>AWS CloudTrail
+      </button>
+      <button class="option-btn" onclick="answer(this,'C','D')">
+        <span class="opt-label">C</span>Amazon Quantum Ledger Database (Amazon QLDB)
+      </button>
+      <button class="option-btn" onclick="answer(this,'D','D')">
+        <span class="opt-label">D</span>Amazon QuickSight
+      </button>
+    </div>
+    <div class="explanation">
+      ✅ <strong>Amazon QuickSight</strong> is AWS's Business Intelligence (BI) service for creating dashboards, visualizations, and reports to understand data insights. 📊
+    </div>
+  </div>
+
+  <!-- Q23 — Single -->
+  <div class="quiz-question" id="q23">
+    <div class="quiz-number">QUESTION 23</div>
+    <p class="quiz-q-text">Users with different roles at a video game company use AWS tools within different stages of the analytics pipeline. Which role would you associate with exploring and analyzing player data?</p>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'A','C')">
+        <span class="opt-label">A</span>DevOps engineer
+      </button>
+      <button class="option-btn" onclick="answer(this,'B','C')">
+        <span class="opt-label">B</span>Data scientist
+      </button>
+      <button class="option-btn" onclick="answer(this,'C','C')">
+        <span class="opt-label">C</span>Data analyst
+      </button>
+      <button class="option-btn" onclick="answer(this,'D','C')">
+        <span class="opt-label">D</span>Business user
+      </button>
+    </div>
+    <div class="explanation">
+      ✅ A <strong>Data Analyst</strong> explores, queries, and analyzes data to find insights — such as player behavior patterns and game performance metrics. 🎮📊
+    </div>
+  </div>
+
+  <!-- Q24 — Multi-select THREE -->
+  <div class="quiz-multi" id="q24">
+    <div class="quiz-number">QUESTION 24 · SELECT THREE</div>
+    <p class="quiz-q-text">What are the MOST common use cases for Amazon OpenSearch Service?</p>
+    <p class="select-hint">Choose exactly three options.</p>
+    <label class="checkbox-option">
+      <input type="checkbox" value="A" /> <span class="opt-text">Analyzing log data</span>
+    </label>
+    <label class="checkbox-option">
+      <input type="checkbox" value="B" /> <span class="opt-text">Monitoring applications in real time</span>
+    </label>
+    <label class="checkbox-option">
+      <input type="checkbox" value="C" /> <span class="opt-text">Working with time-series data</span>
+    </label>
+    <label class="checkbox-option">
+      <input type="checkbox" value="D" /> <span class="opt-text">Geolocating</span>
+    </label>
+    <label class="checkbox-option">
+      <input type="checkbox" value="E" /> <span class="opt-text">Mining data</span>
+    </label>
+    <label class="checkbox-option">
+      <input type="checkbox" value="F" /> <span class="opt-text">Analyzing clickstream data</span>
+    </label>
+    <br/>
+    <button class="check-btn" onclick="checkMulti('q24',['A','B','F'])">Check Answer</button>
+    <div class="multi-explanation">
+      ✅ Amazon OpenSearch Service is most commonly used for: <strong>Log analytics</strong> (system/application logs), <strong>real-time application monitoring</strong>, and <strong>clickstream analysis</strong> (tracking user behavior on websites/apps).
+    </div>
+  </div>
+
+  <!-- Q25 — Single -->
+  <div class="quiz-question" id="q25">
+    <div class="quiz-number">QUESTION 25</div>
+    <p class="quiz-q-text">What is the main difference between continuous delivery and continuous deployment?</p>
+    <div class="options">
+      <button class="option-btn" onclick="answer(this,'A','B')">
+        <span class="opt-label">A</span>Continuous deployment tends to have a manual intervention (checkpoint) before the deployment stage. Continuous delivery does not.
+      </button>
+      <button class="option-btn" onclick="answer(this,'B','B')">
+        <span class="opt-label">B</span>Continuous delivery tends to have a manual intervention (checkpoint) before the deployment stage. Continuous deployment does not.
+      </button>
+      <button class="option-btn" onclick="answer(this,'C','B')">
+        <span class="opt-label">C</span>Continuous deployment is initiated by repo push events. Continuous delivery uses pull requests.
+      </button>
+      <button class="option-btn" onclick="answer(this,'D','B')">
+        <span class="opt-label">D</span>Continuous delivery is initiated by repo push events. Continuous deployment uses pull requests.
+      </button>
+    </div>
+    <div class="explanation">
+      ✅ <strong>Continuous Delivery</strong> — code is ready for deployment but typically requires <em>manual approval</em>. <strong>Continuous Deployment</strong> — code is automatically deployed to production without manual intervention. 🚀
+    </div>
+  </div>
+
+  <!-- ── SCORE BAR ── -->
+  <div class="score-bar" id="scoreBar" style="display:none;">
+    <div class="score-title">🎓 Final Exam Complete</div>
+    <div class="score-count" id="scoreCount">0 / 25</div>
+    <div class="score-sub" id="scoreMsg"></div>
+  </div>
+
+  <!-- ── BOTTOM NAV ── -->
+  <div class="bottom-nav">
+    <a href="../index.html" class="btn">← Back to Home</a>
+    <a href="#" class="btn" onclick="window.location.reload()">🔄 Retry Exam</a>
+  </div>
+
+</div>
+
+<!-- ── TOP BUTTON ── -->
+<button id="topBtn" title="Back to top">↑</button>
+
+<script src="../assets/js/template.js"></script>
+<script>
+  /* ── Progress bar update ── */
+  const _origTryShow = _tryShowScore;
+
+  function updateProgress() {
+    const bar   = document.getElementById('progressBar');
+    const count = document.getElementById('progressCount');
+    if (!bar || !count) return;
+    const pct = (_answered / _total) * 100;
+    bar.style.width = pct + '%';
+    count.textContent = _answered + ' / ' + _total;
+  }
+
+  /* Patch answer() to also update progress */
+  const _origAnswer = answer;
+  window.answer = function(btn, chosen, correctAns) {
+    _origAnswer(btn, chosen, correctAns);
+    updateProgress();
+  };
+
+  /* Patch checkMulti() to also update progress */
+  const _origCheckMulti = checkMulti;
+  window.checkMulti = function(qId, correctVals) {
+    _origCheckMulti(qId, correctVals);
+    updateProgress();
+  };
+</script>
+
+</body>
+</html>
