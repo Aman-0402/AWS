@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Module 9: Processing Big Data | AWS Academy Data Engineering</title>
+  <link rel="stylesheet" href="../assets/css/template.css" />
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-eyebrow">Module 9 · AWS Academy Data Engineering</div>
+  <h1>Processing <span>Big Data</span></h1>
+  <p>Explore the frameworks, architectures, and AWS services that power large-scale data processing — from Hadoop and Spark to Amazon EMR and Apache Hudi.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><strong>17</strong><span>Topics</span></div>
+    <div class="hero-stat"><strong>Hadoop</strong><span>Core Framework</span></div>
+    <div class="hero-stat"><strong>Spark</strong><span>In-Memory Engine</span></div>
+    <div class="hero-stat"><strong>EMR</strong><span>AWS Service</span></div>
+  </div>
+</section>
+
+<!-- ── MAIN CONTENT ── -->
+<div class="container">
+
+  <!-- Anchor Nav -->
+  <nav class="anchor-nav">
+    <span>Jump →</span>
+    <a href="#intro">Intro</a>
+    <a href="#concepts">3 Vs</a>
+    <a href="#pipeline">Pipeline</a>
+    <a href="#processing-types">Processing</a>
+    <a href="#hadoop">Hadoop</a>
+    <a href="#hdfs">HDFS</a>
+    <a href="#mapreduce">MapReduce</a>
+    <a href="#spark">Spark</a>
+    <a href="#emr">EMR</a>
+    <a href="#hudi">Hudi</a>
+    <a href="#quiz">Quiz</a>
+  </nav>
+
+  <!-- ══════════════════════════════════════════
+       SECTION 1 — INTRODUCTION
+  ══════════════════════════════════════════ -->
+  <section id="intro">
+    <div class="section-label">01 · Introduction</div>
+    <h2>Why Big Data Processing?</h2>
+    <p>Modern companies generate massive amounts of data every day. Traditional tools cannot handle this scale — big data processing systems were built to fill that gap.</p>
+
+    <div class="card-grid">
+      <div class="card"><div class="card-icon">📱</div><div class="card-title">Social Media</div><div class="card-desc">Billions of posts, likes, and shares per day</div></div>
+      <div class="card"><div class="card-icon">💳</div><div class="card-title">Financial Transactions</div><div class="card-desc">Millions of payments processed per second</div></div>
+      <div class="card"><div class="card-icon">🌡️</div><div class="card-title">IoT Sensor Data</div><div class="card-desc">Continuous telemetry from connected devices</div></div>
+      <div class="card"><div class="card-icon">🖱️</div><div class="card-title">Website Clickstreams</div><div class="card-desc">Every page view and user interaction logged</div></div>
+      <div class="card"><div class="card-icon">🎬</div><div class="card-title">Video Streaming Events</div><div class="card-desc">Play, pause, seek — tracked for every viewer</div></div>
+    </div>
+
+    <div class="info-box">
+      <strong>🎬 Real Example — Netflix</strong><br/>
+      Netflix collects user activity (what users watch, search history, pause/play events, device info) with millions of events per second. This data drives movie recommendations, user behavior analysis, and streaming performance improvements. This is exactly where big data processing systems are essential.
+    </div>
+  </section>
+
+  <hr class="divider"/>
+
+  <!-- ══════════════════════════════════════════
+       SECTION 2 — THE 3 Vs
+  ══════════════════════════════════════════ -->
+  <section id="concepts">
+    <div class="section-label">02 · Core Concepts</div>
+    <h2>The 3 Vs of Big Data</h2>
+    <p>Big data systems must handle three main challenges known as the <strong>3 Vs</strong>. Understanding these shapes how processing systems are designed.</p>
+
+    <div class="role-grid">
+      <div class="role-card" style="--card-color:#ff9900;">
+        <div class="role-icon">📦</div>
+        <div class="role-title">Volume</div>
+        <div class="role-desc">Massive amount of data — terabytes to petabytes generated continuously.</div>
+        <div class="role-skills"><span class="skill-tag">Petabyte-scale</span><span class="skill-tag">Storage</span><span class="skill-tag">HDFS</span></div>
+      </div>
+      <div class="role-card" style="--card-color:#facc15;">
+        <div class="role-icon">⚡</div>
+        <div class="role-title">Velocity</div>
+        <div class="role-desc">Speed at which data is generated and must be processed in near real-time.</div>
+        <div class="role-skills"><span class="skill-tag">Streaming</span><span class="skill-tag">Real-time</span><span class="skill-tag">Kinesis</span></div>
+      </div>
+      <div class="role-card" style="--card-color:#22c55e;">
+        <div class="role-icon">🗂️</div>
+        <div class="role-title">Variety</div>
+        <div class="role-desc">Different data formats — structured, semi-structured, and unstructured.</div>
+        <div class="role-skills"><span class="skill-tag">Structured</span><span class="skill-tag">JSON/CSV</span><span class="skill-tag">Images</span></div>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <strong>🛒 Example — Online Shopping Platform</strong><br/>
+      An e-commerce platform processes <em>customer profiles</em> (structured), <em>click logs</em> (semi-structured), and <em>product images</em> (unstructured). A big data system must handle all three data types simultaneously.
+    </div>
+  </section>
+
+  <hr class="divider"/>
+
+  <!-- ══════════════════════════════════════════
+       SECTION 3 — ITERATIVE PIPELINE
+  ══════════════════════════════════════════ -->
+  <section id="pipeline">
+    <div class="section-label">03 · Iterative Pipeline</div>
+    <h2>Big Data and the Iterative Pipeline</h2>
+    <p>Big data pipelines are <strong>iterative</strong> — processing happens repeatedly, each cycle improving the system with new data and updated models.</p>
+
+    <h3><span class="icon">🔄</span>Steps in an Iterative Pipeline</h3>
+    <div class="pipeline">
+      <div class="pipeline-step">Data Ingestion</div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">Data Storage</div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">Data Processing</div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">Analytics / ML</div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">New Data Generated</div>
+      <div class="pipeline-arrow">↺</div>
+      <div class="pipeline-step">Pipeline Repeats</div>
+    </div>
+
+    <div class="warn-box">
+      <strong>🏦 Example — Banking Fraud Detection</strong><br/>
+      Transaction data flows through real-time analysis, updates the fraud detection model, then new transactions are processed again. Each loop makes the system smarter and more accurate.
+    </div>
+
+    <h3><span class="icon">🏗️</span>Modern Architecture Pipeline</h3>
+    <p>Modern data architectures process data using multiple layers, combining ingestion, lake storage, processing, and warehousing.</p>
+    <div class="pipeline">
+      <div class="pipeline-step">Data Sources</div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">Kinesis / DMS</div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">Amazon S3 (Lake)</div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">Spark / Hadoop</div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">Redshift (Warehouse)</div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">Analytics / ML</div>
+    </div>
+
+    <div class="info-box">
+      <strong>🛍️ E-Commerce Example</strong><br/>
+      Website events → stored in S3 → processed using Apache Spark → stored in Redshift → powering business dashboards and recommendations.
+    </div>
+  </section>
+
+  <hr class="divider"/>
+
+  <!-- ══════════════════════════════════════════
+       SECTION 4 — PROCESSING TYPES
+  ══════════════════════════════════════════ -->
+  <section id="processing-types">
+    <div class="section-label">04 · Processing Types</div>
+    <h2>Batch vs. Stream Processing</h2>
+    <p>Big data systems generally use two main processing methods, each suited to different use cases and latency requirements.</p>
+
+    <div class="role-grid">
+      <div class="role-card" style="--card-color:#ff9900;">
+        <div class="role-icon">📋</div>
+        <div class="role-title">Batch Processing</div>
+        <div class="role-desc">Analyzes large datasets at scheduled intervals. High latency, high throughput.</div>
+        <div class="role-skills"><span class="skill-tag">Scheduled</span><span class="skill-tag">High Latency</span><span class="skill-tag">MapReduce</span></div>
+      </div>
+      <div class="role-card" style="--card-color:#22c55e;">
+        <div class="role-icon">⚡</div>
+        <div class="role-title">Stream Processing</div>
+        <div class="role-desc">Analyzes data continuously as it arrives. Low latency, real-time response.</div>
+        <div class="role-skills"><span class="skill-tag">Continuous</span><span class="skill-tag">Low Latency</span><span class="skill-tag">Flink</span></div>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Feature</th><th>Batch Processing</th><th>Stream Processing</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Data Processing</td><td>Scheduled intervals</td><td>Continuous</td></tr>
+          <tr><td>Latency</td><td><span class="badge badge-orange">High</span></td><td><span class="badge badge-green">Low</span></td></tr>
+          <tr><td>Throughput</td><td><span class="badge badge-green">High</span></td><td><span class="badge badge-yellow">Variable</span></td></tr>
+          <tr><td>Example</td><td>Daily sales report</td><td>Fraud detection</td></tr>
+          <tr><td>Tools</td><td>Hadoop MapReduce, Hive</td><td>Apache Flink, Kafka, Storm</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3><span class="icon">🛠️</span>Frameworks for Batch and Stream Processing</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Framework</th><th>Type</th><th>Purpose</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="badge badge-orange">Apache Hadoop</span></td><td>Batch</td><td>Large-scale batch processing on clusters</td></tr>
+          <tr><td><span class="badge badge-yellow">Apache Spark</span></td><td>Both</td><td>Fast in-memory batch and streaming processing</td></tr>
+          <tr><td><span class="badge badge-green">Apache Flink</span></td><td>Stream</td><td>Real-time stream processing</td></tr>
+          <tr><td><span class="badge badge-blue">Apache Storm</span></td><td>Stream</td><td>Low-latency streaming data processing</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider"/>
+
+  <!-- ══════════════════════════════════════════
+       SECTION 5 — APACHE HADOOP
+  ══════════════════════════════════════════ -->
+  <section id="hadoop">
+    <div class="section-label">05 · Apache Hadoop</div>
+    <h2>Apache Hadoop</h2>
+    <p>Apache Hadoop is one of the earliest and most widely used big data processing frameworks. It processes massive datasets using <strong>clusters of commodity computers</strong> working in parallel — instead of one expensive, powerful machine.</p>
+
+    <div class="info-box">
+      <strong>📦 Scale Example — 100 TB of Data</strong><br/>
+      <strong>Without Hadoop:</strong> One machine would take days or weeks.<br/>
+      <strong>With Hadoop:</strong> Hundreds of machines process data in parallel, dramatically reducing time.
+    </div>
+
+    <h3><span class="icon">✅</span>Hadoop Characteristics</h3>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🖥️</div>
+        <div class="card-title">Distributed Processing</div>
+        <div class="card-desc">Data processing occurs across multiple machines in a cluster simultaneously.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📈</div>
+        <div class="card-title">Scalability</div>
+        <div class="card-desc">Clusters expand by adding machines: 10 → 100 → 1000 nodes.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🛡️</div>
+        <div class="card-title">Fault Tolerance</div>
+        <div class="card-desc">If one machine fails, Hadoop recovers automatically using data replication.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">💰</div>
+        <div class="card-title">Cost Efficiency</div>
+        <div class="card-desc">Runs on commodity hardware — no need for expensive dedicated servers.</div>
+      </div>
+    </div>
+
+    <h3><span class="icon">🗂️</span>Common Hadoop Ecosystem Frameworks</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Framework</th><th>Purpose</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="badge badge-orange">Apache Hive</span></td><td>SQL queries on Hadoop data</td></tr>
+          <tr><td><span class="badge badge-yellow">Apache Pig</span></td><td>Data transformation using dataflow scripts</td></tr>
+          <tr><td><span class="badge badge-green">Apache HBase</span></td><td>NoSQL database on top of HDFS</td></tr>
+          <tr><td><span class="badge badge-blue">Apache Spark</span></td><td>Fast distributed in-memory processing</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="warn-box">
+      <strong>📱 Real Industry Example — Social Media</strong><br/>
+      A social media company processes billions of posts. User posts → stored in HDFS → MapReduce analyzes posts → output shows trending topics and user engagement patterns.
+    </div>
+  </section>
+
+  <hr class="divider"/>
+
+  <!-- ══════════════════════════════════════════
+       SECTION 6 — HDFS
+  ══════════════════════════════════════════ -->
+  <section id="hdfs">
+    <div class="section-label">06 · HDFS</div>
+    <h2>Hadoop Distributed File System (HDFS)</h2>
+    <p>HDFS is the <strong>storage layer</strong> of Hadoop. It distributes large files across multiple nodes in a cluster, enabling high throughput and fault-tolerant storage.</p>
+
+    <h3><span class="icon">⚙️</span>How HDFS Works</h3>
+    <p>Large files are split into smaller <strong>blocks</strong> and stored across different nodes. Each block is replicated for fault tolerance.</p>
+
+    <div class="pipeline">
+      <div class="pipeline-step">1 TB File</div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">Split into 128 MB blocks</div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">Blocks distributed across nodes</div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">Replicas stored on backup nodes</div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Block</th><th>Primary Node</th><th>Replica Node</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="badge badge-orange">Block 1</span></td><td>Node A</td><td>Node D</td></tr>
+          <tr><td><span class="badge badge-yellow">Block 2</span></td><td>Node B</td><td>Node E</td></tr>
+          <tr><td><span class="badge badge-green">Block 3</span></td><td>Node C</td><td>Node F</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="success-box">
+      <strong>✅ HDFS Advantages</strong><br/>
+      High fault tolerance (automatic failover via replicas) · Distributed storage across many nodes · High throughput for large sequential reads
+    </div>
+
+    <h3><span class="icon">🧩</span>YARN — Resource Management</h3>
+    <p><strong>Yet Another Resource Negotiator (YARN)</strong> is the resource management layer in Hadoop. It acts as the cluster manager, deciding which machine processes which task and how CPU and memory are allocated.</p>
+
+    <div class="card-grid">
+      <div class="card"><div class="card-icon">🧠</div><div class="card-title">CPU Management</div><div class="card-desc">Allocates processing cores to active jobs across the cluster.</div></div>
+      <div class="card"><div class="card-icon">💾</div><div class="card-title">Memory Allocation</div><div class="card-desc">Controls RAM usage per task to prevent resource conflicts.</div></div>
+      <div class="card"><div class="card-icon">📅</div><div class="card-title">Job Scheduling</div><div class="card-desc">Queues and prioritizes jobs across a cluster of hundreds of machines.</div></div>
+    </div>
+  </section>
+
+  <hr class="divider"/>
+
+  <!-- ══════════════════════════════════════════
+       SECTION 7 — MAPREDUCE
+  ══════════════════════════════════════════ -->
+  <section id="mapreduce">
+    <div class="section-label">07 · MapReduce</div>
+    <h2>Hadoop MapReduce</h2>
+    <p>MapReduce is the core <strong>processing model</strong> used in Hadoop. It breaks large data problems into two distinct phases for massive parallel processing.</p>
+
+    <div class="role-grid">
+      <div class="role-card" style="--card-color:#ff9900;">
+        <div class="role-icon">🗺️</div>
+        <div class="role-title">Map Phase</div>
+        <div class="role-desc">Data is split into smaller pieces and processed in parallel across all nodes.</div>
+        <div class="role-skills"><span class="skill-tag">Split</span><span class="skill-tag">Parallel</span><span class="skill-tag">Key-Value</span></div>
+      </div>
+      <div class="role-card" style="--card-color:#facc15;">
+        <div class="role-icon">🔀</div>
+        <div class="role-title">Shuffle &amp; Sort</div>
+        <div class="role-desc">Intermediate outputs are grouped by key and transferred to reducer nodes.</div>
+        <div class="role-skills"><span class="skill-tag">Group</span><span class="skill-tag">Sort</span><span class="skill-tag">Transfer</span></div>
+      </div>
+      <div class="role-card" style="--card-color:#22c55e;">
+        <div class="role-icon">📊</div>
+        <div class="role-title">Reduce Phase</div>
+        <div class="role-desc">Results from map tasks are aggregated to produce the final output.</div>
+        <div class="role-skills"><span class="skill-tag">Aggregate</span><span class="skill-tag">Summarize</span><span class="skill-tag">Output</span></div>
+      </div>
+    </div>
+
+    <h3><span class="icon">📝</span>Word Count Example</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Phase</th><th>Input</th><th>Output</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="badge badge-orange">Map</span></td><td>"Hello world / Hello data"</td><td>Hello→1, world→1, Hello→1, data→1</td></tr>
+          <tr><td><span class="badge badge-yellow">Shuffle</span></td><td>Distributed key-value pairs</td><td>Hello→[1,1], world→[1], data→[1]</td></tr>
+          <tr><td><span class="badge badge-green">Reduce</span></td><td>Grouped values per key</td><td>Hello→2, world→1, data→1</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="info-box">
+      <strong>📁 Website Log Analysis</strong><br/>
+      Website logs (user visits, pages, timestamps) → stored in HDFS → MapReduce processes logs → output shows most visited pages and traffic statistics.
+    </div>
+  </section>
+
+  <hr class="divider"/>
+
+  <!-- ══════════════════════════════════════════
+       SECTION 8 — APACHE SPARK
+  ══════════════════════════════════════════ -->
+  <section id="spark">
+    <div class="section-label">08 · Apache Spark</div>
+    <h2>Apache Spark</h2>
+    <p>Apache Spark is a powerful open-source framework for large-scale data processing. It performs processing <strong>in memory</strong>, making it significantly faster than Hadoop MapReduce for many workloads.</p>
+
+    <div class="warn-box">
+      <strong>⚡ Speed Comparison — 1 TB Website Logs</strong><br/>
+      <strong>Hadoop MapReduce:</strong> Processing may take hours (disk I/O at every step).<br/>
+      <strong>Apache Spark:</strong> Processing can finish much faster — intermediate data stays in RAM.
+    </div>
+
+    <h3><span class="icon">✅</span>Spark Characteristics</h3>
+    <div class="card-grid">
+      <div class="card"><div class="card-icon">🧠</div><div class="card-title">In-Memory Processing</div><div class="card-desc">Intermediate data stored in RAM, not disk — dramatically faster iteration.</div></div>
+      <div class="card"><div class="card-icon">🌐</div><div class="card-title">Distributed</div><div class="card-desc">Processes data across many machines simultaneously.</div></div>
+      <div class="card"><div class="card-icon">🐍</div><div class="card-title">Multi-Language</div><div class="card-desc">Supports Python (PySpark), Java, Scala, and SQL.</div></div>
+      <div class="card"><div class="card-icon">🔄</div><div class="card-title">Batch + Streaming</div><div class="card-desc">Handles batch, real-time streaming, and ML workloads.</div></div>
+      <div class="card"><div class="card-icon">🛡️</div><div class="card-title">Fault Tolerant</div><div class="card-desc">Automatically recovers data using RDDs if a node fails.</div></div>
+    </div>
+
+    <h3><span class="icon">🏗️</span>Spark Cluster Architecture</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Component</th><th>Role</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="badge badge-orange">Driver Node</span></td><td>Controls job execution and coordinates tasks across the cluster</td></tr>
+          <tr><td><span class="badge badge-yellow">Worker Nodes</span></td><td>Execute the actual tasks using assigned data partitions</td></tr>
+          <tr><td><span class="badge badge-blue">Cluster Manager</span></td><td>Allocates resources (CPU, RAM) across the cluster (YARN, Mesos, Kubernetes)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3><span class="icon">🧩</span>Spark Components</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Component</th><th>Purpose</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="badge badge-orange">Spark Core</span></td><td>Basic distributed processing engine; manages RDDs</td></tr>
+          <tr><td><span class="badge badge-yellow">Spark SQL</span></td><td>SQL and DataFrame queries on large-scale data</td></tr>
+          <tr><td><span class="badge badge-green">Spark Streaming</span></td><td>Real-time micro-batch stream processing</td></tr>
+          <tr><td><span class="badge badge-blue">MLlib</span></td><td>Distributed machine learning library</td></tr>
+          <tr><td><span class="badge badge-purple">GraphX</span></td><td>Graph computation and analytics</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="info-box">
+      <strong>🏢 Company Example</strong><br/>
+      <strong>Spark SQL</strong> → query large datasets · <strong>Spark Streaming</strong> → process real-time events · <strong>MLlib</strong> → build recommendation systems
+    </div>
+  </section>
+
+  <hr class="divider"/>
+
+  <!-- ══════════════════════════════════════════
+       SECTION 9 — AMAZON EMR
+  ══════════════════════════════════════════ -->
+  <section id="emr">
+    <div class="section-label">09 · Amazon EMR</div>
+    <h2>Amazon EMR (Elastic MapReduce)</h2>
+    <p>Amazon EMR is the AWS managed service for running big data frameworks — without manually provisioning and configuring infrastructure. It supports Spark, Hadoop, Hive, Presto, and HBase.</p>
+
+    <div class="success-box">
+      <strong>☁️ Key Benefit</strong><br/>
+      Instead of manually installing Spark on many machines, engineers launch an Amazon EMR cluster and AWS automatically sets up the entire environment in minutes.
+    </div>
+
+    <h3><span class="icon">⭐</span>EMR Key Features</h3>
+    <div class="card-grid">
+      <div class="card"><div class="card-icon">⚙️</div><div class="card-title">Managed Platform</div><div class="card-desc">AWS handles infrastructure setup, patching, and configuration.</div></div>
+      <div class="card"><div class="card-icon">📈</div><div class="card-title">Scalable</div><div class="card-desc">Scale from a few nodes to hundreds with auto-scaling support.</div></div>
+      <div class="card"><div class="card-icon">💰</div><div class="card-title">Cost Efficient</div><div class="card-desc">Clusters can be started and stopped as needed — pay only for what you use.</div></div>
+      <div class="card"><div class="card-icon">🔗</div><div class="card-title">AWS Integration</div><div class="card-desc">Native integration with S3, Glue, Redshift, and IAM.</div></div>
+    </div>
+
+    <h3><span class="icon">🖧</span>EMR Node Types</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Node Type</th><th>Function</th><th>Stores Data?</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="badge badge-orange">Main Node</span></td><td>Manages the cluster, coordinates resource allocation</td><td>No</td></tr>
+          <tr><td><span class="badge badge-yellow">Core Nodes</span></td><td>Run tasks and store data in HDFS</td><td>Yes</td></tr>
+          <tr><td><span class="badge badge-blue">Task Nodes</span></td><td>Execute processing tasks only — no data storage</td><td>No</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="warn-box">
+      <strong>🔒 Default Security Note</strong><br/>
+      By default, only the <strong>main node</strong> is accessible externally. Core and task nodes are not directly accessible from outside the cluster, protecting sensitive data and processing resources.
+    </div>
+
+    <h3><span class="icon">🏗️</span>EMR Service Architecture</h3>
+    <div class="pipeline">
+      <div class="pipeline-step">Data Source</div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">Amazon S3</div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">EMR Cluster (Spark)</div>
+      <div class="pipeline-arrow">→</div>
+      <div class="pipeline-step">Processed Results → S3 / Redshift</div>
+    </div>
+
+    <h3><span class="icon">⚖️</span>Scaling Your EMR Cluster</h3>
+    <div class="role-grid">
+      <div class="role-card" style="--card-color:#ff9900;">
+        <div class="role-icon">➕</div>
+        <div class="role-title">Horizontal Scaling</div>
+        <div class="role-desc">Add more nodes to the cluster: 5 nodes → 20 nodes. Best for increasing parallelism.</div>
+      </div>
+      <div class="role-card" style="--card-color:#facc15;">
+        <div class="role-icon">⬆️</div>
+        <div class="role-title">Vertical Scaling</div>
+        <div class="role-desc">Increase node size: t3.large → m5.2xlarge. Best for memory-intensive workloads.</div>
+      </div>
+    </div>
+
+    <h3><span class="icon">🔌</span>Connecting to Your Cluster</h3>
+    <ul class="styled">
+      <li><strong>SSH</strong> — Secure shell connection directly to the main node</li>
+      <li><strong>AWS Console</strong> — Web-based management and job submission</li>
+      <li><strong>Notebooks</strong> — Jupyter/EMR Studio for interactive development</li>
+    </ul>
+  </section>
+
+  <hr class="divider"/>
+
+  <!-- ══════════════════════════════════════════
+       SECTION 10 — APACHE HUDI
+  ══════════════════════════════════════════ -->
+  <section id="hudi">
+    <div class="section-label">10 · Apache Hudi</div>
+    <h2>Apache Hudi</h2>
+    <p>Apache Hudi is a framework designed to manage <strong>incremental data processing</strong> in data lakes. It solves a core problem: traditional data lakes (Parquet/ORC files) are difficult to update efficiently.</p>
+
+    <div class="info-box">
+      <strong>❓ Why Hudi is Needed</strong><br/>
+      <strong>Without Hudi:</strong> Updating a single record requires rewriting the entire dataset file.<br/>
+      <strong>With Hudi:</strong> Only the changed records are updated — dramatically improving performance.
+    </div>
+
+    <h3><span class="icon">✅</span>Hudi Characteristics</h3>
+    <div class="card-grid">
+      <div class="card"><div class="card-icon">📊</div><div class="card-title">Incremental Processing</div><div class="card-desc">Only new or updated data is processed, not the full dataset.</div></div>
+      <div class="card"><div class="card-icon">✏️</div><div class="card-title">Upserts</div><div class="card-desc">Supports insert and update operations natively on data lake files.</div></div>
+      <div class="card"><div class="card-icon">🕰️</div><div class="card-title">Data Versioning</div><div class="card-desc">Maintains a timeline of historical dataset changes for audit and rollback.</div></div>
+      <div class="card"><div class="card-icon">⚡</div><div class="card-title">Faster Queries</div><div class="card-desc">Optimized file layouts improve query performance on large datasets.</div></div>
+    </div>
+
+    <h3><span class="icon">💾</span>Hudi Storage Types</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Storage Type</th><th>How Updates Work</th><th>Best For</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="badge badge-orange">Copy-on-Write (CoW)</span></td>
+            <td>Updates rewrite the entire file with new data merged in</td>
+            <td>Read-heavy workloads with fewer updates</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-yellow">Merge-on-Read (MoR)</span></td>
+            <td>Updates stored in delta logs and merged during query time</td>
+            <td>Write-heavy workloads needing fast ingestion</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3><span class="icon">🔑</span>Key Hudi Concepts</h3>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Concept</th><th>Meaning</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="badge badge-orange">Dataset</span></td><td>Collection of data files managed by Hudi</td></tr>
+          <tr><td><span class="badge badge-yellow">Commit</span></td><td>A recorded set of data changes applied to a dataset</td></tr>
+          <tr><td><span class="badge badge-green">Upsert</span></td><td>Insert a new record or update an existing one atomically</td></tr>
+          <tr><td><span class="badge badge-blue">Timeline</span></td><td>Full history of all dataset changes, enabling time-travel queries</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="success-box">
+      <strong>🚗 Real Industry Example — Ride-Sharing</strong><br/>
+      Trip data → stored in S3 data lake → EMR cluster runs Spark processing → Apache Hudi manages incremental updates → analytics dashboard shows real-time trip statistics.
+    </div>
+  </section>
+
+  <hr class="divider"/>
+
+  <!-- ══════════════════════════════════════════
+       QUIZ SECTION
+  ══════════════════════════════════════════ -->
+  <section id="quiz">
+    <div class="section-label">Knowledge Check</div>
+    <h2>Module 9 Quiz</h2>
+    <p>Test your understanding of big data processing frameworks, Amazon EMR, Apache Spark, and Apache Hudi.</p>
+
+    <!-- Q1 — Single -->
+    <div class="quiz-question" id="q1">
+      <div class="quiz-number">QUESTION 01</div>
+      <p class="quiz-q-text">Which tool is an open-source, in-memory SQL query engine that emphasizes faster queries?</p>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','D')"><span class="opt-label">A</span>Apache Flink</button>
+        <button class="option-btn" onclick="answer(this,'B','D')"><span class="opt-label">B</span>Apache Hive</button>
+        <button class="option-btn" onclick="answer(this,'C','D')"><span class="opt-label">C</span>Apache Kafka</button>
+        <button class="option-btn" onclick="answer(this,'D','D')"><span class="opt-label">D</span>Presto</button>
+      </div>
+      <div class="explanation">✅ <strong>Presto</strong> is an open-source distributed SQL query engine that performs fast in-memory queries on large datasets across multiple data sources — without moving data.</div>
+    </div>
+
+    <!-- Q2 — Multi TWO -->
+    <div class="quiz-multi" id="q2">
+      <div class="quiz-number">QUESTION 02 · SELECT TWO</div>
+      <p class="quiz-q-text">A data engineer is considering the Presto framework for their data analytics workload. What are some benefits of choosing Presto?</p>
+      <p class="select-hint">Choose exactly two options.</p>
+      <label class="checkbox-option"><input type="checkbox" value="A"/><span class="opt-text">Presto integrates with Apache Hudi.</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="B"/><span class="opt-text">Presto is an ideal tool to capture real-time streaming data and place it in a data lake.</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="C"/><span class="opt-text">Presto does not require jobs to be re-run when they fail.</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="D"/><span class="opt-text">Presto supports user-defined functions in Piggy Bank.</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="E"/><span class="opt-text">Presto runs in-memory interactive queries, which results in faster response times.</span></label>
+      <br/>
+      <button class="check-btn" onclick="checkMulti('q2',['A','E'])">Check Answer</button>
+      <div class="multi-explanation">✅ Presto is designed for fast interactive SQL queries using <strong>in-memory processing</strong>, and it integrates with modern data lake technologies like <strong>Apache Hudi</strong> for analytics.</div>
+    </div>
+
+    <!-- Q3 — Multi TWO -->
+    <div class="quiz-multi" id="q3">
+      <div class="quiz-number">QUESTION 03 · SELECT TWO</div>
+      <p class="quiz-q-text">A company wants to use inexpensive commodity hardware they already own. Which programming frameworks are designed to best operate on that hardware?</p>
+      <p class="select-hint">Choose exactly two options.</p>
+      <label class="checkbox-option"><input type="checkbox" value="A"/><span class="opt-text">Presto</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="B"/><span class="opt-text">Apache Hadoop</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="C"/><span class="opt-text">Amazon RDS</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="D"/><span class="opt-text">Amazon Redshift</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="E"/><span class="opt-text">Apache Hive</span></label>
+      <br/>
+      <button class="check-btn" onclick="checkMulti('q3',['B','E'])">Check Answer</button>
+      <div class="multi-explanation">✅ <strong>Apache Hadoop</strong> is specifically designed to run on low-cost commodity hardware, and <strong>Apache Hive</strong> runs on top of Hadoop to provide SQL-like querying — both are built for cost-efficient big data processing.</div>
+    </div>
+
+    <!-- Q4 — Single -->
+    <div class="quiz-question" id="q4">
+      <div class="quiz-number">QUESTION 04</div>
+      <p class="quiz-q-text">A data engineer is planning a machine learning project that involves iterative, multi-stage ML algorithms. Which programming framework best supports these requirements?</p>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','B')"><span class="opt-label">A</span>Apache Hadoop YARN</button>
+        <button class="option-btn" onclick="answer(this,'B','B')"><span class="opt-label">B</span>Apache Spark MLlib</button>
+        <button class="option-btn" onclick="answer(this,'C','B')"><span class="opt-label">C</span>Presto</button>
+        <button class="option-btn" onclick="answer(this,'D','B')"><span class="opt-label">D</span>Apache Hive</button>
+      </div>
+      <div class="explanation">✅ <strong>Apache Spark MLlib</strong> is a distributed machine learning library designed for iterative and multi-stage ML algorithms, using fast in-memory processing that makes repeated model training efficient.</div>
+    </div>
+
+    <!-- Q5 — Single -->
+    <div class="quiz-question" id="q5">
+      <div class="quiz-number">QUESTION 05</div>
+      <p class="quiz-q-text">A company is migrating on-premises Hadoop workloads to Amazon EMR. What is a key benefit of choosing Amazon EMR?</p>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','D')"><span class="opt-label">A</span>Amazon EMR automatically ceases operations when a task fails.</button>
+        <button class="option-btn" onclick="answer(this,'B','D')"><span class="opt-label">B</span>Amazon EMR has low initial investment in hardware.</button>
+        <button class="option-btn" onclick="answer(this,'C','D')"><span class="opt-label">C</span>Amazon EMR negates the need for encryption.</button>
+        <button class="option-btn" onclick="answer(this,'D','D')"><span class="opt-label">D</span>Amazon EMR likely provides faster provisioning and a larger potential cluster capacity than most organizations can achieve with on-premises hardware.</button>
+      </div>
+      <div class="explanation">✅ Amazon EMR can <strong>quickly provision scalable clusters in the cloud</strong>, allowing organizations to scale faster and handle larger workloads than typical on-premises Hadoop infrastructure — without buying or managing hardware.</div>
+    </div>
+
+    <!-- Q6 — Single -->
+    <div class="quiz-question" id="q6">
+      <div class="quiz-number">QUESTION 06</div>
+      <p class="quiz-q-text">When launching a cluster, how is access to the core and task nodes handled under default EMR cluster settings?</p>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','B')"><span class="opt-label">A</span>External access to core and task nodes is not restricted; direct access is allowed from the command line and API.</button>
+        <button class="option-btn" onclick="answer(this,'B','B')"><span class="opt-label">B</span>External access to core and task nodes is not permitted; direct access is allowed only to the main node.</button>
+        <button class="option-btn" onclick="answer(this,'C','B')"><span class="opt-label">C</span>External access to core and task nodes is restricted to SSL-enabled connections.</button>
+        <button class="option-btn" onclick="answer(this,'D','B')"><span class="opt-label">D</span>External access to core and task nodes is restricted to SSH-enabled connections.</button>
+      </div>
+      <div class="explanation">✅ By default, <strong>only the main (master) node</strong> is accessible externally. Core and task nodes are protected within the cluster's security group and cannot be directly accessed from outside.</div>
+    </div>
+
+    <!-- Q7 — Multi THREE -->
+    <div class="quiz-multi" id="q7">
+      <div class="quiz-number">QUESTION 07 · SELECT THREE</div>
+      <p class="quiz-q-text">Each instance in an Amazon EMR cluster is called a node. What are the EMR cluster node types?</p>
+      <p class="select-hint">Choose exactly three options.</p>
+      <label class="checkbox-option"><input type="checkbox" value="A"/><span class="opt-text">Main node</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="B"/><span class="opt-text">Resource Manager node</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="C"/><span class="opt-text">Task node</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="D"/><span class="opt-text">Name node</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="E"/><span class="opt-text">Core node</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="F"/><span class="opt-text">Data node</span></label>
+      <br/>
+      <button class="check-btn" onclick="checkMulti('q7',['A','C','E'])">Check Answer</button>
+      <div class="multi-explanation">✅ Amazon EMR has three node types: <strong>Main node</strong> (manages the cluster), <strong>Core node</strong> (runs tasks and stores data in HDFS), and <strong>Task node</strong> (runs processing tasks only, no data storage).</div>
+    </div>
+
+    <!-- Q8 — Multi TWO -->
+    <div class="quiz-multi" id="q8">
+      <div class="quiz-number">QUESTION 08 · SELECT TWO</div>
+      <p class="quiz-q-text">What are the two dataset storage types that Apache Hudi supports?</p>
+      <p class="select-hint">Choose exactly two options.</p>
+      <label class="checkbox-option"><input type="checkbox" value="A"/><span class="opt-text">Copy-on-Read (CoR)</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="B"/><span class="opt-text">Merge-on-Copy (MoC)</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="C"/><span class="opt-text">Copy-on-Write (CoW)</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="D"/><span class="opt-text">Copy-on-Merge (CoM)</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="E"/><span class="opt-text">Merge-on-Read (MoR)</span></label>
+      <br/>
+      <button class="check-btn" onclick="checkMulti('q8',['C','E'])">Check Answer</button>
+      <div class="multi-explanation">✅ Apache Hudi supports two storage types: <strong>Copy-on-Write (CoW)</strong> — updates rewrite the entire file (best for read-heavy workloads); and <strong>Merge-on-Read (MoR)</strong> — updates stored in delta logs and merged at query time (best for write-heavy workloads).</div>
+    </div>
+
+    <!-- Q9 — Single -->
+    <div class="quiz-question" id="q9">
+      <div class="quiz-number">QUESTION 09</div>
+      <p class="quiz-q-text">Which processing framework uses Resilient Distributed Datasets (RDDs)?</p>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','A')"><span class="opt-label">A</span>Apache Spark</button>
+        <button class="option-btn" onclick="answer(this,'B','A')"><span class="opt-label">B</span>Apache Hive</button>
+        <button class="option-btn" onclick="answer(this,'C','A')"><span class="opt-label">C</span>Presto</button>
+        <button class="option-btn" onclick="answer(this,'D','A')"><span class="opt-label">D</span>Apache Pig</button>
+      </div>
+      <div class="explanation">✅ <strong>Apache Spark</strong> uses RDDs (Resilient Distributed Datasets) as its core data abstraction — an immutable, fault-tolerant collection of elements distributed across the cluster for parallel processing.</div>
+    </div>
+
+    <!-- Q10 — Multi TWO -->
+    <div class="quiz-multi" id="q10">
+      <div class="quiz-number">QUESTION 10 · SELECT TWO</div>
+      <p class="quiz-q-text">A data engineer is considering using the Apache Hadoop framework. What are benefits of the Hadoop framework?</p>
+      <p class="select-hint">Choose exactly two options.</p>
+      <label class="checkbox-option"><input type="checkbox" value="A"/><span class="opt-text">You can store multiple petabytes of data.</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="B"/><span class="opt-text">Hadoop can only process structured and unstructured data.</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="C"/><span class="opt-text">The Hadoop infrastructure is not scalable.</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="D"/><span class="opt-text">Hadoop has a low degree of fault tolerance.</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="E"/><span class="opt-text">The open-source framework is free and can run on inexpensive hardware.</span></label>
+      <br/>
+      <button class="check-btn" onclick="checkMulti('q10',['A','E'])">Check Answer</button>
+      <div class="multi-explanation">✅ Hadoop is highly scalable and designed for big data — enabling <strong>petabyte-scale storage</strong>. It is also <strong>open-source and runs on commodity hardware</strong>, making it a cost-effective solution for large data processing needs.</div>
+    </div>
+
+    <!-- Score Bar -->
+    <div class="score-bar" id="scoreBar" style="display:none;">
+      <div class="score-title">🎉 Module 9 Quiz Complete</div>
+      <div class="score-count" id="scoreCount">0 / 10</div>
+      <div class="score-sub" id="scoreMsg"></div>
+    </div>
+  </section>
+
+  <!-- ── BOTTOM NAV ── -->
+  <div class="bottom-nav">
+    <a href="../index.html" class="btn">← Back to Home</a>
+    <a href="certification.html" class="btn">Final Exam →</a>
+  </div>
+
+</div>
+
+<!-- ── TOP BUTTON ── -->
+<button id="topBtn" title="Back to top">↑</button>
+
+<script src="../assets/js/template.js"></script>
+
+</body>
+</html>
