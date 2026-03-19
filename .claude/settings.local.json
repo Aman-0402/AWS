@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(wc -l /d/code/GITHUB/AWS/assets/js/*.js)",
+      "Bash(git -C /d/code/GITHUB/AWS log --oneline -10)",
+      "Bash(find /d/code/GITHUB/AWS -not -path *.git* -type f -o -type d)"
+    ]
+  }
+}
